@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Погода для всех</string>
+    <string name="unitF">Показывать погоду в F°</string>
+    <string name="unitC">Показывать погоду в C°</string>
+    <string name="update">обновить</string>
+    <string name="clear">Ясно</string>
+    <string name="Saint_Petersburg">Санкт-Петербург</string>
+</resources>

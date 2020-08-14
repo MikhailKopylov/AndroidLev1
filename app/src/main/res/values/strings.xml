@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">WeatherForAll</string>
+    <string name="unitF">Display the temperature in F°</string>
+    <string name="unitC">Display the temperature in C°</string>
+    <string name="update">update</string>
+    <string name="clear">Clear</string>
+    <string name="Saint_Petersburg">Saint-Petersburg</string>
 </resources>

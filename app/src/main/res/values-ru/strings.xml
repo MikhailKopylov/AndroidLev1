@@ -5,5 +5,18 @@
     <string name="unitC">Показывать погоду в C°</string>
     <string name="update">обновить</string>
     <string name="clear">Ясно</string>
+    <string name="select_city">Выбрать город</string>
+    <string name="to_write_city_name">Написать название города</string>
+    <string name="select_to_write_city_name">Написать название города</string>
+    <string name="show_wind">Показать скорость ветра</string>
+    <string name="show_pressure">Показать давление</string>
+    <string name="dark_theme_on">Включить темную тему</string>
+    <string name="on">Включить</string>
+
+
     <string name="Saint_Petersburg">Санкт-Петербург</string>
+    <string name="Moscow">Москва</string>
+    <string name="Saratov">Саратов</string>
+
+
 </resources>

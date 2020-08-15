@@ -4,5 +4,18 @@
     <string name="unitC">Display the temperature in C°</string>
     <string name="update">update</string>
     <string name="clear">Clear</string>
+    <string name="select_city">Select city</string>
+    <string name="to_write_city_name">To write city name</string>
+    <string name="select_to_write_city_name">Select to write city name</string>
+
+
     <string name="Saint_Petersburg">Saint-Petersburg</string>
+    <string name="Moscow">Moscow</string>
+    <string name="Saratov">Saratov</string>
+    <string name="show_wind">To show the speed of the wind</string>
+    <string name="show_pressure">Show the pressure</string>
+    <string name="dark_theme_on">Dark theme on</string>
+    <string name="on">ON</string>
+
+
 </resources>

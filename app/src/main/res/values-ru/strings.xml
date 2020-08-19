@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="Saint_Petersburg">Санкт-Петербург</string>
+    <string name="Moscow">Москва</string>
+    <string name="Saratov">Саратов</string>
+
     <string name="app_name">Погода для всех</string>
     <string name="unitF">Показывать погоду в F°</string>
     <string name="unitC">Показывать погоду в C°</string>
@@ -12,11 +16,10 @@
     <string name="show_pressure">Показать давление</string>
     <string name="dark_theme_on">Включить темную тему</string>
     <string name="on">Включить</string>
+    <string name="wind_text_view">Ветер 15 м/с</string>
+    <string name="pressure_text_view">Давление 760 мм. рт. ст.</string>
 
 
-    <string name="Saint_Petersburg">Санкт-Петербург</string>
-    <string name="Moscow">Москва</string>
-    <string name="Saratov">Саратов</string>
 
 
 </resources>

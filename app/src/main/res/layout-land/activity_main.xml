@@ -111,4 +111,28 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.50" />
 
+    <TextView
+        android:id="@+id/wind_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/wind_text_view"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rainfall_text_view" />
+
+    <TextView
+        android:id="@+id/pressure_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/pressure_text_view"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/rainfall_text_view" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

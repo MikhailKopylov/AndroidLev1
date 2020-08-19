@@ -5,16 +5,17 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.*
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    companion object {
-        const val TEMPERATURE_C = 15
-    }
 
+
+    @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -22,16 +23,13 @@ class MainActivity : AppCompatActivity() {
         startSelectCityActivity()
         startSettingsActivity()
 
-
-
-        update()
-
+        Log.d("MainActivity", "onCreate")
     }
 
     private fun startSettingsActivity() {
         val settingsButton: ImageButton = findViewById(R.id.settings_button)
         settingsButton.setOnClickListener {
-            val intent = Intent(this, Settings::class.java)
+            val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
         }
     }
@@ -39,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     private fun startSelectCityActivity() {
         val cityTextView: TextView = findViewById(R.id.location_text_view)
         cityTextView.setOnClickListener {
-            val intent = Intent(this, SelectCity::class.java)
+            val intent = Intent(this, SelectCityActivity::class.java)
             startActivity(intent)
         }
     }
@@ -54,6 +52,27 @@ class MainActivity : AppCompatActivity() {
             dateTextView.text = dateNow()
             timeTextView.text = timeNow()
         }
+
+        val temperatureTextView: TextView = findViewById(R.id.temperature_text_view)
+        temperatureTextView.text = SettingsPresenter.temperature
+
+        val pressureTextView: TextView = findViewById(R.id.pressure_textView)
+        if (SettingsPresenter.isShowPressure) {
+            pressureTextView.visibility = View.VISIBLE
+        } else {
+            pressureTextView.visibility = View.INVISIBLE
+        }
+
+        val windTextView: TextView = findViewById(R.id.wind_textView)
+        if (SettingsPresenter.isShowWind) {
+            windTextView.visibility = View.VISIBLE
+        } else {
+            windTextView.visibility = View.INVISIBLE
+        }
+
+        val cityName:TextView = findViewById(R.id.location_text_view)
+        cityName.text = SelectCityPresenter.cityName
+
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -87,8 +106,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d("MainActivity", "onStart")
+    }
 
+    override fun onResume() {
+        super.onResume()
+        update()
+        Log.d("MainActivity", "onResume")
+    }
 
+    override fun onPause() {
+        super.onPause()
+        Log.d("MainActivity", "onPause")
+    }
 
+    override fun onStop() {
+        super.onStop()
+        Log.d("MainActivity", "onStop")
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("MainActivity", "onDestroy")
+    }
 }

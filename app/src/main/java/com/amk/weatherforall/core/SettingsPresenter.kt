@@ -1,4 +1,4 @@
-package com.amk.weatherforall
+package com.amk.weatherforall.core
 
 object SettingsPresenter {
     private const val TEMPERATURE_C = 15

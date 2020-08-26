@@ -1,4 +1,4 @@
-package com.amk.weatherforall
+package com.amk.weatherforall.activities
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +7,8 @@ import android.util.Log
 import android.widget.CheckBox
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.TextView
+import com.amk.weatherforall.R
+import com.amk.weatherforall.core.SettingsPresenter
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,10 +18,12 @@ class SettingsActivity : AppCompatActivity() {
         selectTemperatureMode()
 
         val showWindCheckBox: CheckBox = findViewById(R.id.show_wind_checkBox)
-        showWindCheckBox.isChecked = SettingsPresenter.isShowWind
+        showWindCheckBox.isChecked =
+            SettingsPresenter.isShowWind
 
         val showPressureCheckBox: CheckBox = findViewById(R.id.show_pressure_checkBox)
-        showPressureCheckBox.isChecked = SettingsPresenter.isShowPressure
+        showPressureCheckBox.isChecked =
+            SettingsPresenter.isShowPressure
 
         Log.d("SettingsActivity", "onCreate")
     }

@@ -1,4 +1,4 @@
-package com.amk.weatherforall
+package com.amk.weatherforall.activities
 
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +7,8 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
+import com.amk.weatherforall.R
+import com.amk.weatherforall.core.SelectCityPresenter
 
 class SelectCityActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

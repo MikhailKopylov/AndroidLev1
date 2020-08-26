@@ -1,4 +1,4 @@
-package com.amk.weatherforall
+package com.amk.weatherforall.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -8,6 +8,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import com.amk.weatherforall.*
+import com.amk.weatherforall.core.SelectCityPresenter
+import com.amk.weatherforall.core.SettingsPresenter
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
@@ -54,7 +57,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         val temperatureTextView: TextView = findViewById(R.id.temperature_text_view)
-        temperatureTextView.text = SettingsPresenter.temperature
+        temperatureTextView.text =
+            SettingsPresenter.temperature
 
         val pressureTextView: TextView = findViewById(R.id.pressure_textView)
         if (SettingsPresenter.isShowPressure) {

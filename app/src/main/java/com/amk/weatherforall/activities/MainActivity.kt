@@ -2,6 +2,7 @@ package com.amk.weatherforall.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -35,6 +36,12 @@ class MainActivity : AppCompatActivity(), Constants {
         setContentView(R.layout.activity_main)
         cityTextView = findViewById(R.id.location_text_view)
 
+        val additionalInformationButton:Button = findViewById(R.id.additional_information_button)
+        additionalInformationButton.setOnClickListener{
+            val uri:Uri = Uri.parse("${resources.getString(R.string.defaultUrl)}")
+            val browser = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(browser)
+        }
         clickSettingsActivity()
 
         Log.d("MainActivity", "onCreate")

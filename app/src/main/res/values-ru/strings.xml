@@ -19,6 +19,11 @@
     <string name="on">Включить</string>
     <string name="wind_text_view">Ветер 15 м/с</string>
     <string name="pressure_text_view">Давление 760 мм. рт. ст.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Отмена</string>
+    <string name="additional_information">дополнительная информация</string>
+
+    <string name="defaultUrl">https://yandex.ru/pogoda/</string>
 
 
 

@@ -24,6 +24,8 @@
     <string name="pressure_text_view">Pressure 760 mm Hg</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="additional_information">additional information</string>
 
+    <string name="defaultUrl">https://yandex.ru/pogoda/</string>
 
 </resources>

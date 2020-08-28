@@ -1,16 +1,23 @@
 package com.amk.weatherforall.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.amk.weatherforall.R
-import com.amk.weatherforall.core.SettingsPresenter
+import com.amk.weatherforall.core.Constants
+import com.amk.weatherforall.core.Constants.Companion.SETTING_SHOW_MODE_TEMPERATURE
+import com.amk.weatherforall.core.Constants.Companion.SETTING_SHOW_PRESSURE
+import com.amk.weatherforall.core.Constants.Companion.SETTING_SHOW_WIND
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity(), Constants {
+
+    private var showTemperatureInC: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -18,26 +25,25 @@ class SettingsActivity : AppCompatActivity() {
         selectTemperatureMode()
 
         val showWindCheckBox: CheckBox = findViewById(R.id.show_wind_checkBox)
-        showWindCheckBox.isChecked =
-            SettingsPresenter.isShowWind
+        showWindCheckBox.isChecked = intent.getBooleanExtra(SETTING_SHOW_WIND, false)
 
         val showPressureCheckBox: CheckBox = findViewById(R.id.show_pressure_checkBox)
-        showPressureCheckBox.isChecked =
-            SettingsPresenter.isShowPressure
+        showPressureCheckBox.isChecked = intent.getBooleanExtra(SETTING_SHOW_PRESSURE, false)
 
+        requestResult()
         Log.d("SettingsActivity", "onCreate")
     }
 
     @SuppressLint("SetTextI18n")
     private fun selectTemperatureMode() {
         //TODO add change temperature mode
-//        val temperatureTextView: TextView = findViewById(R.id.temperature_text_view)
+        showTemperatureInC = intent.getBooleanExtra(SETTING_SHOW_MODE_TEMPERATURE, true)
+
+        val temperatureRadioGroup: RadioGroup = findViewById(R.id.select_temperature_mode_radio_button)
         val temperatureC: RadioButton = findViewById(R.id.display_in_C_radioButton)
         val temperatureF: RadioButton = findViewById(R.id.display_in_F_radioButton)
-        val temperatureRadioGroup: RadioGroup =
-            findViewById(R.id.select_temperature_mode_radio_button)
 
-        if (SettingsPresenter.isShowTemperatureInC) {
+        if (showTemperatureInC) {
             temperatureC.isChecked = true
         } else {
             temperatureF.isChecked = true
@@ -45,31 +51,35 @@ class SettingsActivity : AppCompatActivity() {
 
         temperatureRadioGroup.setOnCheckedChangeListener { _, radioButtonId ->
             when (radioButtonId) {
-                temperatureC.id -> SettingsPresenter.isShowTemperatureInC = true
-                temperatureF.id -> SettingsPresenter.isShowTemperatureInC = false
+                temperatureC.id -> showTemperatureInC = true
+                temperatureF.id -> showTemperatureInC = false
             }
         }
     }
 
+    private fun requestResult() {
+        val okButton: Button = findViewById(R.id.ok_button_setting)
+        okButton.setOnClickListener {
+            val showWindCheckBox: CheckBox = findViewById(R.id.show_wind_checkBox)
+            val isShowWind = showWindCheckBox.isChecked
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("SettingsActivity", "onStart")
-    }
+            val showPressureCheckBox: CheckBox = findViewById(R.id.show_pressure_checkBox)
+            val isShowPressure = showPressureCheckBox.isChecked
 
-    override fun onResume() {
-        super.onResume()
-        Log.d("SettingsActivity", "onResume")
-    }
+            val intentResult = Intent()
+            intentResult.putExtra(SETTING_SHOW_MODE_TEMPERATURE, showTemperatureInC)
+            intentResult.putExtra(SETTING_SHOW_WIND, isShowWind)
+            intentResult.putExtra(SETTING_SHOW_PRESSURE, isShowPressure)
 
-    override fun onPause() {
-        super.onPause()
-        val showWindCheckBox: CheckBox = findViewById(R.id.show_wind_checkBox)
-        SettingsPresenter.isShowWind = showWindCheckBox.isChecked
+            setResult(RESULT_OK, intentResult)
+            finish()
+        }
 
-        val showPressureCheckBox: CheckBox = findViewById(R.id.show_pressure_checkBox)
-        SettingsPresenter.isShowPressure = showPressureCheckBox.isChecked
-        Log.d("SettingsActivity", "onPause")
+        val cancelButton: Button = findViewById(R.id.cancel_button_setting)
+        cancelButton.setOnClickListener {
+            setResult(RESULT_CANCELED)
+            finish()
+        }
     }
 
     override fun onStop() {
@@ -81,4 +91,19 @@ class SettingsActivity : AppCompatActivity() {
         super.onDestroy()
         Log.d("SettingsActivity", "onDestroy")
     }
+
+//    override fun onStart() {
+//        super.onStart()
+//        Log.d("SettingsActivity", "onStart")
+//    }
+//
+//    override fun onResume() {
+//        super.onResume()
+//        Log.d("SettingsActivity", "onResume")
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        Log.d("SettingsActivity", "onPause")
+//    }
 }

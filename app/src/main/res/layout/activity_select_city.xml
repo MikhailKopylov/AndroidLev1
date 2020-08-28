@@ -30,6 +30,7 @@
             android:id="@+id/city_first_radioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="@string/Saint_Petersburg" />
 
         <RadioButton
@@ -63,6 +64,23 @@
         app:layout_constraintTop_toBottomOf="@+id/select_city_radioGroup"
         android:autofillHints="@string/to_write_city_name" />
 
+    <Button
+        android:id="@+id/ok_button_select_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="@string/ok"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/cancel_button_select_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text="@string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@
     <string name="Saint_Petersburg">Saint-Petersburg</string>
     <string name="Moscow">Moscow</string>
     <string name="Saratov">Saratov</string>
+    <string name="Default_city_name">Saint-Petersburg</string>
 
 
     <string name="app_name">WeatherForAll</string>
@@ -21,6 +22,8 @@
     <string name="on">ON</string>
     <string name="wind_text_view">Wind 15 m/c</string>
     <string name="pressure_text_view">Pressure 760 mm Hg</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
 
 </resources>

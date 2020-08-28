@@ -9,42 +9,87 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import com.amk.weatherforall.*
-import com.amk.weatherforall.core.SelectCityPresenter
-import com.amk.weatherforall.core.SettingsPresenter
+import com.amk.weatherforall.core.Constants
+import com.amk.weatherforall.core.Constants.Companion.CITY_NAME_SELECT
+import com.amk.weatherforall.core.Constants.Companion.REQUEST_CODE_SELECT_CITY
+import com.amk.weatherforall.core.Constants.Companion.REQUEST_CODE_SETTING
+import com.amk.weatherforall.core.Constants.Companion.SETTING_SHOW_MODE_TEMPERATURE
+import com.amk.weatherforall.core.Constants.Companion.SETTING_SHOW_PRESSURE
+import com.amk.weatherforall.core.Constants.Companion.SETTING_SHOW_WIND
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Constants {
 
+    private lateinit var cityTextView: TextView
+    private var showTemperatureInC: Boolean = true
+    private val  TEMPERATURE_C = 15
+
+    private var isWindVisible: Boolean = true
+    private var isPressureVisible: Boolean = true
 
     @SuppressLint("ShowToast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        cityTextView = findViewById(R.id.location_text_view)
 
-        startSelectCityActivity()
-        startSettingsActivity()
+        clickSettingsActivity()
 
         Log.d("MainActivity", "onCreate")
     }
 
-    private fun startSettingsActivity() {
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            REQUEST_CODE_SELECT_CITY -> {
+                val cityName: String = data?.getStringExtra(CITY_NAME_SELECT)
+                    ?: resources.getString(R.string.Default_city_name)
+                cityTextView.text = cityName
+//                update()
+            }
+            REQUEST_CODE_SETTING -> {
+                if (data != null) {
+                    showTemperatureInC = data.getBooleanExtra(SETTING_SHOW_MODE_TEMPERATURE, true)
+                    isPressureVisible = data.getBooleanExtra(SETTING_SHOW_PRESSURE, true)
+                    isWindVisible = data.getBooleanExtra(SETTING_SHOW_WIND, true)
+                }
+
+            }
+            else -> {
+                super.onActivityResult(requestCode, resultCode, data)
+                return
+            }
+        }
+    }
+
+    private fun clickSettingsActivity() {
         val settingsButton: ImageButton = findViewById(R.id.settings_button)
         settingsButton.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent)
+            intent.putExtra(SETTING_SHOW_MODE_TEMPERATURE, showTemperatureInC)
+            intent.putExtra(SETTING_SHOW_PRESSURE, isPressureVisible)
+            intent.putExtra(SETTING_SHOW_WIND, isWindVisible)
+            startActivityForResult(intent, REQUEST_CODE_SETTING)
         }
     }
-
-    private fun startSelectCityActivity() {
-        val cityTextView: TextView = findViewById(R.id.location_text_view)
+    private fun clickSelectCityActivity(cityName: String) {
         cityTextView.setOnClickListener {
             val intent = Intent(this, SelectCityActivity::class.java)
-            startActivity(intent)
+            intent.putExtra(CITY_NAME_SELECT, cityName)
+            startActivityForResult(intent, REQUEST_CODE_SELECT_CITY)
         }
     }
 
+    private fun temperatureMode(showInC:Boolean):String{
+        return if (showInC) {
+            "$TEMPERATURE_C C"
+        } else {
+            "${TEMPERATURE_C.convertToF()} F"
+        }
+
+    }
     private fun update() {
         val dateTextView: TextView = findViewById(R.id.date_text_view)
         val timeTextView: TextView = findViewById(R.id.time_text_view)
@@ -57,26 +102,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         val temperatureTextView: TextView = findViewById(R.id.temperature_text_view)
-        temperatureTextView.text =
-            SettingsPresenter.temperature
+        temperatureTextView.text = temperatureMode(showTemperatureInC)
 
         val pressureTextView: TextView = findViewById(R.id.pressure_textView)
-        if (SettingsPresenter.isShowPressure) {
+        if (isPressureVisible) {
             pressureTextView.visibility = View.VISIBLE
         } else {
             pressureTextView.visibility = View.INVISIBLE
         }
 
         val windTextView: TextView = findViewById(R.id.wind_textView)
-        if (SettingsPresenter.isShowWind) {
+        if (isWindVisible) {
             windTextView.visibility = View.VISIBLE
         } else {
             windTextView.visibility = View.INVISIBLE
         }
-
-        val cityName:TextView = findViewById(R.id.location_text_view)
-        cityName.text = SelectCityPresenter.cityName
-
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -110,29 +150,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("MainActivity", "onStart")
-    }
-
     override fun onResume() {
         super.onResume()
         update()
         Log.d("MainActivity", "onResume")
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.d("MainActivity", "onPause")
+    override fun onStart() {
+        super.onStart()
+        clickSelectCityActivity(cityTextView.text as String)
+        Log.d("MainActivity", "onStart")
     }
 
-    override fun onStop() {
-        super.onStop()
-        Log.d("MainActivity", "onStop")
-    }
+    private fun Int.convertToF() = ((this * 1.8) + 32).toInt()
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("MainActivity", "onDestroy")
-    }
 }

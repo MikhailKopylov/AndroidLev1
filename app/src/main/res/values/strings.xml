@@ -1,3 +1,31 @@
 <resources>
+    <string name="Saint_Petersburg">Saint-Petersburg</string>
+    <string name="Moscow">Moscow</string>
+    <string name="Saratov">Saratov</string>
+    <string name="Default_city_name">Saint-Petersburg</string>
+
+
     <string name="app_name">WeatherForAll</string>
+    <string name="unitF">Display the temperature in F°</string>
+    <string name="unitC">Display the temperature in C°</string>
+    <string name="update">update</string>
+    <string name="clear">Clear</string>
+    <string name="select_city">Select city</string>
+    <string name="to_write_city_name">To write city name</string>
+    <string name="select_to_write_city_name">Select to write city name</string>
+
+
+
+    <string name="show_wind">To show the speed of the wind</string>
+    <string name="show_pressure">Show the pressure</string>
+    <string name="dark_theme_on">Dark theme on</string>
+    <string name="on">ON</string>
+    <string name="wind_text_view">Wind 15 m/c</string>
+    <string name="pressure_text_view">Pressure 760 mm Hg</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="additional_information">additional information</string>
+
+    <string name="defaultUrl">https://yandex.ru/pogoda/</string>
+
 </resources>

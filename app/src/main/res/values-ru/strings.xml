@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Saint_Petersburg">Санкт-Петербург</string>
+    <string name="Moscow">Москва</string>
+    <string name="Saratov">Саратов</string>
+    <string name="Default_city_name">Санкт-Петербург</string>
+
+    <string name="app_name">Погода для всех</string>
+    <string name="unitF">Показывать погоду в F°</string>
+    <string name="unitC">Показывать погоду в C°</string>
+    <string name="update">обновить</string>
+    <string name="clear">Ясно</string>
+    <string name="select_city">Выбрать город</string>
+    <string name="to_write_city_name">Написать название города</string>
+    <string name="select_to_write_city_name">Написать название города</string>
+    <string name="show_wind">Показать скорость ветра</string>
+    <string name="show_pressure">Показать давление</string>
+    <string name="dark_theme_on">Включить темную тему</string>
+    <string name="on">Включить</string>
+    <string name="wind_text_view">Ветер 15 м/с</string>
+    <string name="pressure_text_view">Давление 760 мм. рт. ст.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Отмена</string>
+    <string name="additional_information">дополнительная информация</string>
+
+    <string name="defaultUrl">https://yandex.ru/pogoda/</string>
+
+
+
+
+</resources>

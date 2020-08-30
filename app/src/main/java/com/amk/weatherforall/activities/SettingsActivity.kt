@@ -10,12 +10,11 @@ import android.widget.CheckBox
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.amk.weatherforall.R
-import com.amk.weatherforall.core.Constants
-import com.amk.weatherforall.core.Constants.Companion.SETTING_SHOW_MODE_TEMPERATURE
-import com.amk.weatherforall.core.Constants.Companion.SETTING_SHOW_PRESSURE
-import com.amk.weatherforall.core.Constants.Companion.SETTING_SHOW_WIND
+import com.amk.weatherforall.core.Constants.SETTING_SHOW_MODE_TEMPERATURE
+import com.amk.weatherforall.core.Constants.SETTING_SHOW_PRESSURE
+import com.amk.weatherforall.core.Constants.SETTING_SHOW_WIND
 
-class SettingsActivity : AppCompatActivity(), Constants {
+class SettingsActivity : AppCompatActivity() {
 
     private var showTemperatureInC: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {

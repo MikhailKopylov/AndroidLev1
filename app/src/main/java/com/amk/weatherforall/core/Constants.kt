@@ -1,7 +1,7 @@
 package com.amk.weatherforall.core
 
-interface Constants {
-    companion object{
+object Constants  {
+
         const val CITY_NAME_SELECT = "City name activity request"
 //        const val CITY_NAME_BEFORE_SELECT = "City name activity before"
 
@@ -13,5 +13,8 @@ interface Constants {
 
         const val REQUEST_CODE_SELECT_CITY: Int = 18
         const val REQUEST_CODE_SETTING: Int = 19
-    }
+
+
+        const val CITY_NAME: String = "CityName"
+
 }

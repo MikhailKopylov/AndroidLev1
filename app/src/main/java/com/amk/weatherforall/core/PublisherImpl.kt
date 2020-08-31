@@ -6,6 +6,7 @@ import com.amk.weatherforall.core.interfaces.Publisher
 class PublisherImpl:Publisher {
 
     private val observables:MutableList<Observable> = mutableListOf()
+
     override fun subscribe(observable: Observable) {
         observables.add(observable)
     }

@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity(), PublisherGetter, StartFragment {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         runFragments(FragmentsNames.MainFragment,Bundle())
 
         Log.d("MainActivity", "onCreate")

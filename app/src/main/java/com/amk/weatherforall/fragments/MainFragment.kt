@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
-class MainFragment private constructor() : Fragment(), Observable {
+class MainFragment  : Fragment(), Observable {
     private lateinit var cityTextView: TextView
     private var showTemperatureInC: Boolean = true
     private val TEMPERATURE_C = 15
@@ -31,6 +31,11 @@ class MainFragment private constructor() : Fragment(), Observable {
 
     private lateinit var fragmentView: View
 
+    companion object {
+        fun getInstance(): MainFragment {
+            return MainFragment()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,12 +43,6 @@ class MainFragment private constructor() : Fragment(), Observable {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
-    }
-
-    companion object {
-        fun getInstance(): MainFragment {
-            return MainFragment()
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,7 +61,7 @@ class MainFragment private constructor() : Fragment(), Observable {
         clickSettings(view)
 
         cityTextView.setOnClickListener {
-            val bundle= Bundle()
+            val bundle = Bundle()
             bundle.putString(CITY_NAME, cityTextView.text.toString())
             arguments = bundle
             (context as StartFragment).runFragments(FragmentsNames.SelectCityFragment, bundle)
@@ -70,30 +69,6 @@ class MainFragment private constructor() : Fragment(), Observable {
 
         update(view)
     }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        when (requestCode) {
-//            Constants.REQUEST_CODE_SELECT_CITY -> {
-//                val cityName: String = data?.getStringExtra(Constants.CITY_NAME_SELECT)
-//                    ?: resources.getString(R.string.Default_city_name)
-//                cityTextView.text = cityName
-////                update()
-//            }
-//            Constants.REQUEST_CODE_SETTING -> {
-//                if (data != null) {
-//                    showTemperatureInC =
-//                        data.getBooleanExtra(Constants.SETTING_SHOW_MODE_TEMPERATURE, true)
-//                    isPressureVisible = data.getBooleanExtra(Constants.SETTING_SHOW_PRESSURE, true)
-//                    isWindVisible = data.getBooleanExtra(Constants.SETTING_SHOW_WIND, true)
-//                }
-//
-//            }
-//            else -> {
-//                super.onActivityResult(requestCode, resultCode, data)
-//                return
-//            }
-//        }
-//    }
 
     private fun clickSettings(view: View) {
         val settingsButton: ImageButton = view.findViewById(R.id.settings_button)
@@ -103,7 +78,7 @@ class MainFragment private constructor() : Fragment(), Observable {
             bundle.putBoolean(Constants.SETTING_SHOW_PRESSURE, isPressureVisible)
             bundle.putBoolean(Constants.SETTING_SHOW_WIND, isWindVisible)
             arguments = bundle
-//            startActivityForResult(intent, Constants.REQUEST_CODE_SETTING)
+            (context as StartFragment).runFragments(FragmentsNames.SettingsFragment, bundle)
         }
     }
 
@@ -129,9 +104,13 @@ class MainFragment private constructor() : Fragment(), Observable {
 
         }
 
+        showTemperatureInC =
+            arguments?.getBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE) ?: showTemperatureInC
         val temperatureTextView: TextView = view.findViewById(R.id.temperature_text_view)
         temperatureTextView.text = temperatureMode(showTemperatureInC)
 
+        isPressureVisible =
+            arguments?.getBoolean(Constants.SETTING_SHOW_PRESSURE) ?: isPressureVisible
         val pressureTextView: TextView = view.findViewById(R.id.pressure_textView)
         if (isPressureVisible) {
             pressureTextView.visibility = View.VISIBLE
@@ -139,6 +118,7 @@ class MainFragment private constructor() : Fragment(), Observable {
             pressureTextView.visibility = View.INVISIBLE
         }
 
+        isWindVisible = arguments?.getBoolean(Constants.SETTING_SHOW_WIND) ?: isWindVisible
         val windTextView: TextView = view.findViewById(R.id.wind_textView)
         if (isWindVisible) {
             windTextView.visibility = View.VISIBLE
@@ -146,9 +126,7 @@ class MainFragment private constructor() : Fragment(), Observable {
             windTextView.visibility = View.INVISIBLE
         }
 
-        if(arguments?.getString(CITY_NAME) != null){
-            cityTextView.text = arguments?.getString(CITY_NAME)?:"ERROR"
-        }
+        cityTextView.text = arguments?.getString(CITY_NAME) ?: cityTextView.text
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -191,71 +169,4 @@ class MainFragment private constructor() : Fragment(), Observable {
         arguments = bundle
         update(fragmentView)
     }
-
-
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        outState.putString(CITY_NAME, cityTextView.text.toString())
-//        Log.d("MainFragment", "onSaveInstanceState")
-//        super.onSaveInstanceState(outState)
-//    }
-//
-//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-//        if(savedInstanceState != null){
-//            cityTextView.text = savedInstanceState.getString(CITY_NAME)
-//        }
-//        Log.d("MainFragment", "onViewStateRestored")
-//        super.onViewStateRestored(savedInstanceState)
-//    }
-//
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//
-//        Log.d("MainFragment", "onAttach")
-//    }
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        Log.d("MainFragment", "onCreate")
-//    }
-//
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        Log.d("MainFragment", "onActivityCreated")
-//    }
-//
-//    override fun onStart() {
-//        super.onStart()
-//        Log.d("MainFragment", "onStart")
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        Log.d("MainFragment", "onResume")
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        Log.d("MainFragment", "onPause")
-//    }
-//
-//    override fun onStop() {
-//        super.onStop()
-//        Log.d("MainFragment", "onStop")
-//    }
-//
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        Log.d("MainFragment", "onDestroyView")
-//    }
-//
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        Log.d("MainFragment", "onDestroy")
-//    }
-//
-//    override fun onDetach() {
-//        super.onDetach()
-//        Log.d("MainFragment", "onDetach")
-//    }
 }

@@ -21,9 +21,11 @@ import com.amk.weatherforall.core.interfaces.PublisherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
 import kotlinx.android.synthetic.main.fragment_select_city.*
 
-class SelectCityFragment private constructor() : Fragment() {
+class SelectCityFragment : Fragment() {
 
     private lateinit var publisher: Publisher
+
+    private lateinit var mView:View
 
     companion object {
         fun getInstance(): SelectCityFragment {
@@ -46,9 +48,14 @@ class SelectCityFragment private constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mView = view
         requestResult(view)
-        selectCityName(view = view)
         Log.d("SelectCityActivity", "onCreate")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        selectCityName(mView)
     }
 
     private fun requestResult(view: View) {
@@ -128,57 +135,6 @@ class SelectCityFragment private constructor() : Fragment() {
     }
 
     private fun closeFragment() {
-        fragmentManager
-            ?.beginTransaction()
-            ?.remove(this)
-            ?.commit()
+        (context as StartFragment).runFragments(FragmentsNames.MainFragment, Bundle.EMPTY)
     }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        Log.d("SelectCityFragment", "onCreate")
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.d("SelectCityFragment", "onActivityCreated")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("SelectCityFragment", "onStart")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("SelectCityFragment", "onResume")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("SelectCityFragment", "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("SelectCityFragment", "onStop")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d("SelectCityFragment", "onDestroyView")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("SelectCityFragment", "onDestroy")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.d("SelectCityFragment", "onDetach")
-    }
-
 }

@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
-class MainFragment  : Fragment(), Observable {
+class MainFragment  private constructor(): Fragment(), Observable {
     private lateinit var cityTextView: TextView
     private var showTemperatureInC: Boolean = true
     private val TEMPERATURE_C = 15

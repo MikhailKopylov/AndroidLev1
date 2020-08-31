@@ -135,6 +135,8 @@ class SelectCityFragment : Fragment() {
     }
 
     private fun closeFragment() {
-        (context as StartFragment).runFragments(FragmentsNames.MainFragment, Bundle.EMPTY)
+        (context as AppCompatActivity)
+            .supportFragmentManager
+            .popBackStack()
     }
 }

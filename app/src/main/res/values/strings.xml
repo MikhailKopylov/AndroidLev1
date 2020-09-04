@@ -15,7 +15,6 @@
     <string name="select_to_write_city_name">Select to write city name</string>
 
 
-
     <string name="show_wind">To show the speed of the wind</string>
     <string name="show_pressure">Show the pressure</string>
     <string name="dark_theme_on">Dark theme on</string>
@@ -27,5 +26,7 @@
     <string name="additional_information">additional information</string>
 
     <string name="defaultUrl">https://yandex.ru/pogoda/</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

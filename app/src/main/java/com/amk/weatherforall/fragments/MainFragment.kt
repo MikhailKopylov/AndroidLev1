@@ -3,7 +3,6 @@ package com.amk.weatherforall.fragments
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,21 +14,27 @@ import androidx.fragment.app.Fragment
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.Constants
 import com.amk.weatherforall.core.Constants.CITY_NAME
-import com.amk.weatherforall.core.interfaces.Observable
+import com.amk.weatherforall.core.DateTimeUtils
+import com.amk.weatherforall.core.Weather
+import com.amk.weatherforall.core.WeatherPresenter
+import com.amk.weatherforall.core.interfaces.ObservableWeather
 import com.amk.weatherforall.core.interfaces.StartFragment
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.util.*
 
-class MainFragment  : Fragment(), Observable {
+class MainFragment : Fragment(), ObservableWeather {
     private lateinit var cityTextView: TextView
-    private var showTemperatureInC: Boolean = true
-    private val TEMPERATURE_C = 15
 
-    private var isWindVisible: Boolean = true
-    private var isPressureVisible: Boolean = true
+    private var showTemperatureInF: Boolean = false
+    private var isNotWindVisible: Boolean = false
+    private var isNotPressureVisible: Boolean = false
 
     private lateinit var fragmentView: View
+
+    private val weathers: ArrayList<Weather> = WeatherPresenter.weatherList
+    private var weather:Weather
+
+    init {
+        weather = 0.getWeather()
+    }
 
     companion object {
         fun getInstance(): MainFragment {
@@ -74,53 +79,58 @@ class MainFragment  : Fragment(), Observable {
         val settingsButton: ImageButton = view.findViewById(R.id.settings_button)
         settingsButton.setOnClickListener {
             val bundle = Bundle()
-            bundle.putBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE, showTemperatureInC)
-            bundle.putBoolean(Constants.SETTING_SHOW_PRESSURE, isPressureVisible)
-            bundle.putBoolean(Constants.SETTING_SHOW_WIND, isWindVisible)
+            bundle.putBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE, showTemperatureInF)
+            bundle.putBoolean(Constants.SETTING_SHOW_PRESSURE, isNotPressureVisible)
+            bundle.putBoolean(Constants.SETTING_SHOW_WIND, isNotWindVisible)
             arguments = bundle
             (context as StartFragment).runFragments(FragmentsNames.SettingsFragment, bundle)
         }
     }
 
 
-    private fun temperatureMode(showInC: Boolean): String {
-        return if (showInC) {
-            "$TEMPERATURE_C C"
+    private fun temperatureMode(showInF: Boolean): String {
+        return if (!showInF) {
+            "${weather.temperature} C"
         } else {
-            "${TEMPERATURE_C.convertToF()} F"
+            "${weather.temperature.convertToF()} F"
         }
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun update(view: View) {
         val dateTextView: TextView = view.findViewById(R.id.date_text_view)
         val timeTextView: TextView = view.findViewById(R.id.time_text_view)
         val updateButton: ImageButton = view.findViewById(R.id.update_button)
-        dateTextView.text = dateNow()
-        timeTextView.text = timeNow()
+        dateTextView.text = DateTimeUtils.formatDate(weather.dateTimeWeather)
+        timeTextView.text = DateTimeUtils.formatTime(weather.dateTimeWeather)
         updateButton.setOnClickListener {
-            dateTextView.text = dateNow()
-            timeTextView.text = timeNow()
+            weather = weathers[0]
+            update(view)
+//            dateTextView.text = DateTimeUtils.formatDate(weather.dateTimeWeather)
+//            timeTextView.text = DateTimeUtils.formatTime(weather.dateTimeWeather)
 
         }
 
-        showTemperatureInC =
-            arguments?.getBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE) ?: showTemperatureInC
+        showTemperatureInF =
+            arguments?.getBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE) ?: showTemperatureInF
         val temperatureTextView: TextView = view.findViewById(R.id.temperature_text_view)
-        temperatureTextView.text = temperatureMode(showTemperatureInC)
+        temperatureTextView.text = temperatureMode(showTemperatureInF)
 
-        isPressureVisible =
-            arguments?.getBoolean(Constants.SETTING_SHOW_PRESSURE) ?: isPressureVisible
+        isNotPressureVisible =
+            arguments?.getBoolean(Constants.SETTING_SHOW_PRESSURE) ?: isNotPressureVisible
         val pressureTextView: TextView = view.findViewById(R.id.pressure_textView)
-        if (isPressureVisible) {
+        if (!isNotPressureVisible) {
+            pressureTextView.text = "${weather.pressure} mm Hg"
             pressureTextView.visibility = View.VISIBLE
         } else {
             pressureTextView.visibility = View.INVISIBLE
         }
 
-        isWindVisible = arguments?.getBoolean(Constants.SETTING_SHOW_WIND) ?: isWindVisible
+        isNotWindVisible = arguments?.getBoolean(Constants.SETTING_SHOW_WIND) ?: isNotWindVisible
         val windTextView: TextView = view.findViewById(R.id.wind_textView)
-        if (isWindVisible) {
+        if (!isNotWindVisible) {
+            windTextView.text = "${weather.wind} m/s"
             windTextView.visibility = View.VISIBLE
         } else {
             windTextView.visibility = View.INVISIBLE
@@ -129,44 +139,15 @@ class MainFragment  : Fragment(), Observable {
         cityTextView.text = arguments?.getString(CITY_NAME) ?: cityTextView.text
     }
 
-    @SuppressLint("SimpleDateFormat")
-    private fun timeNow(): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val current = LocalDateTime.now()
-            if (current.minute > 9) {
-                "${current.hour}:${current.minute}"
-            } else {
-                "${current.hour}:0${current.minute}"
-            }
-        } else {
-            val formatterTime = SimpleDateFormat("hh:mma")
-            formatterTime.format(Date())
-        }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    private fun dateNow(): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val current = LocalDateTime.now()
-
-            if (current.monthValue > 9) {
-                "${current.dayOfMonth}.${current.monthValue}.${current.year}"
-            } else {
-                "${current.dayOfMonth}.0${current.monthValue}.${current.year}"
-            }
-        } else {
-            val formatterDate = SimpleDateFormat("dd.mm.yyyy")
-            formatterDate.format(Date())
-        }
-    }
 
     private fun Int.convertToF() = ((this * 1.8) + 32).toInt()
 
-    override fun updateCityName(text: String) {
-        cityTextView.text = text
-        val bundle = Bundle()
-        bundle.putString(CITY_NAME, text)
-        arguments = bundle
+    private fun Int.getWeather():Weather {
+        return weathers[this]
+    }
+
+    override fun updateWeather(weather: Weather) {
+        this.weather = weather
         update(fragmentView)
     }
 }

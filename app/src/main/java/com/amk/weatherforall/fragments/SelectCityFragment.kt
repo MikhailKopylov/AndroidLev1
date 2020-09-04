@@ -16,14 +16,14 @@ import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.Constants.CITY_NAME
-import com.amk.weatherforall.core.interfaces.Publisher
-import com.amk.weatherforall.core.interfaces.PublisherGetter
+import com.amk.weatherforall.core.interfaces.PublisherWeather
+import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
 import kotlinx.android.synthetic.main.fragment_select_city.*
 
 class SelectCityFragment : Fragment() {
 
-    private lateinit var publisher: Publisher
+    private lateinit var publisherWeather: PublisherWeather
 
     private lateinit var mView:View
 
@@ -35,7 +35,7 @@ class SelectCityFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        publisher = (context as PublisherGetter).getPublisher()
+        publisherWeather = (context as PublisherWeatherGetter).publisherWeather()
     }
 
     override fun onCreateView(
@@ -123,7 +123,6 @@ class SelectCityFragment : Fragment() {
     }
 
     private fun requestCityName(cityNameResult: String) {
-        publisher.notify(cityNameResult)
         val bundle = Bundle()
         bundle.putString(CITY_NAME, cityNameResult)
         (context as AppCompatActivity)
@@ -135,6 +134,8 @@ class SelectCityFragment : Fragment() {
     }
 
     private fun closeFragment() {
-        (context as StartFragment).runFragments(FragmentsNames.MainFragment, Bundle.EMPTY)
+        (context as AppCompatActivity)
+            .supportFragmentManager
+            .popBackStack()
     }
 }

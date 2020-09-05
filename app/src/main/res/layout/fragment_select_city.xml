@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SelectCityActivity">
+    >
 
     <TextView
         android:id="@+id/textView"
@@ -51,18 +51,25 @@
             android:layout_height="wrap_content"
             android:text="@string/select_to_write_city_name" />
     </RadioGroup>
-
-    <EditText
-        android:id="@+id/writeCityNameEditText"
-        android:layout_width="0dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="@string/to_write_city_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/select_city_radioGroup"
-        android:autofillHints="@string/to_write_city_name" />
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/writeCityNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="@string/to_write_city_name"
+            android:ems="10"
+            android:hint="@string/to_write_city_name"
+
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/ok_button_select_city"

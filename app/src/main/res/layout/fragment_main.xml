@@ -138,6 +138,7 @@
             android:layout_marginTop="16dp"
             android:textSize="15sp"
             android:text="@string/additional_information"
+            app:backgroundTint="@color/cardview_dark_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

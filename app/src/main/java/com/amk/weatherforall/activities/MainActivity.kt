@@ -6,15 +6,16 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import com.amk.weatherforall.*
-import com.amk.weatherforall.core.PublisherImpl
-import com.amk.weatherforall.core.interfaces.Publisher
-import com.amk.weatherforall.core.interfaces.PublisherGetter
+import com.amk.weatherforall.core.PublisherWeatherImpl
+import com.amk.weatherforall.core.interfaces.ObservableWeather
+import com.amk.weatherforall.core.interfaces.PublisherWeather
+import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
 import com.amk.weatherforall.fragments.FragmentsNames
 
-class MainActivity : AppCompatActivity(), PublisherGetter, StartFragment {
+class MainActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment {
 
-    private val publisher: Publisher = PublisherImpl()
+    private val publisherWeather: PublisherWeather = PublisherWeatherImpl()
 
 
     @SuppressLint("ShowToast")
@@ -24,28 +25,36 @@ class MainActivity : AppCompatActivity(), PublisherGetter, StartFragment {
 
 
         runFragments(FragmentsNames.MainFragment,Bundle())
+        val weatherNextFragment:Fragment = FragmentsNames.NextWeathersFragment.fragment
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.weather_next_day_frame, weatherNextFragment)
+            .addToBackStack("weatherNextFragment")
+            .commit()
+
 
         Log.d("MainActivity", "onCreate")
     }
 
     override fun runFragments(fragmentName: FragmentsNames, arguments:Bundle) {
 
-        val fragment: Fragment = fragmentName.fragment
-        fragment.arguments = arguments
+        val weatherTodayFragment: Fragment = fragmentName.fragment
+        weatherTodayFragment.arguments = arguments
 
-//        if (fragment is Observable) {
-//            publisher.subscribe(fragment)
-//        }
+        if (weatherTodayFragment is ObservableWeather) {
+            publisherWeather.subscribe(weatherTodayFragment)
+        }
 
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragment_container, fragmentName.fragment)
+                .replace(R.id.weather_today_frame, fragmentName.fragment)
                 .addToBackStack(null)
                 .commit()
     }
 
-    override fun getPublisher(): Publisher {
-        return publisher
+    override fun publisherWeather(): PublisherWeather {
+        return publisherWeather
     }
 
     override fun onResume() {

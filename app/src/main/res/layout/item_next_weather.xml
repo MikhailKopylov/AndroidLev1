@@ -9,6 +9,8 @@
     android:layout_marginEnd="10dp"
     android:layout_marginTop="16dp"
     app:cardCornerRadius="4dp"
+    app:cardBackgroundColor="@android:color/transparent"
+
     style="@style/MyCardViewStyle">
 
 
@@ -47,19 +49,17 @@
                 tools:text="15° С" />
 
 
-            <TextView
+            <ImageView
                 android:id="@+id/rainfall_text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:padding="5dp"
-                android:text="@string/clear"
-                android:textSize="35sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Осадки" />
+                android:src="@drawable/cloude" />
 
 
 

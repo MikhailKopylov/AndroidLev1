@@ -26,14 +26,14 @@ class MainActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment 
 
 
         runFragments(FragmentsNames.MainFragment,Bundle())
-        val weatherNextFragment:Fragment = FragmentsNames.NextWeathersFragment.fragment
+//        val weatherNextFragment:Fragment = FragmentsNames.NextWeathersFragment.fragment
 
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.weather_next_day_frame, weatherNextFragment)
-            .addToBackStack("weatherNextFragment")
-            .commit()
+//        supportFragmentManager
+//            .beginTransaction()
+//            .replace(R.id.weather_next_day_frame, weatherNextFragment)
+//            .addToBackStack("weatherNextFragment")
+//            .commit()
 
 
         Log.d("MainActivity", "onCreate")

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CoordinatorActivity"
+            android:name=".activities.CoordinatorActivity"
             android:label="@string/title_activity_coordinator"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

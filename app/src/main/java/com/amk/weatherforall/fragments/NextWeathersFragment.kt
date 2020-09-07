@@ -16,7 +16,7 @@ import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 
 class NextWeathersFragment(private val nextWeatherList:List<Weather>): Fragment() {
 
-    lateinit var publisherWeather: PublisherWeather
+
 
 
     companion object{
@@ -27,7 +27,7 @@ class NextWeathersFragment(private val nextWeatherList:List<Weather>): Fragment(
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        publisherWeather = (context as PublisherWeatherGetter).publisherWeather()
+
     }
 
     override fun onCreateView(
@@ -40,19 +40,7 @@ class NextWeathersFragment(private val nextWeatherList:List<Weather>): Fragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView:RecyclerView = view.findViewById(R.id.nextWeather_fragment)
-        val linearLayoutManager= LinearLayoutManager(view.context)
-        recyclerView.layoutManager = linearLayoutManager
 
-        val nextWeatherAdapter = NextWeatherAdapter(nextWeatherList.toMutableList())
-        recyclerView.adapter = nextWeatherAdapter
-
-        nextWeatherAdapter.setOnItemClickListener(object :NextWeatherAdapter.onWeatherItemClickListener{
-            override fun onItemClickListener(view: View, position: Int) {
-                Toast.makeText(context, "$position", Toast.LENGTH_SHORT).show()
-                publisherWeather.notify(nextWeatherList[position ])
-            }
-        })
 
     }
 }

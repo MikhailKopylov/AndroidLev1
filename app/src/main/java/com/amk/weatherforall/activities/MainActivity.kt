@@ -12,7 +12,6 @@ import com.amk.weatherforall.core.interfaces.PublisherWeather
 import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
 import com.amk.weatherforall.fragments.FragmentsNames
-import com.amk.weatherforall.fragments.MainFragment
 
 class MainActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment {
 

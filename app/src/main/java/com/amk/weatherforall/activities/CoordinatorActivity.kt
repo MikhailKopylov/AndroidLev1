@@ -1,6 +1,7 @@
 package com.amk.weatherforall.activities
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.amk.weatherforall.R
@@ -10,31 +11,33 @@ import com.amk.weatherforall.core.interfaces.PublisherWeather
 import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
 import com.amk.weatherforall.fragments.FragmentsNames
-import com.amk.weatherforall.fragments.MainFragment
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment {
 
-    private lateinit var weatherNextFragment:Fragment
 
     private val publisherWeather: PublisherWeather = PublisherWeatherImpl()
 
-        val onNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
+        private val onNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
             BottomNavigationView.OnNavigationItemSelectedListener { item ->
+
                 when (item.itemId) {
                     R.id.navigation_home -> {
                         runFragments(FragmentsNames.MainFragment, Bundle())
+                        setSelectItem(item)
                         return@OnNavigationItemSelectedListener true
                     }
 
                     R.id.navigation_settings -> {
                         runFragments(FragmentsNames.SettingsFragment, Bundle())
+                        setSelectItem(item)
                         return@OnNavigationItemSelectedListener true
                     }
 
                     R.id.navigation_change_city -> {
                         runFragments(FragmentsNames.SelectCityFragment, Bundle())
+                        setSelectItem(item)
                         return@OnNavigationItemSelectedListener true
                     }
 
@@ -42,6 +45,14 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
                     else -> return@OnNavigationItemSelectedListener false
                 }
             }
+
+    private fun setSelectItem(item: MenuItem) {
+        val bottomNavView:BottomNavigationView = findViewById(R.id.nav_view)
+
+        for(i in 0 until bottomNavView.menu.size()){
+            item.isChecked = item == bottomNavView.menu.getItem(i)
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

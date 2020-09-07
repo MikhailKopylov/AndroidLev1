@@ -1,7 +1,6 @@
 package com.amk.weatherforall.core
 
 import java.time.LocalDateTime
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 

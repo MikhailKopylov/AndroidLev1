@@ -87,10 +87,10 @@ class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), Obse
         }
 
         update(view)
-        nextWeathrsCreate(view)
+        nextWeathersCreate(view)
     }
 
-    private fun nextWeathrsCreate(view: View) {
+    private fun nextWeathersCreate(view: View) {
         val recyclerView: RecyclerView = view.findViewById(R.id.nextWeather_view)
         val linearLayoutManager = LinearLayoutManager(view.context)
         recyclerView.layoutManager = linearLayoutManager
@@ -133,7 +133,6 @@ class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), Obse
     private fun update(view: View) {
         val dateTextView: TextView = view.findViewById(R.id.date_text_view)
         val timeTextView: TextView = view.findViewById(R.id.time_text_view)
-        val updateButton: ImageButton = view.findViewById(R.id.update_button)
         dateTextView.text = DateTimeUtils.formatDate(weather.dateTimeWeather)
         timeTextView.text = DateTimeUtils.formatTime(weather.dateTimeWeather)
 //        updateButton.setOnClickListener {

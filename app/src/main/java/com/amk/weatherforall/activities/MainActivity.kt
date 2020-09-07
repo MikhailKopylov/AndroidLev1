@@ -12,6 +12,7 @@ import com.amk.weatherforall.core.interfaces.PublisherWeather
 import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
 import com.amk.weatherforall.fragments.FragmentsNames
+import com.amk.weatherforall.fragments.MainFragment
 
 class MainActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment {
 
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment 
         runFragments(FragmentsNames.MainFragment,Bundle())
         val weatherNextFragment:Fragment = FragmentsNames.NextWeathersFragment.fragment
 
+
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.weather_next_day_frame, weatherNextFragment)
@@ -39,11 +41,12 @@ class MainActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment 
 
     override fun runFragments(fragmentName: FragmentsNames, arguments:Bundle) {
 
-        val weatherTodayFragment: Fragment = fragmentName.fragment
-        weatherTodayFragment.arguments = arguments
+        val fragment: Fragment = fragmentName.fragment
+        fragment.arguments = arguments
 
-        if (weatherTodayFragment is ObservableWeather) {
-            publisherWeather.subscribe(weatherTodayFragment)
+
+        if (fragment is ObservableWeather) {
+            publisherWeather.subscribe(fragment)
         }
 
             supportFragmentManager
@@ -67,6 +70,7 @@ class MainActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment 
 
         Log.d("MainActivity", "onStart")
     }
+
 
 
 

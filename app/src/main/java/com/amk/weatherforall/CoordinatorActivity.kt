@@ -2,8 +2,6 @@ package com.amk.weatherforall
 
 import android.os.Bundle
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.amk.weatherforall.core.PublisherWeatherImpl
@@ -12,6 +10,7 @@ import com.amk.weatherforall.core.interfaces.PublisherWeather
 import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
 import com.amk.weatherforall.fragments.FragmentsNames
+import com.amk.weatherforall.fragments.MainFragment
 
 class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment {
 
@@ -36,11 +35,11 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
 
     override fun runFragments(fragmentName: FragmentsNames, arguments:Bundle) {
 
-        val weatherTodayFragment: Fragment = fragmentName.fragment
-        weatherTodayFragment.arguments = arguments
+        val fragment: Fragment = fragmentName.fragment
+        fragment.arguments = arguments
 
-        if (weatherTodayFragment is ObservableWeather) {
-            publisherWeather.subscribe(weatherTodayFragment)
+        if (fragment is ObservableWeather) {
+            publisherWeather.subscribe(fragment)
         }
 
         supportFragmentManager
@@ -48,9 +47,14 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
             .replace(R.id.weather_today_frame, fragmentName.fragment)
             .addToBackStack(null)
             .commit()
+
     }
 
     override fun publisherWeather(): PublisherWeather {
         return publisherWeather
+    }
+
+    fun setTitle(title:String){
+        findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout).title = title
     }
 }

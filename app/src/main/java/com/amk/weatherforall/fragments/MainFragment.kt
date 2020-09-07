@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.amk.weatherforall.CoordinatorActivity
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.Constants
 import com.amk.weatherforall.core.Constants.CITY_NAME
@@ -136,7 +137,9 @@ class MainFragment : Fragment(), ObservableWeather {
             windTextView.visibility = View.INVISIBLE
         }
 
-        cityTextView.text = arguments?.getString(CITY_NAME) ?: cityTextView.text
+        val cityName:String = arguments?.getString(CITY_NAME) ?: cityTextView.text.toString()
+        cityTextView.text = cityName
+        (activity as? CoordinatorActivity)?.setTitle(cityName)
     }
 
 
@@ -150,4 +153,6 @@ class MainFragment : Fragment(), ObservableWeather {
         this.weather = weather
         update(fragmentView)
     }
+
+
 }

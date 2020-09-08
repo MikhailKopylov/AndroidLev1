@@ -1,5 +1,6 @@
 package com.amk.weatherforall.core
 
+import com.amk.weatherforall.core.Weather.Weather
 import com.amk.weatherforall.core.interfaces.ObservableWeather
 import com.amk.weatherforall.core.interfaces.PublisherWeather
 

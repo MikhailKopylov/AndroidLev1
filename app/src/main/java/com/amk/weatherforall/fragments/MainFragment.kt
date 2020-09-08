@@ -20,7 +20,7 @@ import com.amk.weatherforall.R
 import com.amk.weatherforall.core.Constants
 import com.amk.weatherforall.core.Constants.CITY_NAME
 import com.amk.weatherforall.core.DateTimeUtils
-import com.amk.weatherforall.core.Weather
+import com.amk.weatherforall.core.Weather.Weather
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.interfaces.ObservableWeather
 import com.amk.weatherforall.core.interfaces.PublisherWeather
@@ -37,7 +37,7 @@ class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), Obse
     private lateinit var fragmentView: View
 
     private val weathers: ArrayList<Weather> = WeatherPresenter.weatherList
-    private var weather:Weather
+    private var weather: Weather
 
     lateinit var publisherWeather: PublisherWeather
 
@@ -175,7 +175,7 @@ class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), Obse
 
     private fun Int.convertToF() = ((this * 1.8) + 32).toInt()
 
-    private fun Int.getWeather():Weather {
+    private fun Int.getWeather(): Weather {
         return weathers[this]
     }
 

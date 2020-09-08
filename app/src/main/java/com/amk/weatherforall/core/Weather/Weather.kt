@@ -1,4 +1,4 @@
-package com.amk.weatherforall.core
+package com.amk.weatherforall.core.Weather
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

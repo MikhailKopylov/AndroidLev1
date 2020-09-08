@@ -1,5 +1,7 @@
 package com.amk.weatherforall.core
 
+import com.amk.weatherforall.core.City.CitiesList
+import com.amk.weatherforall.core.Weather.Weather
 import java.time.LocalDateTime
 import kotlin.collections.ArrayList
 import kotlin.random.Random
@@ -18,5 +20,6 @@ object WeatherPresenter {
             )
             weatherList.add(weather)
         }
+        CitiesList.citiesMap
     }
 }

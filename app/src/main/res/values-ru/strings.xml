@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Saint_Petersburg">Санкт-Петербург</string>
-    <string name="Moscow">Москва</string>
-    <string name="Saratov">Саратов</string>
-    <string name="Default_city_name">Санкт-Петербург</string>
+    <string name="Saint_Petersburg">Saint_Petersburg</string>
+    <string name="Moscow">Moscow</string>
+    <string name="Saratov">Saratov</string>
+    <string name="Default_city_name">Saint_Petersburg</string>
 
     <string name="app_name">Погода для всех</string>
     <string name="unitF">Показывать погоду в F°</string>

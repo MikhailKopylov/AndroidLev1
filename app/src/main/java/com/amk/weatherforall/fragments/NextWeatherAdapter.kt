@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.DateTimeUtils
-import com.amk.weatherforall.core.Weather
+import com.amk.weatherforall.core.Weather.Weather
 
 
 class NextWeatherAdapter(

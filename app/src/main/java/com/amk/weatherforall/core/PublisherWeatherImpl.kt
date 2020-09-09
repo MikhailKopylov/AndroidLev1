@@ -1,6 +1,6 @@
 package com.amk.weatherforall.core
 
-import com.amk.weatherforall.core.Weather.Weather
+import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.interfaces.ObservableWeather
 import com.amk.weatherforall.core.interfaces.PublisherWeather
 
@@ -16,7 +16,7 @@ class PublisherWeatherImpl:PublisherWeather {
         observableWeathers.remove(observableWeather)
     }
 
-    override fun notify(weather: Weather) {
-        observableWeathers.forEach { it.updateWeather(weather) }
+    override fun notify(weatherForecast: WeatherForecast) {
+        observableWeathers.forEach { it.updateWeather(weatherForecast) }
     }
 }

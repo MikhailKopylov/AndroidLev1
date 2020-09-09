@@ -1,25 +1,27 @@
 package com.amk.weatherforall.core
 
 import com.amk.weatherforall.core.City.CitiesList
-import com.amk.weatherforall.core.Weather.Weather
-import java.time.LocalDateTime
+import com.amk.weatherforall.core.Weather.*
+import com.amk.weatherforall.fragments.MainFragment
 import kotlin.collections.ArrayList
-import kotlin.random.Random
 
-object WeatherPresenter {
+class WeatherPresenter(val fragment:MainFragment) {
 
-    val weatherList:ArrayList<Weather> = arrayListOf()
+//    lateinit var fragment:MainFragment
 
-    init{
-        for (i in 0..7){
-            val weather= Weather(temperature = Random.nextInt(-15, 25),
-                rainfall = "Clear",
-                wind = Random.nextInt(0,25),
-                pressure = Random.nextInt(740,780),
-                dateTimeWeather = LocalDateTime.now().plusDays(i.toLong())
-            )
-            weatherList.add(weather)
-        }
-        CitiesList.citiesMap
-    }
+    val WEATHER_DATA_LIST:ArrayList<WeatherData> = arrayListOf()
+    var weatherForecast:WeatherForecast = WeatherRequest(fragment = fragment).weatherResult
+
+//    init{
+//        for (i in 0..7){
+//            val weather= WeatherHandler(main = Random.nextInt(-15, 25),
+//                rainfall = "Clear",
+//                wind = Random.nextInt(0,25),
+//                pressure = Random.nextInt(740,780),
+//                dateTimeWeather = LocalDateTime.now().plusDays(i.toLong())
+//            )
+//            WEATHER_HANDLER_LIST.add(weather)
+//        }
+//        CitiesList.citiesMap
+//    }
 }

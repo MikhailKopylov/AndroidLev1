@@ -187,6 +187,7 @@ class MainFragment : Fragment(), ObservableWeather {
     override fun updateWeather(weatherForecast: WeatherForecast) {
         this.weatherForecast = weatherForecast
         update(fragmentView)
+        nextWeathersCreate(fragmentView)
     }
 
 

@@ -31,8 +31,8 @@ class WeatherRequest(val fragment: MainFragment) {
 
         const val WEATHER_URL_COORD_FORECAST: String =
 //            "https://api.openweathermap.org/data/2.5/forecast/daily?q=Moscow&cnt=7&units=metric&appid="
-            "https://samples.openweathermap.org/data/2.5/forecast/daily?id=524901&appid=appid="
-//        "https://samples.openweathermap.org/data/2.5/forecast/daily?id=524901&lang=zh_cn&appid="
+            "https://samples.openweathermap.org/data/2.5/forecast/daily?id=524901&appid="
+//        "api.openweathermap.org/data/2.5/forecast/daily?q=London&mode=xml&units=metric&cnt=7"
 
         const val API_KEY: String = "a196f08fdb6ccf6e2a8a0ee4af9d9f27"
 

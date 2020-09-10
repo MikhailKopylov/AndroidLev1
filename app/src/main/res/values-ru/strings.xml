@@ -26,6 +26,11 @@
     <string name="defaultUrl">https://yandex.ru/pogoda/</string>
 
 
+    <string name="title_activity_coordinator">Погода</string>
+
+    <string name="action_settings">настройки</string>
+    <string name="home">домой</string>
+
 
 
 </resources>

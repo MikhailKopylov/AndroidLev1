@@ -25,13 +25,14 @@ class MainActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment 
 
 
         runFragments(FragmentsNames.MainFragment,Bundle())
-        val weatherNextFragment:Fragment = FragmentsNames.NextWeathersFragment.fragment
+//        val weatherNextFragment:Fragment = FragmentsNames.NextWeathersFragment.fragment
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.weather_next_day_frame, weatherNextFragment)
-            .addToBackStack("weatherNextFragment")
-            .commit()
+
+//        supportFragmentManager
+//            .beginTransaction()
+//            .replace(R.id.weather_next_day_frame, weatherNextFragment)
+//            .addToBackStack("weatherNextFragment")
+//            .commit()
 
 
         Log.d("MainActivity", "onCreate")
@@ -39,11 +40,12 @@ class MainActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment 
 
     override fun runFragments(fragmentName: FragmentsNames, arguments:Bundle) {
 
-        val weatherTodayFragment: Fragment = fragmentName.fragment
-        weatherTodayFragment.arguments = arguments
+        val fragment: Fragment = fragmentName.fragment
+        fragment.arguments = arguments
 
-        if (weatherTodayFragment is ObservableWeather) {
-            publisherWeather.subscribe(weatherTodayFragment)
+
+        if (fragment is ObservableWeather) {
+            publisherWeather.subscribe(fragment)
         }
 
             supportFragmentManager
@@ -67,6 +69,7 @@ class MainActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment 
 
         Log.d("MainActivity", "onStart")
     }
+
 
 
 

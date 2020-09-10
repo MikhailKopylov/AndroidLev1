@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    android:layout_height="wrap_content"
+        android:background="@color/blue_De_France"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/location_text_view"
@@ -19,6 +19,7 @@
             android:padding="15dp"
             android:text="@string/Saint_Petersburg"
             android:textSize="25sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/update_button"
             tools:text="Location" />
@@ -62,20 +63,17 @@
             tools:text="15° С" />
 
 
-        <TextView
+        <ImageView
             android:id="@+id/rainfall_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:padding="5dp"
-            android:text="@string/clear"
-            android:textSize="35sp"
-            app:layout_constraintBottom_toBottomOf="@+id/temperature_text_view"
+            android:src="@drawable/cloude"
+            app:layout_constraintBottom_toTopOf="@+id/pressure_textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/date_text_view"
-            tools:text="Осадки" />
+            app:layout_constraintTop_toBottomOf="@+id/date_text_view" />
 
         <ImageButton
             android:id="@+id/update_button"
@@ -86,6 +84,7 @@
             android:src="@drawable/ic_action_update"
             android:text="@string/update"
             android:textSize="10sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -98,6 +97,7 @@
             android:src="@drawable/ic_action_settings"
             android:text="@string/update"
             android:textSize="10sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -112,13 +112,13 @@
             android:id="@+id/wind_textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="@string/wind_text_view"
             android:textSize="15sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rainfall_text_view" />
+            app:layout_constraintTop_toBottomOf="@+id/temperature_text_view" />
 
         <TextView
             android:id="@+id/pressure_textView"
@@ -136,13 +136,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textSize="15sp"
             android:text="@string/additional_information"
+            android:textSize="15sp"
+            android:visibility="gone"
+            app:backgroundTint="@color/cardview_dark_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pressure_textView" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
 
-</ScrollView>
+            android:id="@+id/nextWeather_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue_De_France"
+            app:layout_constraintTop_toBottomOf="@+id/pressure_textView">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

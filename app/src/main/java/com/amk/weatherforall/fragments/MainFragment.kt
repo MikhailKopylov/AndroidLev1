@@ -1,6 +1,7 @@
 package com.amk.weatherforall.fragments
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,7 +11,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.amk.weatherforall.activities.CoordinatorActivity
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.Constants
 import com.amk.weatherforall.core.Constants.CITY_NAME
@@ -18,9 +23,11 @@ import com.amk.weatherforall.core.DateTimeUtils
 import com.amk.weatherforall.core.Weather
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.interfaces.ObservableWeather
+import com.amk.weatherforall.core.interfaces.PublisherWeather
+import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
 
-class MainFragment : Fragment(), ObservableWeather {
+class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), ObservableWeather {
     private lateinit var cityTextView: TextView
 
     private var showTemperatureInF: Boolean = false
@@ -32,14 +39,21 @@ class MainFragment : Fragment(), ObservableWeather {
     private val weathers: ArrayList<Weather> = WeatherPresenter.weatherList
     private var weather:Weather
 
+    lateinit var publisherWeather: PublisherWeather
+
     init {
         weather = 0.getWeather()
     }
 
     companion object {
-        fun getInstance(): MainFragment {
-            return MainFragment()
+        fun getInstance(weathers:List<Weather>): MainFragment {
+            return MainFragment(weathers)
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        publisherWeather = (context as PublisherWeatherGetter).publisherWeather()
     }
 
     override fun onCreateView(
@@ -73,6 +87,24 @@ class MainFragment : Fragment(), ObservableWeather {
         }
 
         update(view)
+        nextWeathersCreate(view)
+    }
+
+    private fun nextWeathersCreate(view: View) {
+        val recyclerView: RecyclerView = view.findViewById(R.id.nextWeather_view)
+        val linearLayoutManager = LinearLayoutManager(view.context)
+        recyclerView.layoutManager = linearLayoutManager
+
+        val nextWeatherAdapter = NextWeatherAdapter(nextWeatherList.toMutableList())
+        recyclerView.adapter = nextWeatherAdapter
+
+        nextWeatherAdapter.setOnItemClickListener(object :
+            NextWeatherAdapter.onWeatherItemClickListener {
+            override fun onItemClickListener(view: View, position: Int) {
+                Toast.makeText(context, "$position", Toast.LENGTH_SHORT).show()
+                publisherWeather.notify(nextWeatherList[position])
+            }
+        })
     }
 
     private fun clickSettings(view: View) {
@@ -101,16 +133,15 @@ class MainFragment : Fragment(), ObservableWeather {
     private fun update(view: View) {
         val dateTextView: TextView = view.findViewById(R.id.date_text_view)
         val timeTextView: TextView = view.findViewById(R.id.time_text_view)
-        val updateButton: ImageButton = view.findViewById(R.id.update_button)
         dateTextView.text = DateTimeUtils.formatDate(weather.dateTimeWeather)
         timeTextView.text = DateTimeUtils.formatTime(weather.dateTimeWeather)
-        updateButton.setOnClickListener {
-            weather = weathers[0]
-            update(view)
-//            dateTextView.text = DateTimeUtils.formatDate(weather.dateTimeWeather)
+//        updateButton.setOnClickListener {
+//            weather = weathers[0]
+//            update(view)
+////            dateTextView.text = DateTimeUtils.formatDate(weather.dateTimeWeather)
 //            timeTextView.text = DateTimeUtils.formatTime(weather.dateTimeWeather)
 
-        }
+//        }
 
         showTemperatureInF =
             arguments?.getBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE) ?: showTemperatureInF
@@ -136,7 +167,9 @@ class MainFragment : Fragment(), ObservableWeather {
             windTextView.visibility = View.INVISIBLE
         }
 
-        cityTextView.text = arguments?.getString(CITY_NAME) ?: cityTextView.text
+        val cityName:String = arguments?.getString(CITY_NAME) ?: cityTextView.text.toString()
+        cityTextView.text = cityName
+        (activity as? CoordinatorActivity)?.setTitle(cityName)
     }
 
 
@@ -150,4 +183,6 @@ class MainFragment : Fragment(), ObservableWeather {
         this.weather = weather
         update(fragmentView)
     }
+
+
 }

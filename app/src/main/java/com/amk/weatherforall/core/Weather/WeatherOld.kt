@@ -1,11 +1,11 @@
-package com.amk.weatherforall.core
+package com.amk.weatherforall.core.Weather
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import java.time.LocalDateTime
 
 @Parcelize
-data class Weather(
+data class WeatherOld(
     val temperature: Int,
     val rainfall: String,
     val wind: Int,

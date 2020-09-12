@@ -8,11 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.DateTimeUtils
-import com.amk.weatherforall.core.Weather
+import com.amk.weatherforall.core.Weather.WeatherData
+import com.amk.weatherforall.core.Weather.WeatherHandlerSimple
 
 
 class NextWeatherAdapter(
-    private var nextWeathersList: MutableList<Weather>
+    private var nextWeathersList: Array<WeatherData>
 ) : RecyclerView.Adapter<NextWeatherAdapter.NextWeatherHolder>() {
 
     lateinit var itemClickListener:onWeatherItemClickListener
@@ -30,8 +31,8 @@ class NextWeatherAdapter(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: NextWeatherHolder, position: Int) {
-        holder.temperatureTextView.text = "${nextWeathersList[position].temperature} C"
-        holder.dateTextView.text = "Date: ${DateTimeUtils.formatDate(nextWeathersList[position].dateTimeWeather)}"
+        holder.temperatureTextView.text = "${nextWeathersList[position].temp.day} C"
+//        holder.dateTextView.text = "Date: ${DateTimeUtils.formatDate(nextWeathersList[position].date)}"
     }
 
     override fun getItemCount(): Int {

@@ -15,19 +15,20 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.amk.weatherforall.activities.CoordinatorActivity
 import com.amk.weatherforall.R
+import com.amk.weatherforall.activities.CoordinatorActivity
 import com.amk.weatherforall.core.Constants
 import com.amk.weatherforall.core.Constants.CITY_NAME
 import com.amk.weatherforall.core.DateTimeUtils
-import com.amk.weatherforall.core.Weather
+import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.interfaces.ObservableWeather
 import com.amk.weatherforall.core.interfaces.PublisherWeather
 import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
 
-class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), ObservableWeather {
+
+class MainFragment : Fragment(), ObservableWeather {
     private lateinit var cityTextView: TextView
 
     private var showTemperatureInF: Boolean = false
@@ -36,18 +37,19 @@ class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), Obse
 
     private lateinit var fragmentView: View
 
-    private val weathers: ArrayList<Weather> = WeatherPresenter.weatherList
-    private var weather:Weather
+//    private val weatherData: Array<WeatherData> = WeatherPresenter.weatherForecast.list
+
+
+    private lateinit var weatherForecast: WeatherForecast
 
     lateinit var publisherWeather: PublisherWeather
 
-    init {
-        weather = 0.getWeather()
-    }
 
     companion object {
-        fun getInstance(weathers:List<Weather>): MainFragment {
-            return MainFragment(weathers)
+        fun getInstance(): MainFragment {
+            val fragment: MainFragment = MainFragment()
+//            WeatherPresenter.fragment = fragment
+            return MainFragment()
         }
     }
 
@@ -67,6 +69,8 @@ class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), Obse
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val weatherPresenter:WeatherPresenter= WeatherPresenter(this)
+        weatherForecast = weatherPresenter.weatherForecast
         fragmentView = view
         cityTextView = view.findViewById(R.id.location_text_view)
 
@@ -95,14 +99,14 @@ class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), Obse
         val linearLayoutManager = LinearLayoutManager(view.context)
         recyclerView.layoutManager = linearLayoutManager
 
-        val nextWeatherAdapter = NextWeatherAdapter(nextWeatherList.toMutableList())
+        val nextWeatherAdapter = NextWeatherAdapter(weatherForecast.list)
         recyclerView.adapter = nextWeatherAdapter
 
         nextWeatherAdapter.setOnItemClickListener(object :
             NextWeatherAdapter.onWeatherItemClickListener {
             override fun onItemClickListener(view: View, position: Int) {
                 Toast.makeText(context, "$position", Toast.LENGTH_SHORT).show()
-                publisherWeather.notify(nextWeatherList[position])
+                publisherWeather.notify(weatherForecast)
             }
         })
     }
@@ -122,9 +126,9 @@ class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), Obse
 
     private fun temperatureMode(showInF: Boolean): String {
         return if (!showInF) {
-            "${weather.temperature} C"
+            "${weatherForecast.list[0].temp.day.toInt()} C"
         } else {
-            "${weather.temperature.convertToF()} F"
+            "${weatherForecast.list[0].temp.day.toInt().convertToF()} F"
         }
 
     }
@@ -133,8 +137,8 @@ class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), Obse
     private fun update(view: View) {
         val dateTextView: TextView = view.findViewById(R.id.date_text_view)
         val timeTextView: TextView = view.findViewById(R.id.time_text_view)
-        dateTextView.text = DateTimeUtils.formatDate(weather.dateTimeWeather)
-        timeTextView.text = DateTimeUtils.formatTime(weather.dateTimeWeather)
+//        dateTextView.text = DateTimeUtils.formatDate(weatherForecast.list[0].date)
+//        timeTextView.text = DateTimeUtils.formatTime(weatherForecast.list[0].date)
 //        updateButton.setOnClickListener {
 //            weather = weathers[0]
 //            update(view)
@@ -152,7 +156,7 @@ class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), Obse
             arguments?.getBoolean(Constants.SETTING_SHOW_PRESSURE) ?: isNotPressureVisible
         val pressureTextView: TextView = view.findViewById(R.id.pressure_textView)
         if (!isNotPressureVisible) {
-            pressureTextView.text = "${weather.pressure} mm Hg"
+            pressureTextView.text = "${weatherForecast.list[0].pressure} mm Hg"
             pressureTextView.visibility = View.VISIBLE
         } else {
             pressureTextView.visibility = View.INVISIBLE
@@ -161,13 +165,13 @@ class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), Obse
         isNotWindVisible = arguments?.getBoolean(Constants.SETTING_SHOW_WIND) ?: isNotWindVisible
         val windTextView: TextView = view.findViewById(R.id.wind_textView)
         if (!isNotWindVisible) {
-            windTextView.text = "${weather.wind} m/s"
+            windTextView.text = "${weatherForecast.list[0].speed} m/s"
             windTextView.visibility = View.VISIBLE
         } else {
             windTextView.visibility = View.INVISIBLE
         }
 
-        val cityName:String = arguments?.getString(CITY_NAME) ?: cityTextView.text.toString()
+        val cityName: String = arguments?.getString(CITY_NAME) ?: cityTextView.text.toString()
         cityTextView.text = cityName
         (activity as? CoordinatorActivity)?.setTitle(cityName)
     }
@@ -175,13 +179,15 @@ class MainFragment(private val nextWeatherList:List<Weather>) : Fragment(), Obse
 
     private fun Int.convertToF() = ((this * 1.8) + 32).toInt()
 
-    private fun Int.getWeather():Weather {
-        return weathers[this]
-    }
+//    private fun Int.getWeather(): WeatherData {
+//        return weatherData[this]
+//    }
 
-    override fun updateWeather(weather: Weather) {
-        this.weather = weather
+
+    override fun updateWeather(weatherForecast: WeatherForecast) {
+        this.weatherForecast = weatherForecast
         update(fragmentView)
+        nextWeathersCreate(fragmentView)
     }
 
 

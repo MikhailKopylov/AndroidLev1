@@ -9,6 +9,8 @@ class WeatherPresenter(val fragment:MainFragment) {
 
 //    lateinit var fragment:MainFragment
 
+    val historyWeatherQueries:ArrayList<WeatherForecast> = arrayListOf()
+
     val WEATHER_DATA_LIST:ArrayList<WeatherData> = arrayListOf()
     var weatherForecast:WeatherForecast = WeatherRequest(fragment = fragment).weatherResult
 

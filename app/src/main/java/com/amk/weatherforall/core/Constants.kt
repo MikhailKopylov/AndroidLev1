@@ -15,4 +15,5 @@ object Constants  {
 
         const val CITY_NAME: String = "CityName"
 
+
 }

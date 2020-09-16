@@ -1,7 +1,6 @@
 package com.amk.weatherforall.fragments
 
 import androidx.fragment.app.Fragment
-import com.amk.weatherforall.core.WeatherPresenter
 
 enum class FragmentsNames(val fragment: Fragment) {
 

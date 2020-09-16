@@ -31,7 +31,7 @@ class NextWeatherAdapter(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: NextWeatherHolder, position: Int) {
-        holder.temperatureTextView.text = "${nextWeathersList[position].temp.day} C"
+        holder.temperatureTextView.text = "${nextWeathersList[position].getTemp()} C"
 //        holder.dateTextView.text = "Date: ${DateTimeUtils.formatDate(nextWeathersList[position].date)}"
     }
 

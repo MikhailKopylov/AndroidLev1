@@ -1,4 +1,4 @@
-package com.amk.weatherforall.core.Weather
+package com.amk.weatherforall.core.Weather.weatherFor16Days
 
 data class Weather(
     val main:String,

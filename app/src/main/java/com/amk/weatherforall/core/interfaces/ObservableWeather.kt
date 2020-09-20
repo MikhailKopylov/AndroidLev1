@@ -5,5 +5,5 @@ import com.amk.weatherforall.core.Weather.WeatherHandlerSimple
 
 interface ObservableWeather {
 
-    fun updateWeather(weatherForecast: WeatherForecast)
+    fun updateWeather(weatherForecast: WeatherForecast?)
 }

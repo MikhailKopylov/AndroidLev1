@@ -30,7 +30,13 @@
 
     <string name="action_settings">настройки</string>
     <string name="home">домой</string>
-
+    <string name="weatherNext_Fragment">weatherNextFragment</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="open">Открыть</string>
+    <string name="close">Закрыть</string>
+    <string name="history">История</string>
+    <string name="about">О программе</string>
+    <string name="menu_send">Обратная связь</string>
 
 
 </resources>

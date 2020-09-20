@@ -31,5 +31,12 @@
     <string name="action_settings">settings</string>
     <string name="home">home</string>
     <string name="weatherNext_Fragment">weatherNextFragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="history">history</string>
+    <string name="about">about</string>
+    <string name="menu_send">Send message</string>
 
 </resources>

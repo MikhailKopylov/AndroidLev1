@@ -2,7 +2,10 @@ package com.amk.weatherforall.activities
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.PublisherWeatherImpl
@@ -13,43 +16,43 @@ import com.amk.weatherforall.core.interfaces.StartFragment
 import com.amk.weatherforall.fragments.FragmentsNames
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 
-class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment {
+class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment,
+    NavigationView.OnNavigationItemSelectedListener {
 
 
     private val publisherWeather: PublisherWeather = PublisherWeatherImpl()
+lateinit var drawer: DrawerLayout
+    private val onNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
-        private val onNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
-            BottomNavigationView.OnNavigationItemSelectedListener { item ->
-
-                when (item.itemId) {
-                    R.id.navigation_home -> {
-                        runFragments(FragmentsNames.MainFragment, Bundle())
-                        setSelectItem(item)
-                        return@OnNavigationItemSelectedListener true
-                    }
-
-                    R.id.navigation_settings -> {
-                        runFragments(FragmentsNames.SettingsFragment, Bundle())
-                        setSelectItem(item)
-                        return@OnNavigationItemSelectedListener true
-                    }
-
-                    R.id.navigation_change_city -> {
-                        runFragments(FragmentsNames.SelectCityFragment, Bundle())
-                        setSelectItem(item)
-                        return@OnNavigationItemSelectedListener true
-                    }
-
-//                    R.id.navigation_update -> runFragments(FragmentsNames.SelectCityFragment,Bundle())
-                    else -> return@OnNavigationItemSelectedListener false
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    runFragments(FragmentsNames.MainFragment, Bundle())
+                    setSelectItem(item)
+                    return@OnNavigationItemSelectedListener true
                 }
+
+                R.id.navigation_settings -> {
+                    runFragments(FragmentsNames.SettingsFragment, Bundle())
+                    setSelectItem(item)
+                    return@OnNavigationItemSelectedListener true
+                }
+
+                R.id.navigation_change_city -> {
+                    runFragments(FragmentsNames.SelectCityFragment, Bundle())
+                    setSelectItem(item)
+                    return@OnNavigationItemSelectedListener true
+                }
+                else -> return@OnNavigationItemSelectedListener false
             }
+        }
 
     private fun setSelectItem(item: MenuItem) {
-        val bottomNavView:BottomNavigationView = findViewById(R.id.nav_view)
+        val bottomNavView: BottomNavigationView = findViewById(R.id.nav_view)
 
-        for(i in 0 until bottomNavView.menu.size()){
+        for (i in 0 until bottomNavView.menu.size()) {
             item.isChecked = item == bottomNavView.menu.getItem(i)
         }
     }
@@ -59,8 +62,18 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coordinator)
         setSupportActionBar(findViewById(R.id.toolbar))
-        val bottomNavView:BottomNavigationView = findViewById(R.id.nav_view)
+        val bottomNavView: BottomNavigationView = findViewById(R.id.nav_view)
         findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout).title = title
+
+        val navigationView: NavigationView = findViewById(R.id.navigation_view)
+        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        drawer = findViewById(R.id.drawer_layout)
+        val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close)
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
+        navigationView.setNavigationItemSelectedListener(this)
 
         bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
@@ -79,20 +92,6 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
             publisherWeather.subscribe(fragment)
         }
 
-//        if(fragment is MainFragment){
-//            weatherNextFragment= FragmentsNames.NextWeathersFragment.fragment
-//            supportFragmentManager
-//                .beginTransaction()
-//                .replace(R.id.weather_next_day_frame, weatherNextFragment)
-//                .addToBackStack(getString(R.string.weatherNext_Fragment))
-//                .commit()
-//        } else{
-//            if (weatherNextFragment != null){
-//                supportFragmentManager
-//                    .popBackStack(getString(R.string.weatherNext_Fragment), 0)
-//            }
-//        }
-
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.weather_today_frame, fragmentName.fragment)
@@ -107,5 +106,32 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
 
     fun setTitle(title: String) {
         findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout).title = title
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.home -> {
+                runFragments(FragmentsNames.MainFragment, Bundle())
+            }
+
+            R.id.settings -> {
+                runFragments(FragmentsNames.SettingsFragment, Bundle())
+            }
+
+            R.id.select_city -> {
+                runFragments(FragmentsNames.SelectCityFragment, Bundle())
+            }
+        }
+        val drawer: DrawerLayout = findViewById(R.id.drawer_layout)
+        drawer.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+    override fun onBackPressed() {
+        if (drawer.isDrawerOpen((GravityCompat.START))) {
+            drawer.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 }

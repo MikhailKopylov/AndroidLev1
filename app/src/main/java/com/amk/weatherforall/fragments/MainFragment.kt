@@ -41,6 +41,7 @@ class MainFragment : Fragment(), ObservableWeather {
 
 
     private lateinit var weatherForecast: WeatherForecast
+    private lateinit var weatherPresenter:WeatherPresenter
 
     lateinit var publisherWeather: PublisherWeather
 
@@ -69,7 +70,7 @@ class MainFragment : Fragment(), ObservableWeather {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val weatherPresenter:WeatherPresenter= WeatherPresenter(this)
+        weatherPresenter= WeatherPresenter(this)
         weatherForecast = weatherPresenter.weatherForecast
         fragmentView = view
         cityTextView = view.findViewById(R.id.location_text_view)
@@ -126,9 +127,9 @@ class MainFragment : Fragment(), ObservableWeather {
 
     private fun temperatureMode(showInF: Boolean): String {
         return if (!showInF) {
-            "${weatherForecast.list[0].temp.day.toInt()} C"
+            "${weatherForecast.list[0].getTemp()} C"
         } else {
-            "${weatherForecast.list[0].temp.day.toInt().convertToF()} F"
+            "${weatherForecast.list[0].getTemp().convertToF()} F"
         }
 
     }
@@ -190,5 +191,8 @@ class MainFragment : Fragment(), ObservableWeather {
         nextWeathersCreate(fragmentView)
     }
 
-
+    override fun onPause() {
+        super.onPause()
+        weatherPresenter.historyWeatherQueries.add(weatherForecast)
+    }
 }

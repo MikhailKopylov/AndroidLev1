@@ -8,7 +8,7 @@ import java.util.*
 
 object DateTimeUtils {
     @SuppressLint("SimpleDateFormat")
-     fun formatTime(time: LocalDateTime): String {
+    fun formatTime(time: LocalDateTime): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (time.minute > 9) {
                 "${time.hour}:${time.minute}"
@@ -22,7 +22,7 @@ object DateTimeUtils {
     }
 
     @SuppressLint("SimpleDateFormat")
-     fun formatDate(date: LocalDateTime): String {
+    fun formatDate(date: LocalDateTime): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             if (date.monthValue > 9) {
@@ -36,7 +36,7 @@ object DateTimeUtils {
         }
     }
 
-    fun datePlusDays(countDays:Int):String{
+    fun datePlusDays(countDays: Int): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val current = LocalDateTime.now().plusDays(countDays.toLong())
 
@@ -52,4 +52,7 @@ object DateTimeUtils {
         }
     }
 
+    fun convertFromKelvinToC(kelvin: Int): Int {
+        return kelvin - 273
+    }
 }

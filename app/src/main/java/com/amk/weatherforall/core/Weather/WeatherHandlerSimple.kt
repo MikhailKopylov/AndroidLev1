@@ -1,5 +1,8 @@
 package com.amk.weatherforall.core.Weather
 
+import com.amk.weatherforall.core.Weather.weatherFor16Days.Clouds
+import com.amk.weatherforall.core.Weather.weatherFor16Days.Main
+import com.amk.weatherforall.core.Weather.weatherFor16Days.Weather
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId

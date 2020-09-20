@@ -38,5 +38,7 @@
     <string name="history">history</string>
     <string name="about">about</string>
     <string name="menu_send">Send message</string>
+    <string name="no_network">No network</string>
+    <string name="again_connect">again connect</string>
 
 </resources>

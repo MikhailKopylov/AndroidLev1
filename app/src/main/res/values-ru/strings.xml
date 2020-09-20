@@ -37,6 +37,8 @@
     <string name="history">История</string>
     <string name="about">О программе</string>
     <string name="menu_send">Обратная связь</string>
+    <string name="no_network">Нет сети</string>
+    <string name="again_connect">Попробовать ещё раз</string>
 
 
 </resources>

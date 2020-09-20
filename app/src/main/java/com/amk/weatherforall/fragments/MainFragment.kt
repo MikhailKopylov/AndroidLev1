@@ -19,13 +19,14 @@ import com.amk.weatherforall.R
 import com.amk.weatherforall.activities.CoordinatorActivity
 import com.amk.weatherforall.core.Constants
 import com.amk.weatherforall.core.Constants.CITY_NAME
-import com.amk.weatherforall.core.DateTimeUtils
 import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.interfaces.ObservableWeather
 import com.amk.weatherforall.core.interfaces.PublisherWeather
 import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
+import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
+import com.amk.weatherforall.fragments.dialogs.OnDialogListener
 
 
 class MainFragment : Fragment(), ObservableWeather {
@@ -41,10 +42,21 @@ class MainFragment : Fragment(), ObservableWeather {
 
 
     private lateinit var weatherForecast: WeatherForecast
-    private lateinit var weatherPresenter:WeatherPresenter
+    private lateinit var weatherPresenter: WeatherPresenter
 
     lateinit var publisherWeather: PublisherWeather
 
+    private val onDialogListener:OnDialogListener = object :OnDialogListener{
+        override fun onDialogReconnect() {
+            weatherPresenter.newRequest()
+            updateWeather(weatherForecast)
+        }
+
+        override fun onDialogCancel() {
+            TODO("Not yet implemented")
+        }
+
+    }
 
     companion object {
         fun getInstance(): MainFragment {
@@ -70,7 +82,7 @@ class MainFragment : Fragment(), ObservableWeather {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        weatherPresenter= WeatherPresenter(this)
+        weatherPresenter = WeatherPresenter(this)
         weatherForecast = weatherPresenter.weatherForecast
         fragmentView = view
         cityTextView = view.findViewById(R.id.location_text_view)
@@ -90,6 +102,7 @@ class MainFragment : Fragment(), ObservableWeather {
             arguments = bundle
             (context as StartFragment).runFragments(FragmentsNames.SelectCityFragment, bundle)
         }
+
 
         update(view)
         nextWeathersCreate(view)
@@ -127,9 +140,9 @@ class MainFragment : Fragment(), ObservableWeather {
 
     private fun temperatureMode(showInF: Boolean): String {
         return if (!showInF) {
-            "${weatherForecast.list[0].getTemp()} C"
+            "${weatherForecast.list[0].main.temp.toInt()} C"
         } else {
-            "${weatherForecast.list[0].getTemp().convertToF()} F"
+            "${weatherForecast.list[0].main.temp.toInt().convertToF()} F"
         }
 
     }
@@ -138,26 +151,18 @@ class MainFragment : Fragment(), ObservableWeather {
     private fun update(view: View) {
         val dateTextView: TextView = view.findViewById(R.id.date_text_view)
         val timeTextView: TextView = view.findViewById(R.id.time_text_view)
-//        dateTextView.text = DateTimeUtils.formatDate(weatherForecast.list[0].date)
-//        timeTextView.text = DateTimeUtils.formatTime(weatherForecast.list[0].date)
-//        updateButton.setOnClickListener {
-//            weather = weathers[0]
-//            update(view)
-////            dateTextView.text = DateTimeUtils.formatDate(weather.dateTimeWeather)
-//            timeTextView.text = DateTimeUtils.formatTime(weather.dateTimeWeather)
-
-//        }
 
         showTemperatureInF =
             arguments?.getBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE) ?: showTemperatureInF
         val temperatureTextView: TextView = view.findViewById(R.id.temperature_text_view)
         temperatureTextView.text = temperatureMode(showTemperatureInF)
 
+
         isNotPressureVisible =
             arguments?.getBoolean(Constants.SETTING_SHOW_PRESSURE) ?: isNotPressureVisible
         val pressureTextView: TextView = view.findViewById(R.id.pressure_textView)
         if (!isNotPressureVisible) {
-            pressureTextView.text = "${weatherForecast.list[0].pressure} mm Hg"
+            pressureTextView.text = "${weatherForecast.list[0].main.pressure} mm Hg"
             pressureTextView.visibility = View.VISIBLE
         } else {
             pressureTextView.visibility = View.INVISIBLE
@@ -166,7 +171,7 @@ class MainFragment : Fragment(), ObservableWeather {
         isNotWindVisible = arguments?.getBoolean(Constants.SETTING_SHOW_WIND) ?: isNotWindVisible
         val windTextView: TextView = view.findViewById(R.id.wind_textView)
         if (!isNotWindVisible) {
-            windTextView.text = "${weatherForecast.list[0].speed} m/s"
+            windTextView.text = "${weatherForecast.list[0].wind.speed} m/s"
             windTextView.visibility = View.VISIBLE
         } else {
             windTextView.visibility = View.INVISIBLE
@@ -180,16 +185,19 @@ class MainFragment : Fragment(), ObservableWeather {
 
     private fun Int.convertToF() = ((this * 1.8) + 32).toInt()
 
-//    private fun Int.getWeather(): WeatherData {
-//        return weatherData[this]
-//    }
 
-
-    override fun updateWeather(weatherForecast: WeatherForecast) {
-        this.weatherForecast = weatherForecast
-        update(fragmentView)
-        nextWeathersCreate(fragmentView)
+    override fun updateWeather(weatherForecast: WeatherForecast?) {
+        if (weatherForecast != null) {
+            this.weatherForecast = weatherForecast
+            update(fragmentView)
+            nextWeathersCreate(fragmentView)
+        } else{
+            val noConnectDialog: NoNetworkDialog = NoNetworkDialog.newInstance()
+            noConnectDialog.onDialogListener = onDialogListener
+            activity?.supportFragmentManager?.let { noConnectDialog.show(it, "Dialog") }
+        }
     }
+
 
     override fun onPause() {
         super.onPause()

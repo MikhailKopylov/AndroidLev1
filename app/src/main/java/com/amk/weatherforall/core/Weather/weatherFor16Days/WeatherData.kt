@@ -1,9 +1,9 @@
-package com.amk.weatherforall.core.Weather
+package com.amk.weatherforall.core.Weather.weatherFor16Days
 
 import java.time.LocalDateTime
 
 data class WeatherData(
-    val temp:Temperature,
+    val temp: Temperature,
     val pressure:Double,
     val humidity:Int,
     val weather: Array<Weather>,

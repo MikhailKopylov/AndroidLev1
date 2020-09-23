@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
-import com.amk.weatherforall.core.DateTimeUtils
-import com.amk.weatherforall.core.Weather.WeatherData
-import com.amk.weatherforall.core.Weather.WeatherHandlerSimple
+import com.amk.weatherforall.core.Weather.weatherFor5Days.WeatherData
 
 
 class NextWeatherAdapter(
@@ -31,7 +29,7 @@ class NextWeatherAdapter(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: NextWeatherHolder, position: Int) {
-        holder.temperatureTextView.text = "${nextWeathersList[position].getTemp()} C"
+        holder.temperatureTextView.text = "${nextWeathersList[position].main.temp.toInt()} C"
 //        holder.dateTextView.text = "Date: ${DateTimeUtils.formatDate(nextWeathersList[position].date)}"
     }
 

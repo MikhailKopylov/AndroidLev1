@@ -5,6 +5,7 @@ import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.City.Coord
 import com.amk.weatherforall.core.Weather.weatherFor5Days.*
 import com.amk.weatherforall.core.Weather.weatherFor5Days.Wind
+import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.fragments.MainFragment
 import com.google.gson.Gson
 import java.io.BufferedReader
@@ -22,7 +23,7 @@ import javax.net.ssl.HttpsURLConnection
 //    request.requestURL()
 //}
 
-class WeatherRequest(val fragment: MainFragment) {
+class WeatherRequest(val fragment: MainFragment, val city: City) {
     companion object {
         var isSendRequest: Boolean = true
         const val TAG: String = "WEATHER"
@@ -34,7 +35,8 @@ class WeatherRequest(val fragment: MainFragment) {
             "https://api.openweathermap.org/data/2.5/weather?q=Moscow,RU&appid="
 
         const val WEATHER_URL_COORD_FORECAST: String =
-            "https://api.openweathermap.org/data/2.5/forecast?q=Saint Petersburg&units=metric&APPID="
+//            "https://api.openweathermap.org/data/2.5/forecast?q=Saint Petersburg&units=metric&APPID="
+            "https://api.openweathermap.org/data/2.5/forecast?q=%s&units=metric&APPID=%s"
 //        "https://api.openweathermap.org/data/2.5/forecast/daily?q=Moscow&cnt=7&units=metric&appid="
 //        "https://samples.openweathermap.org/data/2.5/forecast/daily?id=524901&appid="
 //        "https://api.openweathermap.org/data/2.5/forecast?q=Moscow&APPID="
@@ -44,13 +46,7 @@ class WeatherRequest(val fragment: MainFragment) {
 
     }
 
-    val city: City = /*CitiesList.citiesMap["Moscow"] ?:*/ City(
-        0,
-        "Saratov",
-        Coord(46.033333, 51.566666),
-        "RU",
-        ""
-    )
+//    var city: City = City.CITY_DEFAULT
     val temper: Temperature = Temperature(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
     val main: Main = Main(0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0.0)
     val weather: Weather = Weather(0, "", "", "")
@@ -70,7 +66,8 @@ class WeatherRequest(val fragment: MainFragment) {
 
     fun requestURL() {
         try {
-            val uri: URL = URL(WEATHER_URL_COORD_FORECAST + API_KEY)
+//            city = City()
+            val uri: URL = URL(String.format(WEATHER_URL_COORD_FORECAST, city.name, API_KEY))
             val handler: Handler = Handler()
             Thread {
                 try {

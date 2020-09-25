@@ -9,10 +9,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.PublisherWeatherImpl
-import com.amk.weatherforall.core.interfaces.ObservableWeather
-import com.amk.weatherforall.core.interfaces.PublisherWeather
-import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
-import com.amk.weatherforall.core.interfaces.StartFragment
+import com.amk.weatherforall.core.WeatherPresenter
+import com.amk.weatherforall.core.interfaces.*
 import com.amk.weatherforall.fragments.FragmentsNames
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -134,4 +132,5 @@ lateinit var drawer: DrawerLayout
             super.onBackPressed()
         }
     }
+
 }

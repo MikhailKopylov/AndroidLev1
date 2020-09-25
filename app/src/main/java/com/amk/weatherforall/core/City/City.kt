@@ -7,4 +7,18 @@ data class City (
     val country: String,
     val timezone:String
 ){
+
+    constructor(cityName:String) : this(
+        id = 0,
+        name = cityName,
+        coord = Coord(0.0, 0.0),
+        country = "",
+        timezone = ""
+    ) {
+        
+    }
+
+    companion object{
+        val CITY_DEFAULT = City("Moscow")
+    }
 }

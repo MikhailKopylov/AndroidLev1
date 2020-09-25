@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
 import com.amk.weatherforall.activities.CoordinatorActivity
+import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.Constants
 import com.amk.weatherforall.core.Constants.CITY_NAME
 import com.amk.weatherforall.core.Weather.WeatherForecast
@@ -31,6 +32,7 @@ import com.amk.weatherforall.fragments.dialogs.OnDialogListener
 
 class MainFragment : Fragment(), ObservableWeather {
     private lateinit var cityTextView: TextView
+    private var city: City = City.CITY_DEFAULT
 
     private var showTemperatureInF: Boolean = false
     private var isNotWindVisible: Boolean = false
@@ -42,25 +44,25 @@ class MainFragment : Fragment(), ObservableWeather {
 
 
     private lateinit var weatherForecast: WeatherForecast
-    private lateinit var weatherPresenter: WeatherPresenter
+    private val weatherPresenter: WeatherPresenter = WeatherPresenter
 
     lateinit var publisherWeather: PublisherWeather
 
     private val onDialogListener:OnDialogListener = object :OnDialogListener{
         override fun onDialogReconnect() {
-            weatherPresenter.newRequest()
+            weatherPresenter.newRequest(city)
             updateWeather(weatherForecast)
         }
 
         override fun onDialogCancel() {
-            TODO("Not yet implemented")
+
         }
 
     }
 
     companion object {
         fun getInstance(): MainFragment {
-            val fragment: MainFragment = MainFragment()
+//            val fragment: MainFragment = MainFragment()
 //            WeatherPresenter.fragment = fragment
             return MainFragment()
         }
@@ -82,8 +84,9 @@ class MainFragment : Fragment(), ObservableWeather {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        weatherPresenter = WeatherPresenter(this)
-        weatherForecast = weatherPresenter.weatherForecast
+//        weatherPresenter = WeatherPresenter
+//        weatherPresenter.fragment = this
+        weatherForecast = WeatherPresenter.getWeatherForecast(this, city)
         fragmentView = view
         cityTextView = view.findViewById(R.id.location_text_view)
 
@@ -179,6 +182,7 @@ class MainFragment : Fragment(), ObservableWeather {
 
         val cityName: String = arguments?.getString(CITY_NAME) ?: cityTextView.text.toString()
         cityTextView.text = cityName
+        city = City(cityName)
         (activity as? CoordinatorActivity)?.setTitle(cityName)
     }
 
@@ -198,6 +202,12 @@ class MainFragment : Fragment(), ObservableWeather {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+//        city =
+        WeatherPresenter.newRequest(city)
+        update(view = fragmentView)
+    }
 
     override fun onPause() {
         super.onPause()

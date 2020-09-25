@@ -27,6 +27,9 @@
 
             </intent-filter>
         </activity>
+        <service android:name=".services.WeatherRequestService"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

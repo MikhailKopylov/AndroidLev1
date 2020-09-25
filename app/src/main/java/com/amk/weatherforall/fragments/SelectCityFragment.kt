@@ -15,7 +15,9 @@ import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import com.amk.weatherforall.R
+import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.Constants.CITY_NAME
+import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.interfaces.PublisherWeather
 import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
@@ -123,6 +125,7 @@ class SelectCityFragment : Fragment() {
     }
 
     private fun requestCityName(cityNameResult: String) {
+        WeatherPresenter.city = City(cityNameResult)
         val bundle = Bundle()
         bundle.putString(CITY_NAME, cityNameResult)
         (context as AppCompatActivity)

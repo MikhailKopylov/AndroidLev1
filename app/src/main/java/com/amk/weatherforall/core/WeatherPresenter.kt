@@ -10,17 +10,20 @@ object WeatherPresenter{
 
     val historyWeatherQueries:ArrayList<WeatherForecast> = arrayListOf()
 
+    var city: City = City.CITY_DEFAULT
     val WEATHER_DATA_LIST:ArrayList<WeatherData> = arrayListOf()
-    lateinit var weatherForecast:WeatherForecast //= WeatherRequest(fragment = fragment).weatherResult
-    lateinit var fragment: MainFragment
+    var weatherForecast:WeatherForecast = WeatherRequest(city).weatherResult
+//    lateinit var fragment: MainFragment
 
     fun newRequest(city: City){
+        this.city = city
         WeatherRequest.isSendRequest = true
-        weatherForecast = WeatherRequest(fragment = fragment, city = city).weatherResult
+        weatherForecast = WeatherRequest(/*fragment = fragment,*/ city = city).weatherResult
     }
 
-    fun getWeatherForecast(fragment: MainFragment, city: City):WeatherForecast{
-        this.fragment = fragment
-        return WeatherRequest(fragment = fragment, city = city).weatherResult
-    }
+//    fun getWeatherForecast(/*fragment: MainFragment,*/ city: City):WeatherForecast{
+//////        this.fragment = fragment
+////        weatherForecast = WeatherRequest(/*fragment = fragment,*/ city = city).weatherResult
+////        return WeatherRequest(/*fragment = fragment,*/ city = city).weatherResult
+////    }
 }

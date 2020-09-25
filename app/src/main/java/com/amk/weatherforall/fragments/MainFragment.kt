@@ -1,10 +1,16 @@
 package com.amk.weatherforall.fragments
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,11 +34,24 @@ import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
 import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogListener
+import com.amk.weatherforall.services.WeatherRequestService
 
 
 class MainFragment : Fragment(), ObservableWeather {
+
+    companion object {
+        fun getInstance(): MainFragment {
+            return MainFragment()
+        }
+
+        const val BROADCAST_ACTION_REQUEST_FINISHED =
+            "com.amk.weatherforall.services.WeatherRequest.finished"
+    }
+
+    private val handler: Handler = Handler()
+
     private lateinit var cityTextView: TextView
-    private var city: City = City.CITY_DEFAULT
+    private var city: City = WeatherPresenter.city
 
     private var showTemperatureInF: Boolean = false
     private var isNotWindVisible: Boolean = false
@@ -40,18 +59,18 @@ class MainFragment : Fragment(), ObservableWeather {
 
     private lateinit var fragmentView: View
 
-//    private val weatherData: Array<WeatherData> = WeatherPresenter.weatherForecast.list
-
-
     private lateinit var weatherForecast: WeatherForecast
     private val weatherPresenter: WeatherPresenter = WeatherPresenter
 
     lateinit var publisherWeather: PublisherWeather
+    lateinit var recyclerView: RecyclerView
 
-    private val onDialogListener:OnDialogListener = object :OnDialogListener{
+    private val onDialogListener: OnDialogListener = object : OnDialogListener {
         override fun onDialogReconnect() {
-            weatherPresenter.newRequest(city)
-            updateWeather(weatherForecast)
+//            WeatherRequestService.newRequest(city)
+            city = WeatherPresenter.city
+            WeatherRequestService.startWeatherRequestService(activity, city.name)
+//            updateWeather(weatherForecast)
         }
 
         override fun onDialogCancel() {
@@ -60,11 +79,15 @@ class MainFragment : Fragment(), ObservableWeather {
 
     }
 
-    companion object {
-        fun getInstance(): MainFragment {
-//            val fragment: MainFragment = MainFragment()
-//            WeatherPresenter.fragment = fragment
-            return MainFragment()
+    private val requestWeatherReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val cityName: String =
+                intent?.getStringExtra(WeatherRequestService.EXTRA_RESULT) ?: return
+            city = City(cityName)
+            handler.post {
+                weatherForecast = WeatherPresenter.weatherForecast
+                update(fragmentView)
+            }
         }
     }
 
@@ -84,9 +107,11 @@ class MainFragment : Fragment(), ObservableWeather {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        weatherPresenter = WeatherPresenter
-//        weatherPresenter.fragment = this
-        weatherForecast = WeatherPresenter.getWeatherForecast(this, city)
+        initNotificationChannel()
+
+        city = WeatherPresenter.city
+        WeatherRequestService.startWeatherRequestService(activity, city.name)
+        weatherForecast = WeatherPresenter.weatherForecast
         fragmentView = view
         cityTextView = view.findViewById(R.id.location_text_view)
 
@@ -106,18 +131,46 @@ class MainFragment : Fragment(), ObservableWeather {
             (context as StartFragment).runFragments(FragmentsNames.SelectCityFragment, bundle)
         }
 
-
-        update(view)
         nextWeathersCreate(view)
+        update(view)
     }
 
+    override fun onStart() {
+        super.onStart()
+        activity?.registerReceiver(
+            requestWeatherReceiver, IntentFilter(
+                BROADCAST_ACTION_REQUEST_FINISHED
+            )
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        WeatherPresenter.newRequest(city)
+        city = WeatherPresenter.city
+        WeatherRequestService.startWeatherRequestService(activity, city.name)
+//        update(view = fragmentView)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        weatherPresenter.historyWeatherQueries.add(weatherForecast)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activity?.unregisterReceiver(requestWeatherReceiver)
+    }
+
+
     private fun nextWeathersCreate(view: View) {
-        val recyclerView: RecyclerView = view.findViewById(R.id.nextWeather_view)
+        recyclerView = view.findViewById(R.id.nextWeather_view)
         val linearLayoutManager = LinearLayoutManager(view.context)
         recyclerView.layoutManager = linearLayoutManager
 
         val nextWeatherAdapter = NextWeatherAdapter(weatherForecast.list)
         recyclerView.adapter = nextWeatherAdapter
+
 
         nextWeatherAdapter.setOnItemClickListener(object :
             NextWeatherAdapter.onWeatherItemClickListener {
@@ -155,6 +208,8 @@ class MainFragment : Fragment(), ObservableWeather {
         val dateTextView: TextView = view.findViewById(R.id.date_text_view)
         val timeTextView: TextView = view.findViewById(R.id.time_text_view)
 
+        (recyclerView.adapter as NextWeatherAdapter).notifyDataSetChanged()
+
         showTemperatureInF =
             arguments?.getBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE) ?: showTemperatureInF
         val temperatureTextView: TextView = view.findViewById(R.id.temperature_text_view)
@@ -180,10 +235,10 @@ class MainFragment : Fragment(), ObservableWeather {
             windTextView.visibility = View.INVISIBLE
         }
 
-        val cityName: String = arguments?.getString(CITY_NAME) ?: cityTextView.text.toString()
-        cityTextView.text = cityName
-        city = City(cityName)
-        (activity as? CoordinatorActivity)?.setTitle(cityName)
+//        val cityName: String = arguments?.getString(CITY_NAME) ?: cityTextView.text.toString()
+        cityTextView.text = city.name
+//        city = City(cityName)
+        (activity as? CoordinatorActivity)?.setTitle(city.name)
     }
 
 
@@ -195,22 +250,24 @@ class MainFragment : Fragment(), ObservableWeather {
             this.weatherForecast = weatherForecast
             update(fragmentView)
             nextWeathersCreate(fragmentView)
-        } else{
+        } else {
             val noConnectDialog: NoNetworkDialog = NoNetworkDialog.newInstance()
             noConnectDialog.onDialogListener = onDialogListener
             activity?.supportFragmentManager?.let { noConnectDialog.show(it, "Dialog") }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-//        city =
-        WeatherPresenter.newRequest(city)
-        update(view = fragmentView)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        weatherPresenter.historyWeatherQueries.add(weatherForecast)
+    // На Андроидах версии 26 и выше необходимо создавать канал уведомлений
+    // На старых версиях канал создавать не надо
+    private fun initNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager =
+                activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val importance = NotificationManager.IMPORTANCE_LOW
+            val mChannel = NotificationChannel(
+                "2", "name", importance
+            )
+            notificationManager.createNotificationChannel(mChannel)
+        }
     }
 }

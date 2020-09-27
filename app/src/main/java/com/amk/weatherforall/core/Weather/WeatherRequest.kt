@@ -19,7 +19,7 @@ import javax.net.ssl.HttpsURLConnection
 //    request.requestURL()
 //}
 
-class WeatherRequest(/*val fragment: MainFragment,*/ val city: City) {
+class WeatherRequest(val city: City) {
     companion object {
         var isSendRequest: Boolean = false
         const val TAG: String = "WEATHER"

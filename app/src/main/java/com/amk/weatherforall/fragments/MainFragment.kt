@@ -19,6 +19,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
@@ -80,7 +81,7 @@ class MainFragment : Fragment(), ObservableWeather {
     }
 
     private val requestWeatherReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
+        override fun onReceive(context: Context, intent: Intent?) {
             val cityName: String =
                 intent?.getStringExtra(WeatherRequestService.EXTRA_RESULT) ?: return
             city = City(cityName)
@@ -137,11 +138,13 @@ class MainFragment : Fragment(), ObservableWeather {
 
     override fun onStart() {
         super.onStart()
-        activity?.registerReceiver(
-            requestWeatherReceiver, IntentFilter(
-                BROADCAST_ACTION_REQUEST_FINISHED
+        activity?.baseContext?.let {
+            LocalBroadcastManager.getInstance(it).registerReceiver(
+                requestWeatherReceiver, IntentFilter(
+                    BROADCAST_ACTION_REQUEST_FINISHED
+                )
             )
-        )
+        }
     }
 
     override fun onResume() {
@@ -159,7 +162,9 @@ class MainFragment : Fragment(), ObservableWeather {
 
     override fun onStop() {
         super.onStop()
-        activity?.unregisterReceiver(requestWeatherReceiver)
+        activity?.baseContext?.let {
+            LocalBroadcastManager.getInstance(it).unregisterReceiver(requestWeatherReceiver)
+        }
     }
 
 

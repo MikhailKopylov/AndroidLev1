@@ -3,6 +3,7 @@ package com.amk.weatherforall.core.Weather
 import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.Weather.weatherFor5Days.*
 import com.amk.weatherforall.core.Weather.weatherFor5Days.Wind
+import com.amk.weatherforall.core.WeatherPresenter
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -13,11 +14,6 @@ import java.text.ParseException
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
 
-
-//fun main() {
-//    val request: WeatherRequest = WeatherRequest(null)
-//    request.requestURL()
-//}
 
 class WeatherRequest(val city: City) {
     companion object {
@@ -39,11 +35,10 @@ class WeatherRequest(val city: City) {
 //        "https://api.openweathermap.org/data/2.5/forecast?q=Moscow&APPID="
         const val WEATHER_URL_COORD_FORECAST_WRONG =
             "https://api.openweathermap.org/data/2.5/forecast?q=Soratovas&units=metric&APPID="
-        const val API_KEY: String = "a196f08fdb6ccf6e2a8a0ee4af9d9f27"
+//        const val API_KEY: String = "a196f08fdb6ccf6e2a8a0ee4af9d9f27"
 
     }
 
-    //    var city: City = City.CITY_DEFAULT
     val temper: Temperature = Temperature(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
     val main: Main = Main(0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0.0)
     val weather: Weather = Weather(0, "", "", "")
@@ -63,7 +58,7 @@ class WeatherRequest(val city: City) {
 
     fun requestURL() {
         try {
-            val uri = URL(String.format(WEATHER_URL_COORD_FORECAST, city.name, API_KEY))
+            val uri = URL(String.format(WEATHER_URL_COORD_FORECAST, city.name, WeatherPresenter.KEI_API))
             try {
                 val urlConnection: HttpsURLConnection =
                     (uri.openConnection() as HttpsURLConnection)
@@ -76,17 +71,13 @@ class WeatherRequest(val city: City) {
                 val weatherResult2 = gson.fromJson(result, WeatherForecast::class.java)
                 weatherResult = weatherResult2
             } catch (e: SocketTimeoutException) {
-//                    fragment.updateWeather(null)
                 e.printStackTrace()
             } catch (e: ParseException) {
-//                    fragment.updateWeather(null)
                 e.printStackTrace()
             } catch (e: Exception) {
-//                    fragment.updateWeather(null)
                 e.printStackTrace()
             }
         } catch (e: MalformedURLException) {
-//            fragment.updateWeather(null)
             e.printStackTrace()
         }
     }

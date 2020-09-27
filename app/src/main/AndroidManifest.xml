@@ -27,8 +27,8 @@
 
             </intent-filter>
         </activity>
-        <service android:name=".services.WeatherRequestService"
-            android:exported="false"/>
+<!--        <service android:name=".services.WeatherRequestService"-->
+<!--            android:exported="false"/>-->
 
     </application>
 

@@ -35,7 +35,6 @@ import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
 import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogListener
-import com.amk.weatherforall.services.WeatherRequestService
 
 
 class MainFragment : Fragment(), ObservableWeather {
@@ -48,8 +47,6 @@ class MainFragment : Fragment(), ObservableWeather {
         const val BROADCAST_ACTION_REQUEST_FINISHED =
             "com.amk.weatherforall.services.WeatherRequest.finished"
     }
-
-    private val handler: Handler = Handler()
 
     private lateinit var cityTextView: TextView
     private var city: City = WeatherPresenter.city
@@ -68,27 +65,12 @@ class MainFragment : Fragment(), ObservableWeather {
 
     private val onDialogListener: OnDialogListener = object : OnDialogListener {
         override fun onDialogReconnect() {
-//            WeatherRequestService.newRequest(city)
             city = WeatherPresenter.city
-            WeatherRequestService.startWeatherRequestService(activity, city.name)
-//            updateWeather(weatherForecast)
+            WeatherPresenter.newRequest(city)
         }
 
         override fun onDialogCancel() {
 
-        }
-
-    }
-
-    private val requestWeatherReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent?) {
-            val cityName: String =
-                intent?.getStringExtra(WeatherRequestService.EXTRA_RESULT) ?: return
-            city = City(cityName)
-            handler.post {
-                weatherForecast = WeatherPresenter.weatherForecast
-                update(fragmentView)
-            }
         }
     }
 
@@ -111,7 +93,7 @@ class MainFragment : Fragment(), ObservableWeather {
         initNotificationChannel()
 
         city = WeatherPresenter.city
-        WeatherRequestService.startWeatherRequestService(activity, city.name)
+        WeatherPresenter.newRequest(city)
         weatherForecast = WeatherPresenter.weatherForecast
         fragmentView = view
         cityTextView = view.findViewById(R.id.location_text_view)
@@ -136,37 +118,16 @@ class MainFragment : Fragment(), ObservableWeather {
         update(view)
     }
 
-    override fun onStart() {
-        super.onStart()
-        activity?.baseContext?.let {
-            LocalBroadcastManager.getInstance(it).registerReceiver(
-                requestWeatherReceiver, IntentFilter(
-                    BROADCAST_ACTION_REQUEST_FINISHED
-                )
-            )
-        }
-    }
-
     override fun onResume() {
         super.onResume()
-//        WeatherPresenter.newRequest(city)
         city = WeatherPresenter.city
-        WeatherRequestService.startWeatherRequestService(activity, city.name)
-//        update(view = fragmentView)
+        WeatherPresenter.newRequest(city)
     }
 
     override fun onPause() {
         super.onPause()
         weatherPresenter.historyWeatherQueries.add(weatherForecast)
     }
-
-    override fun onStop() {
-        super.onStop()
-        activity?.baseContext?.let {
-            LocalBroadcastManager.getInstance(it).unregisterReceiver(requestWeatherReceiver)
-        }
-    }
-
 
     private fun nextWeathersCreate(view: View) {
         recyclerView = view.findViewById(R.id.nextWeather_view)
@@ -210,6 +171,9 @@ class MainFragment : Fragment(), ObservableWeather {
 
     @SuppressLint("SetTextI18n")
     private fun update(view: View) {
+        if(!WeatherPresenter.isRequestSuccessful){
+            updateWeather(null)
+        }
         val dateTextView: TextView = view.findViewById(R.id.date_text_view)
         val timeTextView: TextView = view.findViewById(R.id.time_text_view)
 
@@ -240,9 +204,7 @@ class MainFragment : Fragment(), ObservableWeather {
             windTextView.visibility = View.INVISIBLE
         }
 
-//        val cityName: String = arguments?.getString(CITY_NAME) ?: cityTextView.text.toString()
         cityTextView.text = city.name
-//        city = City(cityName)
         (activity as? CoordinatorActivity)?.setTitle(city.name)
     }
 

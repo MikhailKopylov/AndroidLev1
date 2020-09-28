@@ -33,7 +33,7 @@
                 app:toolbarId="@+id/toolbar">
 
                 <ImageView
-                    android:id="@+id/main.backdrop"
+                    android:id="@+id/city_backdrop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"

@@ -2,21 +2,25 @@ package com.amk.weatherforall.activities
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.amk.weatherforall.R
+import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.PublisherWeatherImpl
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.interfaces.*
 import com.amk.weatherforall.fragments.FragmentsNames
+import com.amk.weatherforall.services.getUrlByCity
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.squareup.picasso.Picasso
 
-class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment,
+class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment, UpdateImage,
     NavigationView.OnNavigationItemSelectedListener {
 
 
@@ -77,7 +81,14 @@ lateinit var drawer: DrawerLayout
 
         runFragments(FragmentsNames.MainFragment, Bundle())
 
+        updateImage(WeatherPresenter.city)
+    }
 
+    override fun updateImage(city: City) {
+        val backDropImageView: ImageView = findViewById(R.id.city_backdrop)
+        Picasso.get()
+            .load(getUrlByCity(city))
+            .into(backDropImageView)
     }
 
 

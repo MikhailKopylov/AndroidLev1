@@ -29,10 +29,7 @@ import com.amk.weatherforall.core.Constants
 import com.amk.weatherforall.core.Constants.CITY_NAME
 import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
-import com.amk.weatherforall.core.interfaces.ObservableWeather
-import com.amk.weatherforall.core.interfaces.PublisherWeather
-import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
-import com.amk.weatherforall.core.interfaces.StartFragment
+import com.amk.weatherforall.core.interfaces.*
 import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogListener
 
@@ -67,6 +64,7 @@ class MainFragment : Fragment(), ObservableWeather {
         override fun onDialogReconnect() {
             city = WeatherPresenter.city
             WeatherPresenter.newRequest(city)
+            (activity as UpdateImage).updateImage(city)
         }
 
         override fun onDialogCancel() {
@@ -98,6 +96,8 @@ class MainFragment : Fragment(), ObservableWeather {
         fragmentView = view
         cityTextView = view.findViewById(R.id.location_text_view)
 
+        (activity as UpdateImage).updateImage(city)
+
         val additionalInformationButton: Button =
             view.findViewById(R.id.additional_information_button)
         additionalInformationButton.setOnClickListener {
@@ -122,6 +122,7 @@ class MainFragment : Fragment(), ObservableWeather {
         super.onResume()
         city = WeatherPresenter.city
         WeatherPresenter.newRequest(city)
+        (activity as UpdateImage).updateImage(city)
     }
 
     override fun onPause() {

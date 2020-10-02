@@ -3,14 +3,11 @@ package com.amk.weatherforall.fragments
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +16,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
@@ -31,7 +27,7 @@ import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.interfaces.*
 import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
-import com.amk.weatherforall.fragments.dialogs.OnDialogListener
+import com.amk.weatherforall.fragments.dialogs.OnDialogReconnectListener
 
 
 class MainFragment : Fragment(), ObservableWeather {
@@ -60,7 +56,7 @@ class MainFragment : Fragment(), ObservableWeather {
     lateinit var publisherWeather: PublisherWeather
     lateinit var recyclerView: RecyclerView
 
-    private val onDialogListener: OnDialogListener = object : OnDialogListener {
+    private val onDialogReconnectListener: OnDialogReconnectListener = object : OnDialogReconnectListener {
         override fun onDialogReconnect() {
             city = WeatherPresenter.city
             WeatherPresenter.newRequest(city)
@@ -220,7 +216,7 @@ class MainFragment : Fragment(), ObservableWeather {
             nextWeathersCreate(fragmentView)
         } else {
             val noConnectDialog: NoNetworkDialog = NoNetworkDialog.newInstance()
-            noConnectDialog.onDialogListener = onDialogListener
+            noConnectDialog.onDialogReconnectListener = onDialogReconnectListener
             activity?.supportFragmentManager?.let { noConnectDialog.show(it, "Dialog") }
         }
     }

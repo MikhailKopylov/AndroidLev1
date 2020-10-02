@@ -40,5 +40,7 @@
     <string name="menu_send">Send message</string>
     <string name="no_network">No network</string>
     <string name="again_connect">again connect</string>
+    <string name="delete_city">DELETE CITY?</string>
+    <string name="delete">DELETE</string>
 
 </resources>

@@ -1,8 +1,14 @@
 package com.amk.weatherforall.activities
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -20,6 +26,7 @@ import com.amk.weatherforall.services.getUrlByCity
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.iid.FirebaseInstanceId
 import com.squareup.picasso.Picasso
 
 class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment, UpdateImage,
@@ -91,7 +98,33 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
 
         runFragments(FragmentsNames.MainFragment, Bundle())
 
+        initGetToken()
+        initNotificationChannel()
+
         updateImage(WeatherPresenter.city)
+    }
+
+    private fun initNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager: NotificationManager =
+                (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+            val importance: Int = NotificationManager.IMPORTANCE_LOW
+            val channel= NotificationChannel("2", "name", importance)
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun initGetToken() {
+        FirebaseInstanceId.getInstance()
+            .instanceId.addOnCompleteListener {
+                run {
+                    if (!it.isSuccessful) {
+                        Log.w("PushMessage", "getInstanceId failed", it.exception)
+                    }
+                    val token: String = it.result?.token ?: "Error"
+                    Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     override fun updateImage(city: City) {
@@ -155,3 +188,5 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
     }
 
 }
+
+//cA2KRr5OQlKN4-klvTo9d8:APA91bF_FXHBRr9yam3W4gGRyNVe96TM_H7V4IgIGEINghyfgwH2F4egkQpKplt4Rl5U_hyXMAlPUddxkX64xCW810pwyn0iXWzaqmgn-Qtf0vXXhdVagdJ8yZSHkZKgsOV7a7W0qN_G

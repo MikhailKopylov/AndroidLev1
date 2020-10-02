@@ -8,39 +8,36 @@ import android.widget.Button
 import com.amk.weatherforall.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class NoNetworkDialog: BottomSheetDialogFragment() {
-
+class DeleteCityDialog:BottomSheetDialogFragment() {
 
     companion object{
-        fun newInstance(): NoNetworkDialog{
-            return NoNetworkDialog()
+        fun newInstance(): DeleteCityDialog{
+            return DeleteCityDialog()
         }
     }
 
-    var onDialogReconnectListener:OnDialogReconnectListener? = null
+    var onDialogListener:OnDialogListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view:View = inflater.inflate(R.layout.no_network_dialog_fragment, container, false)
+        val view: View = inflater.inflate(R.layout.delete_city_dialog_fragment, container, false)
         isCancelable = false
 
-        view.findViewById<Button>(R.id.connect_again_button).setOnClickListener {
+        view.findViewById<Button>(R.id.delete_city_button).setOnClickListener {
 //            Snackbar.make(view, "Connect again", Snackbar.LENGTH_SHORT).show()
             dismiss()
-            onDialogReconnectListener?.onDialogReconnect()
+            onDialogListener?.onDialogOK()
         }
 
-        view.findViewById<Button>(R.id.cancel_network_button).setOnClickListener {
+        view.findViewById<Button>(R.id.cancel_delete_button).setOnClickListener {
 //            Snackbar.make(view, "Connect again", Snackbar.LENGTH_SHORT).show()
             dismiss()
-            onDialogReconnectListener?.onDialogCancel()
+            onDialogListener?.onDialogCancel()
         }
 
         return view
     }
-
-
 }

@@ -1,7 +1,7 @@
 package com.amk.weatherforall.fragments.dialogs
 
-interface OnDialogListener {
+interface OnDialogReconnectListener {
 
-    fun onDialogOK()
+    fun onDialogReconnect()
     fun onDialogCancel()
 }

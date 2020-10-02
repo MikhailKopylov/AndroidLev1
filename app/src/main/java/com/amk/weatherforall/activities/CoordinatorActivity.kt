@@ -8,10 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.room.Room
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.PublisherWeatherImpl
 import com.amk.weatherforall.core.WeatherPresenter
+import com.amk.weatherforall.core.database.CityDatabase
 import com.amk.weatherforall.core.interfaces.*
 import com.amk.weatherforall.fragments.FragmentsNames
 import com.amk.weatherforall.services.getUrlByCity
@@ -25,7 +27,7 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
 
 
     private val publisherWeather: PublisherWeather = PublisherWeatherImpl()
-lateinit var drawer: DrawerLayout
+    lateinit var drawer: DrawerLayout
     private val onNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
@@ -51,6 +53,8 @@ lateinit var drawer: DrawerLayout
             }
         }
 
+    lateinit var db: CityDatabase
+
     private fun setSelectItem(item: MenuItem) {
         val bottomNavView: BottomNavigationView = findViewById(R.id.nav_view)
 
@@ -66,6 +70,12 @@ lateinit var drawer: DrawerLayout
         setSupportActionBar(findViewById(R.id.toolbar))
         val bottomNavView: BottomNavigationView = findViewById(R.id.nav_view)
         findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout).title = title
+
+        db = Room.databaseBuilder<CityDatabase>(
+            applicationContext, CityDatabase::class.java, "city_database"
+        ).allowMainThreadQueries()
+            .build()
+
 
         val navigationView: NavigationView = findViewById(R.id.navigation_view)
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)

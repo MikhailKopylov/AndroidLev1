@@ -3,6 +3,9 @@ package com.amk.weatherforall.activities
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +25,7 @@ import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.database.CityDatabase
 import com.amk.weatherforall.core.interfaces.*
 import com.amk.weatherforall.fragments.FragmentsNames
+import com.amk.weatherforall.services.NetworkChangeReceiver
 import com.amk.weatherforall.services.getUrlByCity
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -35,6 +39,7 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
 
     private val publisherWeather: PublisherWeather = PublisherWeatherImpl()
     lateinit var drawer: DrawerLayout
+    private  val changeNetStateReceiver:NetworkChangeReceiver = NetworkChangeReceiver()
     private val onNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
@@ -98,6 +103,7 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
 
         runFragments(FragmentsNames.MainFragment, Bundle())
 
+        registerReceiver(changeNetStateReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         initGetToken()
         initNotificationChannel()
 
@@ -122,7 +128,7 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
                         Log.w("PushMessage", "getInstanceId failed", it.exception)
                     }
                     val token: String = it.result?.token ?: "Error"
-                    Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
                 }
             }
     }

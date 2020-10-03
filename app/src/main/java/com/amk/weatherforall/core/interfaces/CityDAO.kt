@@ -20,7 +20,7 @@ interface CityDAO {
     @Delete
     fun deleteCity(city: City)
 
-    @Query("SELECT *  FROM city")
+    @Query("SELECT idDB, idFromNet, cityName, lon, lat, countryName, population, sunrise, sunset, timezone  FROM city")
     fun getAllCities():List<City>
 
 //    @Query("SELECT * FROM city WHERE id = :id")

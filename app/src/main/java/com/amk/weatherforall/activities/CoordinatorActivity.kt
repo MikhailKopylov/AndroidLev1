@@ -3,8 +3,6 @@ package com.amk.weatherforall.activities
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.IntentFilter
-import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -16,25 +14,21 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.room.Room
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.City.City
-import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.database.CityDatabase
 import com.amk.weatherforall.core.interfaces.*
 import com.amk.weatherforall.fragments.FragmentsNames
 import com.amk.weatherforall.fragments.runFragments
-import com.amk.weatherforall.services.NetworkChangeReceiver
 import com.amk.weatherforall.services.getUrlByCity
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
 
-class CoordinatorActivity : AppCompatActivity()/*, PublisherWeatherGetter*/, UpdateImage,
+class CoordinatorActivity : AppCompatActivity(), UpdateImage,
     NavigationView.OnNavigationItemSelectedListener {
 
 
-//    private val publisherWeather: PublisherWeather = PublisherWeatherImpl()
-    lateinit var drawer: DrawerLayout
-    private  val changeNetStateReceiver:NetworkChangeReceiver = NetworkChangeReceiver()
+    private lateinit var drawer: DrawerLayout
     private val onNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
@@ -98,11 +92,9 @@ class CoordinatorActivity : AppCompatActivity()/*, PublisherWeatherGetter*/, Upd
 
         runFragments(this, FragmentsNames.MainFragment)
 
-        registerReceiver(changeNetStateReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-//        initGetToken()
+//        registerReceiver(changeNetStateReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         initNotificationChannel()
 
-        updateImage(WeatherPresenter.city)
     }
 
     private fun initNotificationChannel() {
@@ -174,5 +166,3 @@ class CoordinatorActivity : AppCompatActivity()/*, PublisherWeatherGetter*/, Upd
     }
 
 }
-
-//cA2KRr5OQlKN4-klvTo9d8:APA91bF_FXHBRr9yam3W4gGRyNVe96TM_H7V4IgIGEINghyfgwH2F4egkQpKplt4Rl5U_hyXMAlPUddxkX64xCW810pwyn0iXWzaqmgn-Qtf0vXXhdVagdJ8yZSHkZKgsOV7a7W0qN_G

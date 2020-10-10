@@ -1,7 +1,6 @@
 package com.amk.weatherforall.fragments.selectCityFragment
 
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,31 +16,28 @@ import com.amk.weatherforall.R
 import com.amk.weatherforall.activities.CoordinatorActivity
 import com.amk.weatherforall.activities.MapsActivity
 import com.amk.weatherforall.core.City.City
+import com.amk.weatherforall.core.City.Coord
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.database.CitySource
 import com.amk.weatherforall.fragments.FragmentsNames
 import com.amk.weatherforall.fragments.dialogs.DeleteCityDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogListener
 import com.amk.weatherforall.fragments.runFragments
-import com.amk.weatherforall.viewModels.SelectCityNameViewModel
-import com.amk.weatherforall.viewModels.SelectCoordViewModel
-import com.google.android.gms.maps.model.LatLng
+import com.amk.weatherforall.viewModels.SelectCityViewModel
 
 class SelectCityFragment : Fragment() {
 
 
-//    private lateinit var publisherWeather: PublisherWeather
 
     private lateinit var mView: View
 
-    lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView: RecyclerView
     lateinit var cityListAdapter: CityListAdapter
 
     private lateinit var citySource: CitySource
     private lateinit var deletingCity: City
 
-    private lateinit var  modelCoord: SelectCoordViewModel
-    private lateinit var  modelCityName: SelectCityNameViewModel
+    private lateinit var modelCity: SelectCityViewModel
 
     companion object {
 
@@ -65,11 +61,6 @@ class SelectCityFragment : Fragment() {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-//        publisherWeather = (context as PublisherWeatherGetter).publisherWeather()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -83,14 +74,16 @@ class SelectCityFragment : Fragment() {
         mView = view
         initCityList()
 
-//        model = ViewModelProviders.of(this).get(SelectCoordViewModel::class.java)
-        modelCoord = ViewModelProviders.of(activity?:return).get(SelectCoordViewModel::class.java)
-        modelCityName = ViewModelProviders.of(activity?:return).get(SelectCityNameViewModel::class.java)
+        modelCity =
+            ViewModelProviders.of(activity ?: return).get(SelectCityViewModel::class.java)
         initRecyclerView(view)
 
         requestResult(view)
         val selectCoordButton: Button = view.findViewById(R.id.show_on_map_button)
         selectCoordButton.setOnClickListener {
+            activity?.supportFragmentManager
+                ?.popBackStack()
+
             startActivityForResult(
                 Intent(context, MapsActivity::class.java),
                 REQUEST_CODE_MAPS_COORD
@@ -109,7 +102,7 @@ class SelectCityFragment : Fragment() {
         cityListAdapter.setOnItemClickListener(object :
             CityListAdapter.onCityItemClickListener {
             override fun onItemClickListener(view: View, position: Int) {
-                requestCityName(citySource.allCities[position].name)
+                requestCity(City(citySource.allCities[position].name, Coord(Double.NaN, Double.NaN)))
             }
 
             override fun onItemLongClickListener(view: View, position: Int) {
@@ -139,17 +132,15 @@ class SelectCityFragment : Fragment() {
             val newCityName = newCityEditText.text.toString()
             newCityEditText.setText("")
             citySource.addCity(City(newCityName))
-            requestCityName(newCityName)
+            requestCity(City(newCityName, Coord(Double.NaN, Double.NaN)))
         }
     }
 
-    private fun requestCityName(cityNameResult: String) {
+    private fun requestCity(cityNameResult: City) {
 
-            modelCityName.cityName(cityNameResult)
+        modelCity.cityName(cityNameResult)
 
-            modelCoord.coordinate(LatLng(Double.NaN, Double.NaN))
-        runFragments(activity?:return, FragmentsNames.MainFragment)
-
+        runFragments(activity ?: return, FragmentsNames.MainFragment)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -161,21 +152,9 @@ class SelectCityFragment : Fragment() {
                 val longitude: Double =
                     data?.getDoubleExtra(MapsActivity.LONGITUDE, WeatherPresenter.LONGITUDE_DEFAULT)
                         ?: WeatherPresenter.LONGITUDE_DEFAULT
-                requestCoord(latitude, longitude)
+                requestCity(City(WeatherPresenter.UNKNOWN_CITY_NAME, Coord(latitude, longitude)))
             }
         }
     }
 
-    private fun requestCoord(latitude: Double, longitude: Double) {
-//        WeatherPresenter.newRequest(latitude, longitude)
-        val coord:LatLng = LatLng(latitude, longitude)
-        modelCoord.coordinate(coord)
-        modelCityName.cityName("Unknown")
-//        (context as AppCompatActivity)
-//            .supportFragmentManager
-//            .beginTransaction()
-//            .remove(this)
-//            .commit()
-        runFragments(activity?:return, FragmentsNames.MainFragment)
-    }
 }

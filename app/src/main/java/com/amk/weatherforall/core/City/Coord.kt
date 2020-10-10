@@ -9,14 +9,14 @@ import com.google.gson.annotations.SerializedName
 
 
 data class Coord (
-    @SerializedName("lon")
-    @Expose
-    @ColumnInfo(name = "lon")
-    val lon: Double ,
     @SerializedName("lat")
     @Expose
     @ColumnInfo(name = "lat")
-    val lat: Double
+    val lat: Double,
+    @SerializedName("lon")
+    @Expose
+    @ColumnInfo(name = "lon")
+    val lon: Double
 ){
 //    @PrimaryKey(autoGenerate = true) var id:Long = 0
 //

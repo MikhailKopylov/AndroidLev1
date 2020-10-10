@@ -26,8 +26,7 @@ import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.interfaces.*
 import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogReconnectListener
-import com.amk.weatherforall.viewModels.SelectCityNameViewModel
-import com.amk.weatherforall.viewModels.SelectCoordViewModel
+import com.amk.weatherforall.viewModels.SelectCityViewModel
 import com.google.android.gms.maps.model.LatLng
 
 
@@ -37,9 +36,11 @@ class MainFragment : Fragment(){
         fun getInstance(): MainFragment {
             return MainFragment()
         }
+
+        const val LOAD_DATA:String = "Load data..."
     }
 
-    private var city: City = WeatherPresenter.city
+    private var city: City = City(LOAD_DATA)
 
     private var showTemperatureInF: Boolean = false
     private var isNotWindVisible: Boolean = false
@@ -52,8 +53,7 @@ class MainFragment : Fragment(){
 
     lateinit var recyclerView: RecyclerView
 
-    private lateinit var modelCoord: SelectCoordViewModel
-    private lateinit var modelCity: SelectCityNameViewModel
+    private lateinit var modelCity: SelectCityViewModel
 
     private val onDialogReconnectListener: OnDialogReconnectListener = object : OnDialogReconnectListener {
         override fun onDialogReconnect() {
@@ -85,15 +85,15 @@ class MainFragment : Fragment(){
 
         initNotificationChannel()
 
-//        city = WeatherPresenter.city
-        WeatherPresenter.newRequest(WeatherPresenter.city)
-//        weatherForecast = WeatherPresenter.weatherForecast
+        if (city.name == LOAD_DATA) {
+            WeatherPresenter.newRequest(WeatherPresenter.city)
+        }
         fragmentView = view
 
 
         initViewModel()
 
-        (activity as UpdateImage).updateImage(city)
+
 
 //        val additionalInformationButton: Button =
 //            view.findViewById(R.id.additional_information_button)
@@ -110,21 +110,11 @@ class MainFragment : Fragment(){
     }
 
     private fun initViewModel() {
-        modelCoord =
-            ViewModelProviders.of(activity ?: return).get(SelectCoordViewModel::class.java)
-        modelCoord.selectedCoord.observe(viewLifecycleOwner, Observer<LatLng> {
-            if (!it.latitude.isNaN() && !it.longitude.isNaN()) {
-                WeatherPresenter.newRequest(it.latitude, it.longitude)
-            }
-        })
-
         modelCity =
-            ViewModelProviders.of(activity ?: return).get(SelectCityNameViewModel::class.java)
-        modelCity.selectedCity.observe(viewLifecycleOwner, Observer<String> {
-            //TODO найти причину бага - при запросе по координатам также срабатывает запрос по имени предыдущего города
-            if (it != "Unknown") {
-                WeatherPresenter.newRequest(City(it))
-            }
+            ViewModelProviders.of(activity ?: return).get(SelectCityViewModel::class.java)
+        modelCity.selectedCity.observe(viewLifecycleOwner, Observer<City> {
+                WeatherPresenter.newRequest(it)
+
         })
     }
 
@@ -220,6 +210,7 @@ class MainFragment : Fragment(){
         if (weatherForecast != null) {
             this.weatherForecast = weatherForecast
             city = weatherForecast.city
+            (activity as UpdateImage).updateImage(city)
             update(fragmentView)
             nextWeathersCreate(fragmentView)
         } else {

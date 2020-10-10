@@ -12,9 +12,11 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModelProviders
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.WeatherPresenter.LATITUDE_DEFAULT
 import com.amk.weatherforall.core.WeatherPresenter.LONGITUDE_DEFAULT
+import com.amk.weatherforall.viewModels.SelectCityViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -36,6 +38,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var latitude:Double = LATITUDE_DEFAULT
     private var longitude:Double = LONGITUDE_DEFAULT
 
+    private lateinit var modelCity: SelectCityViewModel
 
     companion object {
         const val PERIOD_OF_REQUEST: Long = 3600 * 1000
@@ -61,7 +64,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
             val accuracy: String = location.accuracy.toString()
 
-            val position: LatLng = LatLng(latitude, longitude)
+            val position = LatLng(latitude, longitude)
             currentMarker.position = position
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 12F))
         }
@@ -85,6 +88,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+
         initView()
         requestPermissions()
     }
@@ -94,7 +98,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         longitudeTextView = findViewById(R.id.textLng)
         confirmButton = findViewById(R.id.confirm_coord_button)
         confirmButton.setOnClickListener {
-            val intent: Intent = Intent()
+            val intent = Intent()
             intent.putExtra(LATITUDE, latitude)
             intent.putExtra(LONGITUDE, longitude)
             setResult(RESULT_OK, intent)
@@ -167,7 +171,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         )
             return
         val locationManager: LocationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        val criteria: Criteria = Criteria()
+        val criteria = Criteria()
 
 
         latitude = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)?.latitude?: LATITUDE_DEFAULT
@@ -179,11 +183,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         criteria.accuracy = Criteria.ACCURACY_COARSE
         val provider: String? = LocationManager.NETWORK_PROVIDER//locationManager.getBestProvider(criteria, true)
         if (provider != null) {
-            locationManager.requestLocationUpdates(
-                provider,
-                PERIOD_OF_REQUEST,
-                DISTANCE_OF_REQUEST,
-                locationListener)
+//            locationManager.requestLocationUpdates(
+//                provider,
+//                PERIOD_OF_REQUEST,
+//                DISTANCE_OF_REQUEST,
+//                locationListener)
+            locationManager.requestSingleUpdate(provider, locationListener, null)
         }
     }
 

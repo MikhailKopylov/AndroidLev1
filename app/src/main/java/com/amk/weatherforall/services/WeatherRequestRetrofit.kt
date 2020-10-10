@@ -43,8 +43,9 @@ class WeatherRequestRetrofit {
                     response: Response<WeatherForecast>
                 ) {
                     response.body()?.let {
-                        WeatherPresenter.weatherForecast = it
                         WeatherPresenter.isRequestSuccessful = true
+                        WeatherPresenter.weatherForecast = it
+                        WeatherPresenter.city = it.city
                         WeatherPresenter.fragment.updateWeather(it)
                     }
                 }

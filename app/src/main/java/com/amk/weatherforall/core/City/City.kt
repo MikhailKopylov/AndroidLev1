@@ -61,7 +61,18 @@ data class City(
         population = 0,
         sunrise = 0,
         sunset = 0
-    ) {
+    )
+    constructor(cityName: String, coord: Coord) : this(
+        id = 0,
+        name = cityName,
+        coord = coord,
+        country = "",
+        timezone = "",
+        population = 0,
+        sunrise = 0,
+        sunset = 0
+    )
+    {
 
     }
 

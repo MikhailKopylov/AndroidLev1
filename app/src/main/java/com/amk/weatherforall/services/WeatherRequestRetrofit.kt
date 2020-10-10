@@ -34,7 +34,7 @@ class WeatherRequestRetrofit {
         openWeatherCoord = retrofit.create(OpenWeatherCoord::class.java)
     }
 
-    fun requestWeather(city: City, keyApi: String){
+    fun requestWeatherCity(city: City, keyApi: String){
         openWeatherCityName.loadWeather(city.name, keyApi, UNITS)
             .enqueue(object : Callback<WeatherForecast> {
 
@@ -56,7 +56,7 @@ class WeatherRequestRetrofit {
 
     }
 
-    fun requestWeather(lat:Double, lon:Double, keyApi: String){
+    fun requestWeatherCoord(lat:Double, lon:Double, keyApi: String){
         openWeatherCoord.loadWeather(lat.toString(), lon.toString(), keyApi, UNITS)
             .enqueue(object : Callback<WeatherForecast> {
 

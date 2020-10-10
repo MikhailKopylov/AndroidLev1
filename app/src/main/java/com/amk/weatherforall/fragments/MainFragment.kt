@@ -4,44 +4,41 @@ import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
 import com.amk.weatherforall.activities.CoordinatorActivity
 import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.Constants
-import com.amk.weatherforall.core.Constants.CITY_NAME
 import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.interfaces.*
 import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogReconnectListener
+import com.amk.weatherforall.viewModels.SelectCityNameViewModel
+import com.amk.weatherforall.viewModels.SelectCoordViewModel
+import com.google.android.gms.maps.model.LatLng
 
 
-class MainFragment : Fragment(), ObservableWeather {
+class MainFragment : Fragment(){
 
     companion object {
         fun getInstance(): MainFragment {
             return MainFragment()
         }
-
-        const val BROADCAST_ACTION_REQUEST_FINISHED =
-            "com.amk.weatherforall.services.WeatherRequest.finished"
     }
 
-    private lateinit var cityTextView: TextView
     private var city: City = WeatherPresenter.city
 
     private var showTemperatureInF: Boolean = false
@@ -50,11 +47,13 @@ class MainFragment : Fragment(), ObservableWeather {
 
     private lateinit var fragmentView: View
 
-    private lateinit var weatherForecast: WeatherForecast
+    private var weatherForecast: WeatherForecast= WeatherPresenter.weatherForecast
     private val weatherPresenter: WeatherPresenter = WeatherPresenter
 
-    lateinit var publisherWeather: PublisherWeather
     lateinit var recyclerView: RecyclerView
+
+    private lateinit var modelCoord: SelectCoordViewModel
+    private lateinit var modelCity: SelectCityNameViewModel
 
     private val onDialogReconnectListener: OnDialogReconnectListener = object : OnDialogReconnectListener {
         override fun onDialogReconnect() {
@@ -70,7 +69,6 @@ class MainFragment : Fragment(), ObservableWeather {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        publisherWeather = (context as PublisherWeatherGetter).publisherWeather()
         WeatherPresenter.fragment = this
     }
 
@@ -87,43 +85,47 @@ class MainFragment : Fragment(), ObservableWeather {
 
         initNotificationChannel()
 
-        city = WeatherPresenter.city
-        WeatherPresenter.newRequest(city)
-        weatherForecast = WeatherPresenter.weatherForecast
+//        city = WeatherPresenter.city
+        WeatherPresenter.newRequest(WeatherPresenter.city)
+//        weatherForecast = WeatherPresenter.weatherForecast
         fragmentView = view
-        cityTextView = view.findViewById(R.id.location_text_view)
+
+
+        initViewModel()
 
         (activity as UpdateImage).updateImage(city)
 
-        val additionalInformationButton: Button =
-            view.findViewById(R.id.additional_information_button)
-        additionalInformationButton.setOnClickListener {
-            val uri: Uri = Uri.parse(resources.getString(R.string.defaultUrl))
-            val browser = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(browser)
-        }
+//        val additionalInformationButton: Button =
+//            view.findViewById(R.id.additional_information_button)
+//        additionalInformationButton.setOnClickListener {
+//            val uri: Uri = Uri.parse(resources.getString(R.string.defaultUrl))
+//            val browser = Intent(Intent.ACTION_VIEW, uri)
+//            startActivity(browser)
+//        }
         clickSettings(view)
-
-        cityTextView.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString(CITY_NAME, cityTextView.text.toString())
-            arguments = bundle
-            if (context is StartFragment) {
-                (context as StartFragment).runFragments(FragmentsNames.SelectCityFragment, bundle)
-            }
-        }
 
         nextWeathersCreate(view)
         update(view)
 
     }
 
-    override fun onResume() {
-        super.onResume()
-//        city = WeatherPresenter.city
-////        WeatherPresenter.newRequest(city)
-//        update(this.fragmentView)
-//        (activity as UpdateImage).updateImage(city)
+    private fun initViewModel() {
+        modelCoord =
+            ViewModelProviders.of(activity ?: return).get(SelectCoordViewModel::class.java)
+        modelCoord.selectedCoord.observe(viewLifecycleOwner, Observer<LatLng> {
+            if (!it.latitude.isNaN() && !it.longitude.isNaN()) {
+                WeatherPresenter.newRequest(it.latitude, it.longitude)
+            }
+        })
+
+        modelCity =
+            ViewModelProviders.of(activity ?: return).get(SelectCityNameViewModel::class.java)
+        modelCity.selectedCity.observe(viewLifecycleOwner, Observer<String> {
+            //TODO найти причину бага - при запросе по координатам также срабатывает запрос по имени предыдущего города
+            if (it != "Unknown") {
+                WeatherPresenter.newRequest(City(it))
+            }
+        })
     }
 
     override fun onPause() {
@@ -144,7 +146,7 @@ class MainFragment : Fragment(), ObservableWeather {
             NextWeatherAdapter.onWeatherItemClickListener {
             override fun onItemClickListener(view: View, position: Int) {
                 Toast.makeText(context, "$position", Toast.LENGTH_SHORT).show()
-                publisherWeather.notify(weatherForecast)
+//                publisherWeather.notify(weatherForecast)
             }
         })
     }
@@ -157,9 +159,8 @@ class MainFragment : Fragment(), ObservableWeather {
             bundle.putBoolean(Constants.SETTING_SHOW_PRESSURE, isNotPressureVisible)
             bundle.putBoolean(Constants.SETTING_SHOW_WIND, isNotWindVisible)
             arguments = bundle
-            if (context is StartFragment) {
-                (context as StartFragment).runFragments(FragmentsNames.SettingsFragment, bundle)
-            }
+            runFragments(activity?:return@setOnClickListener, FragmentsNames.SettingsFragment)
+
         }
     }
 
@@ -208,7 +209,6 @@ class MainFragment : Fragment(), ObservableWeather {
             windTextView.visibility = View.INVISIBLE
         }
 
-        cityTextView.text = city.name
         (activity as? CoordinatorActivity)?.setTitle(city.name)
     }
 
@@ -216,7 +216,7 @@ class MainFragment : Fragment(), ObservableWeather {
     private fun Int.convertToF() = ((this * 1.8) + 32).toInt()
 
 
-    override fun updateWeather(weatherForecast: WeatherForecast?) {
+    fun updateWeather(weatherForecast: WeatherForecast?) {
         if (weatherForecast != null) {
             this.weatherForecast = weatherForecast
             city = weatherForecast.city
@@ -242,4 +242,6 @@ class MainFragment : Fragment(), ObservableWeather {
             notificationManager.createNotificationChannel(mChannel)
         }
     }
+
+
 }

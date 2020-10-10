@@ -92,9 +92,8 @@ class SettingsFragment : Fragment() {
             bundleResult.putBoolean(Constants.SETTING_SHOW_WIND, isShowWind)
             bundleResult.putBoolean(Constants.SETTING_SHOW_PRESSURE, isShowPressure)
 
-            if (context is StartFragment) {
-                (context as StartFragment).runFragments(FragmentsNames.MainFragment, bundleResult)
-            }
+            runFragments(activity?:return@setOnClickListener, FragmentsNames.MainFragment)
+
         }
 
         val cancelButton: Button = view.findViewById(R.id.cancel_button_setting)

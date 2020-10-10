@@ -38,8 +38,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
     companion object {
-        const val PERIOD_OF_REQUEST: Long = 10 * 1000
-        const val DISTANCE_OF_REQUEST: Float = 10F
+        const val PERIOD_OF_REQUEST: Long = 3600 * 1000
+        const val DISTANCE_OF_REQUEST: Float = 1000F
 
         const val PERMISSION_REQUEST_CODE: Int = 10
 

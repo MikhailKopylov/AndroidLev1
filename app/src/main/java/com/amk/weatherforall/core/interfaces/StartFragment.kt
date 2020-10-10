@@ -5,5 +5,5 @@ import com.amk.weatherforall.fragments.FragmentsNames
 
 interface StartFragment {
 
-    fun runFragments(fragmentName: FragmentsNames, arguments: Bundle)
+    fun runFragments(fragmentName: FragmentsNames)
 }

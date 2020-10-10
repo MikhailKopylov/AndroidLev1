@@ -3,41 +3,36 @@ package com.amk.weatherforall.activities
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.City.City
-import com.amk.weatherforall.core.PublisherWeatherImpl
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.database.CityDatabase
 import com.amk.weatherforall.core.interfaces.*
 import com.amk.weatherforall.fragments.FragmentsNames
+import com.amk.weatherforall.fragments.runFragments
 import com.amk.weatherforall.services.NetworkChangeReceiver
 import com.amk.weatherforall.services.getUrlByCity
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.iid.FirebaseInstanceId
 import com.squareup.picasso.Picasso
 
-class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFragment, UpdateImage,
+class CoordinatorActivity : AppCompatActivity()/*, PublisherWeatherGetter*/, UpdateImage,
     NavigationView.OnNavigationItemSelectedListener {
 
 
-    private val publisherWeather: PublisherWeather = PublisherWeatherImpl()
+//    private val publisherWeather: PublisherWeather = PublisherWeatherImpl()
     lateinit var drawer: DrawerLayout
     private  val changeNetStateReceiver:NetworkChangeReceiver = NetworkChangeReceiver()
     private val onNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
@@ -45,19 +40,19 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
 
             when (item.itemId) {
                 R.id.navigation_home -> {
-                    runFragments(FragmentsNames.MainFragment, Bundle())
+                    runFragments(this, FragmentsNames.MainFragment)
                     setSelectItem(item)
                     return@OnNavigationItemSelectedListener true
                 }
 
                 R.id.navigation_settings -> {
-                    runFragments(FragmentsNames.SettingsFragment, Bundle())
+                    runFragments(this, FragmentsNames.SettingsFragment)
                     setSelectItem(item)
                     return@OnNavigationItemSelectedListener true
                 }
 
                 R.id.navigation_change_city -> {
-                    runFragments(FragmentsNames.SelectCityFragment, Bundle())
+                    runFragments(this, FragmentsNames.SelectCityFragment)
                     setSelectItem(item)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -101,7 +96,7 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
 
         bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        runFragments(FragmentsNames.MainFragment, Bundle())
+        runFragments(this, FragmentsNames.MainFragment)
 
         registerReceiver(changeNetStateReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 //        initGetToken()
@@ -141,26 +136,11 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
     }
 
 
-    override fun runFragments(fragmentName: FragmentsNames, arguments: Bundle) {
 
-        val fragment: Fragment = fragmentName.fragment
-        fragment.arguments = arguments
 
-        if (fragment is ObservableWeather) {
-            publisherWeather.subscribe(fragment)
-        }
-
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.weather_today_frame, fragmentName.fragment)
-            .addToBackStack(null)
-            .commit()
-
-    }
-
-    override fun publisherWeather(): PublisherWeather {
-        return publisherWeather
-    }
+//    override fun publisherWeather(): PublisherWeather {
+//        return publisherWeather
+//    }
 
     fun setTitle(title: String) {
         findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout).title = title
@@ -169,15 +149,15 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.home -> {
-                runFragments(FragmentsNames.MainFragment, Bundle())
+                runFragments(this, FragmentsNames.MainFragment)
             }
 
             R.id.settings -> {
-                runFragments(FragmentsNames.SettingsFragment, Bundle())
+                runFragments(this, FragmentsNames.SettingsFragment)
             }
 
             R.id.select_city -> {
-                runFragments(FragmentsNames.SelectCityFragment, Bundle())
+                runFragments(this, FragmentsNames.SelectCityFragment)
             }
         }
         val drawer: DrawerLayout = findViewById(R.id.drawer_layout)

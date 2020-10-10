@@ -8,7 +8,7 @@ import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.fragments.MainFragment
 
-class WeatherRequestService : IntentService("WeatherRequestService") {
+class WeatherRequestService/* : IntentService("WeatherRequestService")*/ {
 
     companion object {
         const val EXTRA_CITY_NAME = "com.amk.weatherforall.services.WeatherRequest.CITY_NAME"
@@ -21,16 +21,16 @@ class WeatherRequestService : IntentService("WeatherRequestService") {
         }
     }
 
-    override fun onHandleIntent(intent: Intent?) {
-        val cityName:String  = intent?.getStringExtra(EXTRA_CITY_NAME)?:return
-        val city = City(cityName)
-        WeatherPresenter.newRequest(city)
-        sendBroadcastFinishRequest(city)
-    }
+//    override fun onHandleIntent(intent: Intent?) {
+//        val cityName:String  = intent?.getStringExtra(EXTRA_CITY_NAME)?:return
+//        val city = City(cityName)
+//        WeatherPresenter.newRequest(city)
+//        sendBroadcastFinishRequest(city)
+//    }
 
-    private fun sendBroadcastFinishRequest(city: City){
-        val intent = Intent(MainFragment.BROADCAST_ACTION_REQUEST_FINISHED)
-        intent.putExtra(EXTRA_RESULT, city.name)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
-        }
+//    private fun sendBroadcastFinishRequest(city: City){
+//        val intent = Intent(MainFragment.BROADCAST_ACTION_REQUEST_FINISHED)
+//        intent.putExtra(EXTRA_RESULT, city.name)
+//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+//        }
 }

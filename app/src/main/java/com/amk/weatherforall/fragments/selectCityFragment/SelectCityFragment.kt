@@ -1,6 +1,14 @@
 package com.amk.weatherforall.fragments.selectCityFragment
 
+import android.Manifest
+import android.app.Activity.LOCATION_SERVICE
+import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,13 +17,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
 import com.amk.weatherforall.activities.CoordinatorActivity
+import com.amk.weatherforall.activities.MapsActivity
 import com.amk.weatherforall.core.City.City
-import com.amk.weatherforall.core.Constants.CITY_NAME
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.database.CitySource
 import com.amk.weatherforall.core.interfaces.PublisherWeather
@@ -23,22 +32,27 @@ import com.amk.weatherforall.core.interfaces.PublisherWeatherGetter
 import com.amk.weatherforall.core.interfaces.StartFragment
 import com.amk.weatherforall.fragments.FragmentsNames
 import com.amk.weatherforall.fragments.dialogs.DeleteCityDialog
-import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogListener
+import com.google.android.gms.maps.model.LatLng
 
 class SelectCityFragment : Fragment() {
+
 
     private lateinit var publisherWeather: PublisherWeather
 
     private lateinit var mView: View
 
     lateinit var recyclerView: RecyclerView
-    lateinit var  cityListAdapter:CityListAdapter
+    lateinit var cityListAdapter: CityListAdapter
 
     private lateinit var citySource: CitySource
-    private lateinit var deletingCity:City
+    private lateinit var deletingCity: City
+
 
     companion object {
+
+        const val REQUEST_CODE_MAPS_COORD = 10001
+
         fun getInstance(): SelectCityFragment {
             return SelectCityFragment()
         }
@@ -51,6 +65,7 @@ class SelectCityFragment : Fragment() {
             cityListAdapter.cityList = citySource.allCities
             cityListAdapter.notifyDataSetChanged()
         }
+
         override fun onDialogCancel() {
 
         }
@@ -74,6 +89,13 @@ class SelectCityFragment : Fragment() {
         mView = view
         initCityList()
 
+        initRecyclerView(view)
+
+        requestResult(view)
+        Log.d("SelectCityActivity", "onCreate")
+    }
+
+    private fun initRecyclerView(view: View) {
         recyclerView = view.findViewById(R.id.city_list_view)
         val linearLayoutManager = LinearLayoutManager(view.context)
         recyclerView.layoutManager = linearLayoutManager
@@ -95,8 +117,6 @@ class SelectCityFragment : Fragment() {
             }
 
         })
-        requestResult(view)
-        Log.d("SelectCityActivity", "onCreate")
     }
 
     private fun initCityList() {
@@ -108,10 +128,6 @@ class SelectCityFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-//        selectCityName(mView)
-    }
 
     private fun requestResult(view: View) {
         val okButton: Button = view.findViewById(R.id.ok_button_select_city)
@@ -121,30 +137,55 @@ class SelectCityFragment : Fragment() {
             newCityEditText.setText("")
             citySource.addCity(City(newCityName))
             requestCityName(newCityName)
-
         }
 
-        val cancelButton: Button = view.findViewById(R.id.cancel_button_select_city)
-        cancelButton.setOnClickListener {
-            closeFragment()
+        val selectCoordButton: Button = view.findViewById(R.id.show_on_map_button)
+        selectCoordButton.setOnClickListener {
+            startActivityForResult(
+                Intent(context, MapsActivity::class.java),
+                REQUEST_CODE_MAPS_COORD
+            )
         }
     }
 
     private fun requestCityName(cityNameResult: String) {
         WeatherPresenter.city = City(cityNameResult)
         val bundle = Bundle()
-        bundle.putString(CITY_NAME, cityNameResult)
+        WeatherPresenter.newRequest(city = WeatherPresenter.city)
         (context as AppCompatActivity)
             .supportFragmentManager
             .beginTransaction()
             .remove(this)
             .commit()
-        (context as StartFragment).runFragments(FragmentsNames.MainFragment, bundle)
+        if (context is StartFragment) {
+            (context as StartFragment).runFragments(FragmentsNames.MainFragment, bundle)
+        }
     }
 
-    private fun closeFragment() {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_MAPS_COORD) {
+                val latitude: Double =
+                    data?.getDoubleExtra(MapsActivity.LATITUDE, WeatherPresenter.LATITUDE_DEFAULT)
+                        ?: WeatherPresenter.LATITUDE_DEFAULT
+                val longitude: Double =
+                    data?.getDoubleExtra(MapsActivity.LONGITUDE, WeatherPresenter.LONGITUDE_DEFAULT)
+                        ?: WeatherPresenter.LONGITUDE_DEFAULT
+                requestCoord(latitude, longitude)
+            }
+
+        }
+    }
+
+    private fun requestCoord(latitude: Double, longitude: Double) {
+        WeatherPresenter.newRequest(latitude, longitude)
         (context as AppCompatActivity)
             .supportFragmentManager
-            .popBackStack()
+            .beginTransaction()
+            .remove(this)
+            .commit()
+        if (context is StartFragment) {
+            (context as StartFragment).runFragments(FragmentsNames.MainFragment, Bundle())
+        }
     }
 }

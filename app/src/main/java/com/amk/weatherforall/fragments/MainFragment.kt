@@ -71,6 +71,7 @@ class MainFragment : Fragment(), ObservableWeather {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         publisherWeather = (context as PublisherWeatherGetter).publisherWeather()
+        WeatherPresenter.fragment = this
     }
 
     override fun onCreateView(
@@ -107,18 +108,22 @@ class MainFragment : Fragment(), ObservableWeather {
             val bundle = Bundle()
             bundle.putString(CITY_NAME, cityTextView.text.toString())
             arguments = bundle
-            (context as StartFragment).runFragments(FragmentsNames.SelectCityFragment, bundle)
+            if (context is StartFragment) {
+                (context as StartFragment).runFragments(FragmentsNames.SelectCityFragment, bundle)
+            }
         }
 
         nextWeathersCreate(view)
         update(view)
+
     }
 
     override fun onResume() {
         super.onResume()
-        city = WeatherPresenter.city
-        WeatherPresenter.newRequest(city)
-        (activity as UpdateImage).updateImage(city)
+//        city = WeatherPresenter.city
+////        WeatherPresenter.newRequest(city)
+//        update(this.fragmentView)
+//        (activity as UpdateImage).updateImage(city)
     }
 
     override fun onPause() {
@@ -152,7 +157,9 @@ class MainFragment : Fragment(), ObservableWeather {
             bundle.putBoolean(Constants.SETTING_SHOW_PRESSURE, isNotPressureVisible)
             bundle.putBoolean(Constants.SETTING_SHOW_WIND, isNotWindVisible)
             arguments = bundle
-            (context as StartFragment).runFragments(FragmentsNames.SettingsFragment, bundle)
+            if (context is StartFragment) {
+                (context as StartFragment).runFragments(FragmentsNames.SettingsFragment, bundle)
+            }
         }
     }
 
@@ -212,6 +219,7 @@ class MainFragment : Fragment(), ObservableWeather {
     override fun updateWeather(weatherForecast: WeatherForecast?) {
         if (weatherForecast != null) {
             this.weatherForecast = weatherForecast
+            city = weatherForecast.city
             update(fragmentView)
             nextWeathersCreate(fragmentView)
         } else {

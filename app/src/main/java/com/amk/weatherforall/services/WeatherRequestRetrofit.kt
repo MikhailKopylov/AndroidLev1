@@ -5,7 +5,8 @@ import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.WeatherPresenter.UNITS
-import com.amk.weatherforall.core.interfaces.OpenWeather
+import com.amk.weatherforall.core.interfaces.OpenWeatherCityName
+import com.amk.weatherforall.core.interfaces.OpenWeatherCoord
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,7 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 class WeatherRequestRetrofit {
 
     private lateinit var sharedPref: SharedPreferences
-    private lateinit var openWeather: OpenWeather
+    private lateinit var openWeatherCityName: OpenWeatherCityName
+    private lateinit var openWeatherCoord: OpenWeatherCoord
 
     init {
         initRetrofit()
@@ -28,11 +30,12 @@ class WeatherRequestRetrofit {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        openWeather = retrofit.create(OpenWeather::class.java)
+        openWeatherCityName = retrofit.create(OpenWeatherCityName::class.java)
+        openWeatherCoord = retrofit.create(OpenWeatherCoord::class.java)
     }
 
-    fun requestWeather(city: City, keyApi: String) {
-        openWeather.loadWeather(city.name, keyApi, UNITS)
+    fun requestWeather(city: City, keyApi: String){
+        openWeatherCityName.loadWeather(city.name, keyApi, UNITS)
             .enqueue(object : Callback<WeatherForecast> {
 
                 override fun onResponse(
@@ -42,6 +45,7 @@ class WeatherRequestRetrofit {
                     response.body()?.let {
                         WeatherPresenter.weatherForecast = it
                         WeatherPresenter.isRequestSuccessful = true
+                        WeatherPresenter.fragment.updateWeather(it)
                     }
                 }
 
@@ -49,6 +53,30 @@ class WeatherRequestRetrofit {
                     WeatherPresenter.isRequestSuccessful = false
                 }
             })
+
+    }
+
+    fun requestWeather(lat:Double, lon:Double, keyApi: String){
+        openWeatherCoord.loadWeather(lat.toString(), lon.toString(), keyApi, UNITS)
+            .enqueue(object : Callback<WeatherForecast> {
+
+                override fun onResponse(
+                    call: Call<WeatherForecast>,
+                    response: Response<WeatherForecast>
+                ) {
+                    response.body()?.let {
+                        WeatherPresenter.weatherForecast = it
+                        WeatherPresenter.isRequestSuccessful = true
+                        WeatherPresenter.city = it.city
+                        WeatherPresenter.fragment.updateWeather(it)
+                    }
+                }
+
+                override fun onFailure(call: Call<WeatherForecast>, t: Throwable) {
+                    WeatherPresenter.isRequestSuccessful = false
+                }
+            })
+
     }
 
 

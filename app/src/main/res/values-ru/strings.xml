@@ -41,7 +41,11 @@
     <string name="again_connect">Попробовать ещё раз</string>
     <string name="delete_city">Удалить город?</string>
     <string name="delete">Удалить</string>
-
+    <string name="select_on_map">Выбрать на карте</string>
+    <string name="select_by_coordinates">Определить по координатам</string>
+    <string name="title_activity_maps">Карта</string>
+    <string name="longitude">Долгота</string>
+    <string name="latitude">Широта</string>
 
 
 </resources>

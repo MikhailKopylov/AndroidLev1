@@ -104,7 +104,7 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
         runFragments(FragmentsNames.MainFragment, Bundle())
 
         registerReceiver(changeNetStateReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-        initGetToken()
+//        initGetToken()
         initNotificationChannel()
 
         updateImage(WeatherPresenter.city)
@@ -120,18 +120,18 @@ class CoordinatorActivity : AppCompatActivity(), PublisherWeatherGetter, StartFr
         }
     }
 
-    private fun initGetToken() {
-        FirebaseInstanceId.getInstance()
-            .instanceId.addOnCompleteListener {
-                run {
-                    if (!it.isSuccessful) {
-                        Log.w("PushMessage", "getInstanceId failed", it.exception)
-                    }
-                    val token: String = it.result?.token ?: "Error"
-//                    Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
+//    private fun initGetToken() {
+//        FirebaseInstanceId.getInstance()
+//            .instanceId.addOnCompleteListener {
+//                run {
+//                    if (!it.isSuccessful) {
+//                        Log.w("PushMessage", "getInstanceId failed", it.exception)
+//                    }
+//                    val token: String = it.result?.token ?: "Error"
+////                    Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//    }
 
     override fun updateImage(city: City) {
         val backDropImageView: ImageView = findViewById(R.id.city_backdrop)

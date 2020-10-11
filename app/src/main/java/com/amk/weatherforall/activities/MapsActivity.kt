@@ -3,20 +3,17 @@ package com.amk.weatherforall.activities
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Criteria
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
+import android.location.*
 import android.os.Bundle
+import android.os.Handler
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.ViewModelProviders
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.WeatherPresenter.LATITUDE_DEFAULT
 import com.amk.weatherforall.core.WeatherPresenter.LONGITUDE_DEFAULT
-import com.amk.weatherforall.viewModels.SelectCityViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -24,49 +21,40 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import java.io.IOException
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var currentMarker: Marker
+    private val markers: ArrayList<Marker> = arrayListOf()
 
     private lateinit var latitudeTextView: TextView
-    private lateinit var longitudeTextView: TextView
-    private lateinit var confirmButton:Button
+    private lateinit var confirmButton: Button
 
-    private var latitude:Double = LATITUDE_DEFAULT
-    private var longitude:Double = LONGITUDE_DEFAULT
+    private var latitude: Double = LATITUDE_DEFAULT
+    private var longitude: Double = LONGITUDE_DEFAULT
 
-    private lateinit var modelCity: SelectCityViewModel
 
     companion object {
-        const val PERIOD_OF_REQUEST: Long = 3600 * 1000
-        const val DISTANCE_OF_REQUEST: Float = 1000F
-
         const val PERMISSION_REQUEST_CODE: Int = 10
 
 
-
-        const val LATITUDE:String = "latitude"
-        const val LONGITUDE:String = "longitude"
+        const val LATITUDE: String = "latitude"
+        const val LONGITUDE: String = "longitude"
     }
 
-    private val locationListener:LocationListener =  object : LocationListener {
+    private val locationListener: LocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location?) {
             latitude = location?.latitude ?: return
-            val latitudeString: String = latitude.toString()
-            latitudeTextView.text = latitudeString
-
             longitude = location.longitude
-            val longitudeString: String = longitude.toString()
-            latitudeTextView.text = longitudeString
-
-            val accuracy: String = location.accuracy.toString()
 
             val position = LatLng(latitude, longitude)
             currentMarker.position = position
+
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 12F))
+            getAddress(position)
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
@@ -83,7 +71,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -95,7 +83,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun initView() {
         latitudeTextView = findViewById(R.id.textLat)
-        longitudeTextView = findViewById(R.id.textLng)
         confirmButton = findViewById(R.id.confirm_coord_button)
         confirmButton.setOnClickListener {
             val intent = Intent()
@@ -118,13 +105,48 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
+        val defaultCity = LatLng(latitude, longitude)
+        getAddress(defaultCity)
+        currentMarker =
+            mMap.addMarker(MarkerOptions().position(defaultCity).title("Current position"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultCity))
+        mMap.setOnMapLongClickListener { latLng ->
+            getAddress(latLng)
+            addMarker(latLng)
+            latitude = latLng.latitude
+            longitude = latLng.longitude
+        }
 
-        val sydney = LatLng(latitude,longitude)
-//        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        currentMarker = mMap.addMarker(MarkerOptions().position(sydney).title("Current position"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
 
+    }
+
+    private fun getAddress(latLng: LatLng) {
+
+        val handler = Handler()
+        val geocoder = Geocoder(this)
+
+        Thread {
+            try {
+                val adresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+                handler.post {
+                    latitudeTextView.text = adresses[0].getAddressLine(0)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }.start()
+    }
+
+    private fun addMarker(latLng: LatLng) {
+        val title = markers.size.toString()
+        mMap.clear()
+        val marker: Marker = mMap.addMarker(
+            MarkerOptions()
+                .position(latLng)
+                .title(title)
+                .icon(null)
+        )
+        markers.add(marker)
     }
 
     override fun onResume() {
@@ -174,14 +196,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val criteria = Criteria()
 
 
-        latitude = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)?.latitude?: LATITUDE_DEFAULT
-        longitude = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)?.longitude?: LONGITUDE_DEFAULT
-//        val currentCoord = LatLng(latitude, longitude)
-//        currentMarker.position = currentCoord
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentCoord, 12F))
+        latitude = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)?.latitude
+            ?: LATITUDE_DEFAULT
+        longitude = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)?.longitude
+            ?: LONGITUDE_DEFAULT
 
         criteria.accuracy = Criteria.ACCURACY_COARSE
-        val provider: String? = LocationManager.NETWORK_PROVIDER//locationManager.getBestProvider(criteria, true)
+        val provider: String? =
+            LocationManager.NETWORK_PROVIDER//locationManager.getBestProvider(criteria, true)
         if (provider != null) {
 //            locationManager.requestLocationUpdates(
 //                provider,
@@ -189,6 +211,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 //                DISTANCE_OF_REQUEST,
 //                locationListener)
             locationManager.requestSingleUpdate(provider, locationListener, null)
+
         }
     }
 

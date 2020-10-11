@@ -46,7 +46,7 @@
     <string name="select_by_coordinates">Select by coordinates</string>
     <string name="title_activity_maps">Map</string>
     <string name="longitude">Longitude</string>
-    <string name="latitude">Latitide</string>
+    <string name="load_data">Load data...</string>
     <string name="confirm">Confirm</string>
 
 </resources>

@@ -23,6 +23,7 @@ import com.amk.weatherforall.fragments.FragmentsNames
 import com.amk.weatherforall.fragments.dialogs.DeleteCityDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogListener
 import com.amk.weatherforall.fragments.runFragments
+import com.amk.weatherforall.viewModels.BottomNavigationViewModel
 import com.amk.weatherforall.viewModels.SelectCityViewModel
 
 class SelectCityFragment : Fragment() {
@@ -141,6 +142,10 @@ class SelectCityFragment : Fragment() {
         modelCity.cityName(cityNameResult)
 
         runFragments(activity ?: return, FragmentsNames.MainFragment)
+        val bottomNavigationViewModel: BottomNavigationViewModel = ViewModelProviders.of(activity?:return).get(
+            BottomNavigationViewModel::class.java)
+        bottomNavigationViewModel.selectItemBottom(R.id.navigation_home)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -103,7 +103,7 @@ class MainFragment : Fragment(){
 //            val browser = Intent(Intent.ACTION_VIEW, uri)
 //            startActivity(browser)
 //        }
-        clickSettings(view)
+//        clickSettings(view)
 
         nextWeathersCreate(view)
         update(view)
@@ -144,18 +144,18 @@ class MainFragment : Fragment(){
         })
     }
 
-    private fun clickSettings(view: View) {
-        val settingsButton: ImageButton = view.findViewById(R.id.settings_button)
-        settingsButton.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE, showTemperatureInF)
-            bundle.putBoolean(Constants.SETTING_SHOW_PRESSURE, isNotPressureVisible)
-            bundle.putBoolean(Constants.SETTING_SHOW_WIND, isNotWindVisible)
-            arguments = bundle
-            runFragments(activity?:return@setOnClickListener, FragmentsNames.SettingsFragment)
-
-        }
-    }
+//    private fun clickSettings(view: View) {
+//        val settingsButton: ImageButton = view.findViewById(R.id.settings_button)
+//        settingsButton.setOnClickListener {
+//            val bundle = Bundle()
+//            bundle.putBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE, showTemperatureInF)
+//            bundle.putBoolean(Constants.SETTING_SHOW_PRESSURE, isNotPressureVisible)
+//            bundle.putBoolean(Constants.SETTING_SHOW_WIND, isNotWindVisible)
+//            arguments = bundle
+//            runFragments(activity?:return@setOnClickListener, FragmentsNames.SettingsFragment)
+//
+//        }
+//    }
 
 
     private fun temperatureMode(showInF: Boolean): String {

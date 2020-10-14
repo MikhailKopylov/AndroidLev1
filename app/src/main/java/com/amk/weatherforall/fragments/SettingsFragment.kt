@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.Constants
 import com.amk.weatherforall.core.interfaces.StartFragment
+import com.amk.weatherforall.viewModels.BottomNavigationViewModel
 
 class SettingsFragment : Fragment() {
     private var showTemperatureInC: Boolean = true
@@ -91,7 +93,9 @@ class SettingsFragment : Fragment() {
             bundleResult.putBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE, showTemperatureInC)
             bundleResult.putBoolean(Constants.SETTING_SHOW_WIND, isShowWind)
             bundleResult.putBoolean(Constants.SETTING_SHOW_PRESSURE, isShowPressure)
-
+            val bottomNavigationViewModel: BottomNavigationViewModel = ViewModelProviders.of(activity?:return@setOnClickListener).get(
+                BottomNavigationViewModel::class.java)
+            bottomNavigationViewModel.selectItemBottom(R.id.navigation_home)
             runFragments(activity?:return@setOnClickListener, FragmentsNames.MainFragment)
 
         }

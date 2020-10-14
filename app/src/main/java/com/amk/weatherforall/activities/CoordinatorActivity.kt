@@ -20,6 +20,7 @@ import com.amk.weatherforall.core.database.CityDatabase
 import com.amk.weatherforall.fragments.FragmentsNames
 import com.amk.weatherforall.fragments.runFragments
 import com.amk.weatherforall.services.getUrlByCity
+import com.amk.weatherforall.viewModels.BottomNavigationViewModel
 import com.amk.weatherforall.viewModels.UpdateCityViewModel
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -31,7 +32,10 @@ class CoordinatorActivity : AppCompatActivity(),
 
 
     private lateinit var drawer: DrawerLayout
+    private lateinit var bottomNavView: BottomNavigationView
+
     private lateinit var updateCity:UpdateCityViewModel
+    private lateinit var selectItemBottomNavView:BottomNavigationViewModel
 
     private val onNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -73,7 +77,7 @@ class CoordinatorActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coordinator)
         setSupportActionBar(findViewById(R.id.toolbar))
-        val bottomNavView: BottomNavigationView = findViewById(R.id.nav_view)
+        bottomNavView = findViewById(R.id.nav_view)
         findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout).title = title
 
         db = Room.databaseBuilder<CityDatabase>(
@@ -96,6 +100,7 @@ class CoordinatorActivity : AppCompatActivity(),
         bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         runFragments(this, FragmentsNames.MainFragment)
+//        bottomNavView.selectedItemId = R.id.navigation_home
 
 //        registerReceiver(changeNetStateReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         initNotificationChannel()
@@ -108,6 +113,11 @@ class CoordinatorActivity : AppCompatActivity(),
             setTitle(it.name)
             updateImage(it)
         } )
+
+        selectItemBottomNavView = ViewModelProviders.of(this).get(BottomNavigationViewModel::class.java)
+        selectItemBottomNavView.itemBottomNavView.observe(this, Observer <Int>{
+            bottomNavView.selectedItemId = it
+        })
     }
 
     private fun initNotificationChannel() {
@@ -171,11 +181,14 @@ class CoordinatorActivity : AppCompatActivity(),
     }
 
     override fun onBackPressed() {
-        if (drawer.isDrawerOpen((GravityCompat.START))) {
-            drawer.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
+//        bottomNavView.
+//        if (drawer.isDrawerOpen((GravityCompat.START))) {
+//            drawer.closeDrawer(GravityCompat.START)
+//        } else {
+//            super.onBackPressed()
+//        }
     }
+
+
 
 }

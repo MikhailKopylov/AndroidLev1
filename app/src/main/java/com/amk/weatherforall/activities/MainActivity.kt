@@ -1,18 +1,10 @@
 package com.amk.weatherforall.activities
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.amk.weatherforall.*
-import com.amk.weatherforall.core.WeatherPresenter
-import com.amk.weatherforall.core.interfaces.StartFragment
-import com.amk.weatherforall.fragments.FragmentsNames
-import com.amk.weatherforall.fragments.runFragments
 
 class MainActivity : AppCompatActivity(){
 
@@ -25,7 +17,7 @@ class MainActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
 
 
-        runFragments(this, FragmentsNames.MainFragment)
+//        runFragments(this, FragmentsNames.MainFragment)
         Log.d("MainActivity", "onCreate")
     }
 

@@ -72,9 +72,6 @@ data class City(
         sunrise = 0,
         sunset = 0
     )
-    {
-
-    }
 
     companion object {
         val CITY_DEFAULT = City("Moscow")

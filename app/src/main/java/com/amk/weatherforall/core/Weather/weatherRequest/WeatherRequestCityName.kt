@@ -1,18 +1,8 @@
 package com.amk.weatherforall.core.Weather.weatherRequest
 
 import com.amk.weatherforall.core.City.City
-import com.amk.weatherforall.core.Weather.WeatherForecast
-import com.amk.weatherforall.core.Weather.weatherFor5Days.*
 import com.amk.weatherforall.core.WeatherPresenter
-import com.google.gson.Gson
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.MalformedURLException
-import java.net.SocketTimeoutException
 import java.net.URL
-import java.text.ParseException
-import java.util.*
-import javax.net.ssl.HttpsURLConnection
 
 
 class WeatherRequestCityName(val city: City): AbstractRequest() {

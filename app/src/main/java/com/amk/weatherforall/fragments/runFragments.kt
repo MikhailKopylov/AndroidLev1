@@ -6,10 +6,6 @@ import com.amk.weatherforall.R
 import com.amk.weatherforall.viewModels.BottomNavigationViewModel
 
 fun runFragments(app: FragmentActivity, fragmentName: FragmentsNames) {
-
-
-//    fragmentName.fragment
-
     app.supportFragmentManager
         .beginTransaction()
         .replace(R.id.weather_today_frame, fragmentName.fragment)

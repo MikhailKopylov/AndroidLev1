@@ -18,10 +18,10 @@ object WeatherPresenter {
 
     val main: Main = Main(0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0.0)
     val weather: Weather = Weather(0, "", "", "")
-    val clouds: Clouds = Clouds(0)
-    val wind: Wind = Wind(0.0, 0)
-    val sys: Sys = Sys("")
-    val weaterDataDefault: WeatherData =
+    private val clouds: Clouds = Clouds(0)
+    private val wind: Wind = Wind(0.0, 0)
+    private val sys: Sys = Sys("")
+    private val weaterDataDefault: WeatherData =
         WeatherData(1L, main, arrayOf(weather), clouds, wind, 0, 0.0, sys, "")
     var city: City = City.CITY_DEFAULT
 

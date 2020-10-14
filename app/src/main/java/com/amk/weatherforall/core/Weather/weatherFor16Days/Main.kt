@@ -4,5 +4,4 @@ data class Main (
     val temp: Temperature,
     val pressure:Int,
     val humidity:Int
-){
-}
+)

@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -139,23 +138,10 @@ class MainFragment : Fragment(){
             NextWeatherAdapter.onWeatherItemClickListener {
             override fun onItemClickListener(view: View, position: Int) {
                 Toast.makeText(context, "$position", Toast.LENGTH_SHORT).show()
-//                publisherWeather.notify(weatherForecast)
             }
         })
     }
 
-//    private fun clickSettings(view: View) {
-//        val settingsButton: ImageButton = view.findViewById(R.id.settings_button)
-//        settingsButton.setOnClickListener {
-//            val bundle = Bundle()
-//            bundle.putBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE, showTemperatureInF)
-//            bundle.putBoolean(Constants.SETTING_SHOW_PRESSURE, isNotPressureVisible)
-//            bundle.putBoolean(Constants.SETTING_SHOW_WIND, isNotWindVisible)
-//            arguments = bundle
-//            runFragments(activity?:return@setOnClickListener, FragmentsNames.SettingsFragment)
-//
-//        }
-//    }
 
 
     private fun temperatureMode(showInF: Boolean): String {

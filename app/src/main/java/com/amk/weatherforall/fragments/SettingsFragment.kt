@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.Constants
-import com.amk.weatherforall.core.interfaces.StartFragment
 import com.amk.weatherforall.viewModels.BottomNavigationViewModel
 
 class SettingsFragment : Fragment() {

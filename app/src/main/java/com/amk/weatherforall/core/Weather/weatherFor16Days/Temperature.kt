@@ -8,5 +8,4 @@ data class Temperature (
     val eve:Double,
     val morn:Double
 
-){
-}
+)

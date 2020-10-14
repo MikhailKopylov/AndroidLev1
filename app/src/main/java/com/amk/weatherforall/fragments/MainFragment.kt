@@ -18,16 +18,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
-import com.amk.weatherforall.activities.CoordinatorActivity
 import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.Constants
 import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
-import com.amk.weatherforall.core.interfaces.*
 import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogReconnectListener
 import com.amk.weatherforall.viewModels.SelectCityViewModel
-import com.google.android.gms.maps.model.LatLng
+import com.amk.weatherforall.viewModels.UpdateCityViewModel
 
 
 class MainFragment : Fragment(){
@@ -54,12 +52,15 @@ class MainFragment : Fragment(){
     lateinit var recyclerView: RecyclerView
 
     private lateinit var modelCity: SelectCityViewModel
+    private lateinit var updateCity: UpdateCityViewModel
+
 
     private val onDialogReconnectListener: OnDialogReconnectListener = object : OnDialogReconnectListener {
         override fun onDialogReconnect() {
             city = WeatherPresenter.city
             WeatherPresenter.newRequest(city)
-            (activity as UpdateImage).updateImage(city)
+//            (activity as UpdateImage).updateImage(city)
+            updateCity.updateCity(city)
         }
 
         override fun onDialogCancel() {
@@ -116,6 +117,8 @@ class MainFragment : Fragment(){
                 WeatherPresenter.newRequest(it)
 
         })
+
+        updateCity = ViewModelProviders.of(activity?: return).get(UpdateCityViewModel::class.java)
     }
 
     override fun onPause() {
@@ -199,7 +202,8 @@ class MainFragment : Fragment(){
             windTextView.visibility = View.INVISIBLE
         }
 
-        (activity as? CoordinatorActivity)?.setTitle(city.name)
+//        (activity as? CoordinatorActivity)?.setTitle(city.name)
+        updateCity.updateCity(city)
     }
 
 
@@ -210,7 +214,6 @@ class MainFragment : Fragment(){
         if (weatherForecast != null) {
             this.weatherForecast = weatherForecast
             city = weatherForecast.city
-            (activity as UpdateImage).updateImage(city)
             update(fragmentView)
             nextWeathersCreate(fragmentView)
         } else {

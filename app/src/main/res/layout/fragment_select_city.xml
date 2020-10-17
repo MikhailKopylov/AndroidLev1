@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/select_city"
-        android:textColor="@color/black_overlay"
+        android:textColor="@color/white"
         android:textSize="16sp"
 
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,5 +70,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textInputLayout" />
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/city_list_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>

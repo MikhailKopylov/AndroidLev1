@@ -1,5 +1,6 @@
 package com.amk.weatherforall.core
 
+import com.amk.weatherforall.R
 import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.Weather.weatherFor5Days.*
@@ -33,9 +34,12 @@ object WeatherPresenter {
     var isRequestSuccessful: Boolean = true
     private val weatherRequestRetrofit: WeatherRequestRetrofit = WeatherRequestRetrofit()
 
+    lateinit var local:String
+
     lateinit var fragment: MainFragment
 
     fun newRequest(city: City) {
+        local = fragment.resources.getString(R.string.Local)
         this.city = city
         if (city.name == UNKNOWN_CITY_NAME) {
             weatherRequestRetrofit.requestWeatherCoord(city.coord.lat, city.coord.lon, KEI_API)

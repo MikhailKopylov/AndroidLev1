@@ -49,4 +49,9 @@
     <string name="load_data">Load data...</string>
     <string name="confirm">Confirm</string>
 
+    <string name="mm_Hg">mm Hg</string>
+    <string name="pressure">Pressure</string>
+    <string name="wind">Wind</string>
+    <string name="Local">en</string>
+
 </resources>

@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.os.Build
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.util.*
 
 object DateTimeUtils {
     @SuppressLint("SimpleDateFormat")
-    fun formatTime(time: LocalDateTime): String {
+    fun formatTime(timeLong: Long): String {
+        val time = LocalDateTime.ofEpochSecond(timeLong, 0, ZoneOffset.UTC)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (time.minute > 9) {
                 "${time.hour}:${time.minute}"
@@ -22,7 +24,8 @@ object DateTimeUtils {
     }
 
     @SuppressLint("SimpleDateFormat")
-    fun formatDate(date: LocalDateTime): String {
+    fun formatDate(dateLong: Long): String {
+        val date = LocalDateTime.ofEpochSecond(dateLong, 0, ZoneOffset.UTC)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             if (date.monthValue > 9) {
@@ -31,7 +34,7 @@ object DateTimeUtils {
                 "${date.dayOfMonth}.0${date.monthValue}.${date.year}"
             }
         } else {
-            val formatterDate = SimpleDateFormat("dd.mm.yyyy")
+            val formatterDate = SimpleDateFormat("dd.mm.yy")
             formatterDate.format(Date())
         }
     }

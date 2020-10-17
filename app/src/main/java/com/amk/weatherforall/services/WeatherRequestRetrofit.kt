@@ -35,7 +35,7 @@ class WeatherRequestRetrofit {
     }
 
     fun requestWeatherCity(city: City, keyApi: String){
-        openWeatherCityName.loadWeather(city.name, keyApi, UNITS)
+        openWeatherCityName.loadWeather(city.name, keyApi, UNITS, WeatherPresenter.local)
             .enqueue(object : Callback<WeatherForecast> {
 
                 override fun onResponse(
@@ -58,7 +58,7 @@ class WeatherRequestRetrofit {
     }
 
     fun requestWeatherCoord(lat:Double, lon:Double, keyApi: String){
-        openWeatherCoord.loadWeather(lat.toString(), lon.toString(), keyApi, UNITS)
+        openWeatherCoord.loadWeather(lat.toString(), lon.toString(), keyApi, UNITS, WeatherPresenter.local)
             .enqueue(object : Callback<WeatherForecast> {
 
                 override fun onResponse(

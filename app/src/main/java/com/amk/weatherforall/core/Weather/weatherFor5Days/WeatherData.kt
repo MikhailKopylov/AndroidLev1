@@ -14,7 +14,7 @@ data class WeatherData(
 //    val clouds: Int
     @SerializedName("dt")
     @Expose
-    val date:Long,
+    val dateTime:Long,
     @SerializedName("main")
     @Expose
     val main:Main,

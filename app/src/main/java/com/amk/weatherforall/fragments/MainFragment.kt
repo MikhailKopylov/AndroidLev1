@@ -149,21 +149,23 @@ class MainFragment : Fragment(){
         if(!WeatherPresenter.isRequestSuccessful){
             updateWeather(null)
         }
-        val dateTextView: TextView = view.findViewById(R.id.date_text_view)
-        val timeTextView: TextView = view.findViewById(R.id.time_text_view)
-
-        (recyclerView.adapter as NextWeatherAdapter).notifyDataSetChanged()
-
-
-        val temperatureTextView: TextView = view.findViewById(R.id.temperature_text_view)
-        temperatureTextView.text = Settings.temperatureMode(settings.temperatureC, weatherForecast.list[0])
-
-        val pressureTextView: TextView = view.findViewById(R.id.pressure_textView)
-        Settings.pressureMode(pressureTextView,weatherForecast.list[0])
-
-
-        val windTextView: TextView = view.findViewById(R.id.wind_textView)
-        Settings.windMode(windTextView, weatherForecast.list[0])
+//        val dateTextView: TextView = view.findViewById(R.id.date_text_view)
+//        Settings.dateView(dateTextView, weatherForecast.list[0])
+//        val timeTextView: TextView = view.findViewById(R.id.time_text_view)
+//        Settings.timeView(timeTextView, weatherForecast.list[0])
+//
+//        (recyclerView.adapter as NextWeatherAdapter).notifyDataSetChanged()
+//
+//
+//        val temperatureTextView: TextView = view.findViewById(R.id.temperature_text_view)
+//        temperatureTextView.text = Settings.temperatureMode(settings.temperatureC, weatherForecast.list[0])
+//
+//        val pressureTextView: TextView = view.findViewById(R.id.pressure_textView)
+//        Settings.pressureView(pressureTextView,weatherForecast.list[0])
+//
+//
+//        val windTextView: TextView = view.findViewById(R.id.wind_textView)
+//        Settings.windView(windTextView, weatherForecast.list[0])
 
         updateCity.updateCity(city)
     }

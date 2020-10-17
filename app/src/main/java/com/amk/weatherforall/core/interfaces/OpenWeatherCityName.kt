@@ -8,6 +8,10 @@ import retrofit2.http.Query
 interface OpenWeatherCityName {
 
     @GET("data/2.5/forecast")
-    fun loadWeather(@Query("q") city:String, @Query("appid") keyApi:String,
-    @Query("units") units:String): Call<WeatherForecast>
+    fun loadWeather(
+        @Query("q") city: String,
+        @Query("appid") keyApi: String,
+        @Query("units") units: String,
+        @Query("lang") local:String
+    ): Call<WeatherForecast>
 }

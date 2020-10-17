@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.room.Room
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.City.City
+import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.database.CityDatabase
 import com.amk.weatherforall.fragments.FragmentsNames
 import com.amk.weatherforall.fragments.runFragments
@@ -58,6 +59,11 @@ class CoordinatorActivity : AppCompatActivity()/*,
                     setSelectItem(item)
                     return@OnNavigationItemSelectedListener true
                 }
+
+//                R.id.navigation_update -> {
+//                    WeatherPresenter.newRequest(WeatherPresenter.city)
+//                    return@OnNavigationItemSelectedListener true
+//                }
                 else -> return@OnNavigationItemSelectedListener false
             }
         }
@@ -131,7 +137,7 @@ class CoordinatorActivity : AppCompatActivity()/*,
     private fun updateImage(city: City) {
         val backDropImageView: ImageView = findViewById(R.id.city_backdrop)
         Picasso.get()
-            .load(getUrlByCity(city))
+            .load(getUrlByCity(city, this))
             .into(backDropImageView)
     }
 

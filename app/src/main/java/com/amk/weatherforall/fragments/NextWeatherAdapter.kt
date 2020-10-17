@@ -32,9 +32,13 @@ class NextWeatherAdapter(
     override fun onBindViewHolder(holder: NextWeatherHolder, position: Int) {
         holder.temperatureTextView.text = Settings.temperatureMode(Settings.temperatureC, nextWeathersList[position])
 
-        Settings.pressureMode(holder.pressureTextView,nextWeathersList[position])
+        Settings.pressureView(holder.pressureTextView,nextWeathersList[position])
 
-        Settings.windMode(holder.windTextView, nextWeathersList[position])
+        Settings.windView(holder.windTextView, nextWeathersList[position])
+
+        Settings.dateView(holder.dateTextView, nextWeathersList[position])
+
+        Settings.timeView(holder.timeTextView, nextWeathersList[position])
 
     }
 
@@ -46,6 +50,7 @@ class NextWeatherAdapter(
 
         var temperatureTextView: TextView = itemView.findViewById(R.id.temperature_text_view)
         var dateTextView:TextView = itemView.findViewById(R.id.date_text_view)
+        var timeTextView:TextView = itemView.findViewById(R.id.time_text_view)
         var windTextView:TextView = itemView.findViewById(R.id.wind_textView)
         var pressureTextView:TextView = itemView.findViewById(R.id.pressure_textView)
 

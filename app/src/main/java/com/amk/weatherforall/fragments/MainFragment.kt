@@ -17,9 +17,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
+import com.amk.weatherforall.activities.CoordinatorActivity
 import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
+import com.amk.weatherforall.core.database.CitySource
 import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogReconnectListener
 import com.amk.weatherforall.services.Settings
@@ -39,6 +41,7 @@ class MainFragment : Fragment(){
     }
 
     private var city: City = City(LOAD_DATA)
+    private lateinit var citySource: CitySource
 
     private var settings = Settings
 
@@ -69,6 +72,7 @@ class MainFragment : Fragment(){
     override fun onAttach(context: Context) {
         super.onAttach(context)
         WeatherPresenter.fragment = this
+        citySource = CitySource((activity as CoordinatorActivity).db.cityDAO())
     }
 
     override fun onCreateView(
@@ -173,6 +177,7 @@ class MainFragment : Fragment(){
         if (weatherForecast != null) {
             this.weatherForecast = weatherForecast
             city = weatherForecast.city
+            citySource.addCity(city)
             update(fragmentView)
             nextWeathersCreate(fragmentView)
         } else {

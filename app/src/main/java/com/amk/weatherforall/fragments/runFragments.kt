@@ -9,7 +9,6 @@ fun runFragments(app: FragmentActivity, fragmentName: FragmentsNames) {
     app.supportFragmentManager
         .beginTransaction()
         .replace(R.id.container, fragmentName.fragment)
-        .addToBackStack(null)
+//        .addToBackStack(null)
         .commit()
-
 }

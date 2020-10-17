@@ -69,6 +69,7 @@ class WeatherRequestRetrofit {
                         WeatherPresenter.weatherForecast = it
                         WeatherPresenter.isRequestSuccessful = true
                         WeatherPresenter.city = it.city
+
                         WeatherPresenter.fragment.updateWeather(it)
                     }
                 }

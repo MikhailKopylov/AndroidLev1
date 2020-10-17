@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
@@ -40,6 +41,10 @@ class NextWeatherAdapter(
 
         Settings.timeView(holder.timeTextView, nextWeathersList[position])
 
+        Settings.iconView(holder.iconWeather, nextWeathersList[position])
+
+        Settings.descriptionView(holder.descriptionTextView, nextWeathersList[position])
+
     }
 
     override fun getItemCount(): Int {
@@ -52,7 +57,9 @@ class NextWeatherAdapter(
         var dateTextView:TextView = itemView.findViewById(R.id.date_text_view)
         var timeTextView:TextView = itemView.findViewById(R.id.time_text_view)
         var windTextView:TextView = itemView.findViewById(R.id.wind_textView)
+        var descriptionTextView:TextView = itemView.findViewById(R.id.description_textView)
         var pressureTextView:TextView = itemView.findViewById(R.id.pressure_textView)
+        var iconWeather:ImageView = itemView.findViewById(R.id.weather_image_view)
 
         init{
             itemView.setOnClickListener {

@@ -52,6 +52,7 @@
                 android:gravity="center_horizontal"
                 android:text="15° С"
                 android:textSize="40sp"
+                android:paddingStart="3dp"
                 android:textStyle="bold|italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,13 +60,15 @@
 
 
             <ImageView
-                android:id="@+id/rainfall_text_view"
+                android:id="@+id/weather_image_view"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:gravity="center_horizontal"
-                android:src="@drawable/cloude"
+                android:scaleType="fitCenter"
+                android:src="@drawable/d01"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintStart_toEndOf="@+id/pressure_textView"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -84,9 +87,19 @@
                 android:gravity="center"
                 android:text="@string/wind_text_view"
                 android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/pressure_textView"
+                app:layout_constraintStart_toStartOf="@+id/guideline2" />
+
+            <TextView
+                android:id="@+id/description_textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/Cloudy"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/wind_textView"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/rainfall_text_view" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/pressure_textView"
@@ -95,9 +108,8 @@
                 android:gravity="center"
                 android:text="@string/pressure_text_view"
                 android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/wind_textView" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline2" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

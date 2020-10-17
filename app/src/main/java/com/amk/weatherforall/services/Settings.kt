@@ -2,6 +2,7 @@ package com.amk.weatherforall.services
 
 import android.annotation.SuppressLint
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.DateTimeUtils
@@ -24,9 +25,10 @@ object Settings {
 
     @SuppressLint("SetTextI18n")
     fun windView(windTextView: TextView, weatherData: WeatherData) {
-        val wind:String = windTextView.context.resources.getString(R.string.wind)
+        val wind: String = windTextView.context.resources.getString(R.string.wind)
+        val m_s: String = windTextView.context.resources.getString(R.string.m_s)
         if (showWind) {
-            windTextView.text = "$wind ${weatherData.wind.speed} m/s"
+            windTextView.text = "$wind ${weatherData.wind.speed} $m_s"
             windTextView.visibility = View.VISIBLE
         } else {
             windTextView.visibility = View.INVISIBLE
@@ -35,10 +37,11 @@ object Settings {
 
     @SuppressLint("SetTextI18n")
     fun pressureView(pressureTextView: TextView, weatherData: WeatherData) {
-        val mm_Hg:String = pressureTextView.context.resources.getString(R.string.mm_Hg)
-        val pressure:String = pressureTextView.context.resources.getString(R.string.pressure)
+        val mm_Hg: String = pressureTextView.context.resources.getString(R.string.mm_Hg)
+        val pressure: String = pressureTextView.context.resources.getString(R.string.pressure)
         if (showPressure) {
-            pressureTextView.text = "$pressure ${weatherData.main.pressure.converterToMmHg()} $mm_Hg"
+            pressureTextView.text =
+                "$pressure ${weatherData.main.pressure.converterToMmHg()} $mm_Hg"
             pressureTextView.visibility = View.VISIBLE
         } else {
             pressureTextView.visibility = View.INVISIBLE
@@ -53,6 +56,28 @@ object Settings {
     @SuppressLint("SetTextI18n")
     fun timeView(timeTextView: TextView, weatherData: WeatherData) {
         timeTextView.text = "${DateTimeUtils.formatTime(weatherData.dateTime)} "
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun descriptionView(descriptionTextView: TextView, weatherData: WeatherData) {
+        descriptionTextView.text = startWithUpperCase(weatherData.weather[0].description)
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    fun iconView(icon: ImageView, weatherData: WeatherData) {
+        icon.setImageDrawable(
+            icon.context.resources.getDrawable(
+                drawable(weatherData.weather[0].icon),
+                null
+            )
+        )
+    }
+
+    private fun startWithUpperCase(word: String): String {
+        if(word.isEmpty()) return word
+        return StringBuilder().append(word.first().toUpperCase())
+            .append(word.subSequence(1, word.length))
+            .toString()
     }
 
 

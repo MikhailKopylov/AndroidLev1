@@ -52,6 +52,9 @@
     <string name="pressure">Давление</string>
     <string name="wind">Ветер</string>
     <string name="Local">ru</string>
+    <string name="m_s">м/с</string>
+
+    <string name="Cloudy">Облачно</string>
 
 
 </resources>

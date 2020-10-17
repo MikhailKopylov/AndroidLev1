@@ -53,5 +53,7 @@
     <string name="pressure">Pressure</string>
     <string name="wind">Wind</string>
     <string name="Local">en</string>
+    <string name="m_s">m/s</string>
+    <string name="Cloudy">Cloudy</string>
 
 </resources>

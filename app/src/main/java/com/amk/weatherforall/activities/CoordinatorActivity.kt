@@ -27,11 +27,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
 
-class CoordinatorActivity : AppCompatActivity(),
-    NavigationView.OnNavigationItemSelectedListener {
+class CoordinatorActivity : AppCompatActivity()/*,
+    NavigationView.OnNavigationItemSelectedListener*/ {
 
 
-    private lateinit var drawer: DrawerLayout
+//    private lateinit var drawer: DrawerLayout
     private lateinit var bottomNavView: BottomNavigationView
 
     private lateinit var updateCity:UpdateCityViewModel
@@ -87,15 +87,15 @@ class CoordinatorActivity : AppCompatActivity(),
 
         initViewModel()
 
-        val navigationView: NavigationView = findViewById(R.id.navigation_view)
-        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        drawer = findViewById(R.id.drawer_layout)
-        val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close)
-        drawer.addDrawerListener(toggle)
-        toggle.syncState()
-        navigationView.setNavigationItemSelectedListener(this)
+//        val navigationView: NavigationView = findViewById(R.id.navigation_view)
+//        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+//        setSupportActionBar(toolbar)
+//
+//        drawer = findViewById(R.id.drawer_layout)
+//        val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close)
+//        drawer.addDrawerListener(toggle)
+//        toggle.syncState()
+//        navigationView.setNavigationItemSelectedListener(this)
 
         bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
@@ -139,24 +139,27 @@ class CoordinatorActivity : AppCompatActivity(),
         findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout).title = title
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+  /*  override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.home -> {
                 runFragments(this, FragmentsNames.MainFragment)
+                setSelectItem(item)
             }
 
             R.id.settings -> {
                 runFragments(this, FragmentsNames.SettingsFragment)
+                setSelectItem(item)
             }
 
             R.id.select_city -> {
                 runFragments(this, FragmentsNames.SelectCityFragment)
+                setSelectItem(item)
             }
         }
         val drawer: DrawerLayout = findViewById(R.id.drawer_layout)
         drawer.closeDrawer(GravityCompat.START)
         return true
-    }
+    }*/
 
     override fun onBackPressed() {
 

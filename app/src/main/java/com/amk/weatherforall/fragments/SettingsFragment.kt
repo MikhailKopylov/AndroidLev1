@@ -10,11 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.amk.weatherforall.R
-import com.amk.weatherforall.core.Constants
+import com.amk.weatherforall.services.Settings
 import com.amk.weatherforall.viewModels.BottomNavigationViewModel
 
 class SettingsFragment : Fragment() {
-    private var showTemperatureInC: Boolean = true
+
+    private val settings= Settings
 
     private lateinit var mView: View
 
@@ -36,36 +37,34 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mView = view
+        initView(mView)
         requestResult(view)
     }
 
     override fun onResume() {
         super.onResume()
-        bootSettings(mView)
+        initView(mView)
     }
 
-    private fun bootSettings(view: View) {
+    private fun initView(view: View) {
         selectTemperatureMode(view)
 
         val showWindCheckBox: CheckBox = view.findViewById(R.id.show_wind_checkBox)
-        showWindCheckBox.isChecked = arguments?.getBoolean(Constants.SETTING_SHOW_WIND) ?: false
+        showWindCheckBox.isChecked = settings.showWind
 
         val showPressureCheckBox: CheckBox = view.findViewById(R.id.show_pressure_checkBox)
-        showPressureCheckBox.isChecked =
-            arguments?.getBoolean(Constants.SETTING_SHOW_PRESSURE) ?: false
+        showPressureCheckBox.isChecked = settings.showPressure
     }
 
     @SuppressLint("SetTextI18n")
     private fun selectTemperatureMode(view: View) {
-        //TODO add change temperature mode
-        showTemperatureInC = arguments?.getBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE) ?: true
 
         val temperatureRadioGroup: RadioGroup =
             view.findViewById(R.id.select_temperature_mode_radio_button)
         val temperatureC: RadioButton = view.findViewById(R.id.display_in_C_radioButton)
         val temperatureF: RadioButton = view.findViewById(R.id.display_in_F_radioButton)
 
-        if (showTemperatureInC) {
+        if (settings.temperatureC) {
             temperatureC.isChecked = true
         } else {
             temperatureF.isChecked = true
@@ -73,8 +72,8 @@ class SettingsFragment : Fragment() {
 
         temperatureRadioGroup.setOnCheckedChangeListener { _, radioButtonId ->
             when (radioButtonId) {
-                temperatureC.id -> showTemperatureInC = true
-                temperatureF.id -> showTemperatureInC = false
+                temperatureC.id -> settings.temperatureC = true
+                temperatureF.id -> settings.temperatureC = false
             }
         }
     }
@@ -83,18 +82,15 @@ class SettingsFragment : Fragment() {
         val okButton: Button = view.findViewById(R.id.ok_button_setting)
         okButton.setOnClickListener {
             val showWindCheckBox: CheckBox = view.findViewById(R.id.show_wind_checkBox)
-            val isShowWind = showWindCheckBox.isChecked
+            settings.showWind = showWindCheckBox.isChecked
 
             val showPressureCheckBox: CheckBox = view.findViewById(R.id.show_pressure_checkBox)
-            val isShowPressure = showPressureCheckBox.isChecked
+           settings.showPressure = showPressureCheckBox.isChecked
 
-            val bundleResult = Bundle()
-            bundleResult.putBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE, showTemperatureInC)
-            bundleResult.putBoolean(Constants.SETTING_SHOW_WIND, isShowWind)
-            bundleResult.putBoolean(Constants.SETTING_SHOW_PRESSURE, isShowPressure)
             val bottomNavigationViewModel: BottomNavigationViewModel = ViewModelProviders.of(activity?:return@setOnClickListener).get(
                 BottomNavigationViewModel::class.java)
             bottomNavigationViewModel.selectItemBottom(R.id.navigation_home)
+
             runFragments(activity?:return@setOnClickListener, FragmentsNames.MainFragment)
 
         }

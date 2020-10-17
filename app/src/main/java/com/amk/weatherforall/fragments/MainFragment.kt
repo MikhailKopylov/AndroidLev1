@@ -18,12 +18,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.City.City
-import com.amk.weatherforall.core.Constants
 import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogReconnectListener
+import com.amk.weatherforall.services.Settings
 import com.amk.weatherforall.viewModels.SelectCityViewModel
+import com.amk.weatherforall.viewModels.SettingViewModel
 import com.amk.weatherforall.viewModels.UpdateCityViewModel
 
 
@@ -39,9 +40,7 @@ class MainFragment : Fragment(){
 
     private var city: City = City(LOAD_DATA)
 
-    private var showTemperatureInF: Boolean = false
-    private var isNotWindVisible: Boolean = false
-    private var isNotPressureVisible: Boolean = false
+    private var settings = Settings
 
     private lateinit var fragmentView: View
 
@@ -52,13 +51,13 @@ class MainFragment : Fragment(){
 
     private lateinit var modelCity: SelectCityViewModel
     private lateinit var updateCity: UpdateCityViewModel
+    private lateinit var changeSettings:SettingViewModel
 
 
     private val onDialogReconnectListener: OnDialogReconnectListener = object : OnDialogReconnectListener {
         override fun onDialogReconnect() {
             city = WeatherPresenter.city
             WeatherPresenter.newRequest(city)
-//            (activity as UpdateImage).updateImage(city)
             updateCity.updateCity(city)
         }
 
@@ -82,31 +81,18 @@ class MainFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initNotificationChannel()
+        fragmentView = view
 
         if (city.name == LOAD_DATA) {
             WeatherPresenter.newRequest(WeatherPresenter.city)
         }
-        fragmentView = view
-
 
         initViewModel()
-
-
-
-//        val additionalInformationButton: Button =
-//            view.findViewById(R.id.additional_information_button)
-//        additionalInformationButton.setOnClickListener {
-//            val uri: Uri = Uri.parse(resources.getString(R.string.defaultUrl))
-//            val browser = Intent(Intent.ACTION_VIEW, uri)
-//            startActivity(browser)
-//        }
-//        clickSettings(view)
 
         nextWeathersCreate(view)
         update(view)
 
+        initNotificationChannel()
     }
 
     private fun initViewModel() {
@@ -117,7 +103,15 @@ class MainFragment : Fragment(){
 
         })
 
+        changeSettings = ViewModelProviders.of(activity?:return).get(SettingViewModel::class.java)
+        changeSettings.settings.observe(viewLifecycleOwner, Observer <Settings>{
+            settings = it
+            update(fragmentView)
+        })
+
         updateCity = ViewModelProviders.of(activity?: return).get(UpdateCityViewModel::class.java)
+
+
     }
 
     override fun onPause() {
@@ -144,14 +138,7 @@ class MainFragment : Fragment(){
 
 
 
-    private fun temperatureMode(showInF: Boolean): String {
-        return if (!showInF) {
-            "${weatherForecast.list[0].main.temp.toInt()} C"
-        } else {
-            "${weatherForecast.list[0].main.temp.toInt().convertToF()} F"
-        }
 
-    }
 
     @SuppressLint("SetTextI18n")
     private fun update(view: View) {
@@ -163,37 +150,23 @@ class MainFragment : Fragment(){
 
         (recyclerView.adapter as NextWeatherAdapter).notifyDataSetChanged()
 
-        showTemperatureInF =
-            arguments?.getBoolean(Constants.SETTING_SHOW_MODE_TEMPERATURE) ?: showTemperatureInF
+
         val temperatureTextView: TextView = view.findViewById(R.id.temperature_text_view)
-        temperatureTextView.text = temperatureMode(showTemperatureInF)
+        temperatureTextView.text = Settings.temperatureMode(settings.temperatureC, weatherForecast.list[0])
 
-
-        isNotPressureVisible =
-            arguments?.getBoolean(Constants.SETTING_SHOW_PRESSURE) ?: isNotPressureVisible
         val pressureTextView: TextView = view.findViewById(R.id.pressure_textView)
-        if (!isNotPressureVisible) {
-            pressureTextView.text = "${weatherForecast.list[0].main.pressure} mm Hg"
-            pressureTextView.visibility = View.VISIBLE
-        } else {
-            pressureTextView.visibility = View.INVISIBLE
-        }
+        Settings.pressureMode(pressureTextView,weatherForecast.list[0])
 
-        isNotWindVisible = arguments?.getBoolean(Constants.SETTING_SHOW_WIND) ?: isNotWindVisible
+
         val windTextView: TextView = view.findViewById(R.id.wind_textView)
-        if (!isNotWindVisible) {
-            windTextView.text = "${weatherForecast.list[0].wind.speed} m/s"
-            windTextView.visibility = View.VISIBLE
-        } else {
-            windTextView.visibility = View.INVISIBLE
-        }
+        Settings.windMode(windTextView, weatherForecast.list[0])
 
-//        (activity as? CoordinatorActivity)?.setTitle(city.name)
         updateCity.updateCity(city)
     }
 
 
-    private fun Int.convertToF() = ((this * 1.8) + 32).toInt()
+
+
 
 
     fun updateWeather(weatherForecast: WeatherForecast?) {

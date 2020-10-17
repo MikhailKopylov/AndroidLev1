@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.amk.weatherforall.R
+import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.DateTimeUtils
 import com.amk.weatherforall.core.Weather.weatherFor5Days.WeatherData
 
@@ -73,7 +74,7 @@ object Settings {
         )
     }
 
-    private fun startWithUpperCase(word: String): String {
+    fun startWithUpperCase(word: String): String {
         if(word.isEmpty()) return word
         return StringBuilder().append(word.first().toUpperCase())
             .append(word.subSequence(1, word.length))
@@ -82,6 +83,10 @@ object Settings {
 
 
     private fun Int.convertToF() = ((this * 1.8) + 32).toInt()
+    fun copyCity(city: City): City {
+        return City(city.id, startWithUpperCase(city.name),
+        city.coord, city.country, city.timezone, city.population, city.sunrise, city.sunset)
+    }
 }
 
 private fun Int.converterToMmHg() = (this / 133.3 * 100).toInt().toString()

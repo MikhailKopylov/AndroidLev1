@@ -2,6 +2,7 @@ package com.amk.weatherforall.core.database
 
 import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.interfaces.CityDAO
+import com.amk.weatherforall.services.Settings
 
 class CitySource(private val cityDAO: CityDAO) {
 
@@ -16,10 +17,11 @@ class CitySource(private val cityDAO: CityDAO) {
     }
 
     fun addCity(city: City){
+        val cityUpperCase:City = Settings.copyCity(city)
         for(elem in allCities){
-            if (city.name==elem.name) return
+            if (cityUpperCase.name==elem.name) return
         }
-        cityDAO.insertCity(city)
+        cityDAO.insertCity(cityUpperCase)
         loadCities()
     }
     fun updateCity(city: City){

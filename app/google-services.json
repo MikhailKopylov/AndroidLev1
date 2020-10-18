@@ -10,9 +10,11 @@
       "client_info": {
         "mobilesdk_app_id": "1:424420460266:android:fa0ffd7143c7f45e9f7993",
         "android_client_info": {
-          "package_name": "com.amk.weatherforall"
+          "package_name": "com.amk.weatherforall.pro",
+          "package_name": "com.amk.weatherforall.free"
         }
       },
+
       "oauth_client": [
         {
           "client_id": "424420460266-46impe4diduia0a0s61l6nlukcic0221.apps.googleusercontent.com",

@@ -1,7 +1,10 @@
 package com.amk.weatherforall.fragments
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +15,27 @@ import androidx.lifecycle.ViewModelProviders
 import com.amk.weatherforall.R
 import com.amk.weatherforall.services.Settings
 import com.amk.weatherforall.viewModels.BottomNavigationViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.SignInButton
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+
 
 class SettingsFragment : Fragment() {
 
     private val settings= Settings
 
     private lateinit var mView: View
+    private lateinit var googleSignInClient:GoogleSignInClient
+    private lateinit var buttonSignIn:SignInButton
 
     companion object {
+
+        const val RC_SIGN_IN = 40404
+        const val TAG =  "GoogleAuth"
         fun getInstance(): SettingsFragment {
             return SettingsFragment()
         }
@@ -39,12 +55,62 @@ class SettingsFragment : Fragment() {
         mView = view
         initView(mView)
         requestResult(view)
+        val gso: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(context ?: return, gso)
+
+        buttonSignIn = view.findViewById(R.id.signInButton)
+        buttonSignIn.setOnClickListener {
+            signIn()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val account: GoogleSignInAccount? =GoogleSignIn.getLastSignedInAccount(context ?: return)
+        if(account != null){
+            buttonSignIn.isEnabled = false
+            updateUI(account.email )
+        }
     }
 
     override fun onResume() {
         super.onResume()
         initView(mView)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == RC_SIGN_IN){
+            val task:Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
+        }
+    }
+
+    private fun handleSignInResult(task: Task<GoogleSignInAccount>) {
+
+        try{
+            val account:GoogleSignInAccount = task.getResult(ApiException::class.java)?:return
+            buttonSignIn.isEnabled = false
+            updateUI(account.email)
+        }catch (e:ApiException){
+            Log.w(TAG, "signInResult:failed code=" + e.statusCode)
+        }
+    }
+
+    private fun signIn() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    private fun updateUI(idToken:String?){
+        val token:TextView = mView.findViewById(R.id.account_text_view)
+        token.text = idToken?:""
+    }
+
+
 
     private fun initView(view: View) {
         selectTemperatureMode(view)
@@ -87,11 +153,14 @@ class SettingsFragment : Fragment() {
             val showPressureCheckBox: CheckBox = view.findViewById(R.id.show_pressure_checkBox)
            settings.showPressure = showPressureCheckBox.isChecked
 
-            val bottomNavigationViewModel: BottomNavigationViewModel = ViewModelProviders.of(activity?:return@setOnClickListener).get(
-                BottomNavigationViewModel::class.java)
+            val bottomNavigationViewModel: BottomNavigationViewModel = ViewModelProviders.of(
+                activity ?: return@setOnClickListener
+            ).get(
+                BottomNavigationViewModel::class.java
+            )
             bottomNavigationViewModel.selectItemBottom(R.id.navigation_home)
 
-            runFragments(activity?:return@setOnClickListener, FragmentsNames.MainFragment)
+            runFragments(activity ?: return@setOnClickListener, FragmentsNames.MainFragment)
 
         }
 
@@ -106,4 +175,6 @@ class SettingsFragment : Fragment() {
             .supportFragmentManager
             .popBackStack()
     }
+
+
 }

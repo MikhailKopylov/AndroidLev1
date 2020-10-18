@@ -56,5 +56,7 @@
 
     <string name="Cloudy">Облачно</string>
 
+    <string name="signout">Выйти</string>
+
 
 </resources>

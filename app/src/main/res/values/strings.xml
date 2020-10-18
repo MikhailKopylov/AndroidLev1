@@ -55,5 +55,6 @@
     <string name="Local">en</string>
     <string name="m_s">m/s</string>
     <string name="Cloudy">Cloudy</string>
+    <string name="signout">Sign Out</string>
 
 </resources>

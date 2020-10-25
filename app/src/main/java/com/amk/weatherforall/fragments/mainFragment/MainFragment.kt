@@ -1,4 +1,4 @@
-package com.amk.weatherforall.fragments
+package com.amk.weatherforall.fragments.mainFragment
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
@@ -129,16 +129,16 @@ class MainFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(view.context)
         recyclerView.layoutManager = linearLayoutManager
 
-        val nextWeatherAdapter = NextWeatherAdapter(weatherForecast.list)
+        val nextWeatherAdapter = ListWeatherAdapter(weatherForecast.list)
         recyclerView.adapter = nextWeatherAdapter
 
 
-        nextWeatherAdapter.setOnItemClickListener(object :
-            NextWeatherAdapter.onWeatherItemClickListener {
-            override fun onItemClickListener(view: View, position: Int) {
-                Toast.makeText(context, "$position", Toast.LENGTH_SHORT).show()
-            }
-        })
+//        nextWeatherAdapter.setOnItemClickListener(object :
+//            ListWeatherAdapter.onWeatherItemClickListener {
+//            override fun onItemClickListener(view: View, position: Int) {
+//                Toast.makeText(context, "$position", Toast.LENGTH_SHORT).show()
+//            }
+//        })
     }
 
 

@@ -1,4 +1,4 @@
-package com.amk.weatherforall.core
+package com.amk.weatherforall.services
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -39,6 +39,21 @@ object DateTimeUtils {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
+    fun formatDateForParseToLocalDate(dateLong:Long):String{
+        val date = LocalDateTime.ofEpochSecond(dateLong, 0, ZoneOffset.UTC)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            if (date.monthValue > 9) {
+                "${date.year}-${date.monthValue}-${date.dayOfMonth}"
+            } else {
+                "${date.year}-0${date.monthValue}-${date.dayOfMonth}"
+            }
+        } else {
+            val formatterDate = SimpleDateFormat("yyyy-mm-dd")
+            formatterDate.format(Date())
+        }
+    }
     fun datePlusDays(countDays: Int): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val current = LocalDateTime.now().plusDays(countDays.toLong())

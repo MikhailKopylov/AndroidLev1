@@ -4,7 +4,7 @@ import com.amk.weatherforall.R
 import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.Weather.weatherFor5Days.*
-import com.amk.weatherforall.fragments.MainFragment
+import com.amk.weatherforall.fragments.mainFragment.MainFragment
 import com.amk.weatherforall.services.WeatherRequestRetrofit
 
 object WeatherPresenter {

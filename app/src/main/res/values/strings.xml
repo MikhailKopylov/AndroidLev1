@@ -11,8 +11,8 @@
     <string name="update">Update</string>
     <string name="clear">Clear</string>
     <string name="select_city">Select city</string>
-    <string name="to_write_city_name">To write city name</string>
-    <string name="select_to_write_city_name">Select to write city name</string>
+    <string name="to_write_city_name">Enter the city name</string>
+    <string name="select_to_write_city_name">Enter the city name</string>
 
 
     <string name="show_wind">To show the speed of the wind</string>
@@ -42,7 +42,7 @@
     <string name="again_connect">Again connect</string>
     <string name="delete_city">DELETE CITY?</string>
     <string name="delete">DELETE</string>
-    <string name="select_on_map">Select on map</string>
+    <string name="select_on_map">Choose on the map</string>
     <string name="select_by_coordinates">Select by coordinates</string>
     <string name="title_activity_maps">Map</string>
     <string name="longitude">Longitude</string>

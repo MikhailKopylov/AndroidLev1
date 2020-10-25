@@ -1,15 +1,18 @@
 package com.amk.weatherforall.core.database
 
 import com.amk.weatherforall.core.City.City
+import com.amk.weatherforall.core.City.DateLastUseCity
 import com.amk.weatherforall.core.interfaces.CityDAO
 import com.amk.weatherforall.services.Settings
+import java.util.*
 
 class CitySource(private val cityDAO: CityDAO) {
 
-    var allCities: List<City> = cityDAO.getAllCities()
+    var allCities: List<City> = cityDAO.getAllCitiesOrderByLastUse()
 
     private fun loadCities() {
-        allCities = cityDAO.getAllCities()
+        allCities = cityDAO.getAllCitiesOrderByLastUse()
+//        val listLastCities:List<DateLastUseCity> = cityDAO.getCitiesLastUse()
     }
 
     fun countCities():Long{
@@ -17,11 +20,17 @@ class CitySource(private val cityDAO: CityDAO) {
     }
 
     fun addCity(city: City){
-        val cityUpperCase:City = Settings.copyCity(city)
+        val cityUpperCase:City = Settings.cityNameStartWithUpperCase(city)
         for(elem in allCities){
-            if (cityUpperCase.name==elem.name) return
+            if (cityUpperCase.name==elem.name){
+                cityDAO.insertLastCity(DateLastUseCity(elem.idDB, cityUpperCase.id, Date().time))
+                loadCities()
+                return
+            }
         }
-        cityDAO.insertCity(cityUpperCase)
+        val id:Long = cityDAO.insertCity(cityUpperCase)
+        cityDAO.insertLastCity(DateLastUseCity(id, cityUpperCase.id,Date().time))
+
         loadCities()
     }
     fun updateCity(city: City){

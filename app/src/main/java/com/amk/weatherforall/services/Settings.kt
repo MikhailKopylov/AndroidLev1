@@ -83,7 +83,7 @@ object Settings {
 
 
     private fun Int.convertToF() = ((this * 1.8) + 32).toInt()
-    fun copyCity(city: City): City {
+    fun cityNameStartWithUpperCase(city: City): City {
         return City(city.id, startWithUpperCase(city.name),
         city.coord, city.country, city.timezone, city.population, city.sunrise, city.sunset)
     }

@@ -50,10 +50,11 @@ data class City(
     val sunset: Long
 
 ) {
-    @PrimaryKey(autoGenerate = true) var idDB:Long = 0
+    @PrimaryKey(autoGenerate = true)
+    var idDB: Long = 0
 
-    constructor(cityName: String) : this(
-        id = 0,
+    constructor(cityName: String, id:Int) : this(
+        id = id,
         name = cityName,
         coord = Coord(0.0, 0.0),
         country = "",
@@ -62,6 +63,7 @@ data class City(
         sunrise = 0,
         sunset = 0
     )
+
     constructor(cityName: String, coord: Coord) : this(
         id = 0,
         name = cityName,
@@ -74,6 +76,6 @@ data class City(
     )
 
     companion object {
-        val CITY_DEFAULT = City("Moscow")
+        val CITY_DEFAULT = City("Moscow", 524901)
     }
 }

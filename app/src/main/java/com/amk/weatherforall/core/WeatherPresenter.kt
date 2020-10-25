@@ -12,8 +12,8 @@ object WeatherPresenter {
     const val KEI_API: String = "a196f08fdb6ccf6e2a8a0ee4af9d9f27"
     const val UNITS: String = "metric"
 
-    const val LATITUDE_DEFAULT: Double = 56.26241//-34.0
-    const val LONGITUDE_DEFAULT: Double = 34.32817//151.0
+    const val LATITUDE_DEFAULT: Double = 56.26241
+    const val LONGITUDE_DEFAULT: Double = 34.32817
 
     const val UNKNOWN_CITY_NAME = "Unknown"
 
@@ -22,12 +22,12 @@ object WeatherPresenter {
     private val clouds: Clouds = Clouds(0)
     private val wind: Wind = Wind(0.0, 0)
     private val sys: Sys = Sys("")
-    private val weaterDataDefault: WeatherData =
+    private val weatherDataDefault: WeatherData =
         WeatherData(1L, main, arrayOf(weather), clouds, wind, 0, 0.0, sys, "")
     var city: City = City.CITY_DEFAULT
 
     var weatherForecast: WeatherForecast =
-        WeatherForecast(City("Unknown"), arrayOf(weaterDataDefault))
+        WeatherForecast(City(UNKNOWN_CITY_NAME, 0), arrayOf(weatherDataDefault))
 
     val historyWeatherQueries: ArrayList<WeatherForecast> = arrayListOf()
 

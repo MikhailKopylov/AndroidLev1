@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -30,44 +29,46 @@ import com.amk.weatherforall.viewModels.SettingViewModel
 import com.amk.weatherforall.viewModels.UpdateCityViewModel
 
 
-class MainFragment : Fragment(){
+class MainFragment : Fragment() {
 
     companion object {
         fun getInstance(): MainFragment {
             return MainFragment()
         }
 
-        const val LOAD_DATA:String = "Load data..."
+        const val LOAD_DATA: String = "Load data..."
+        const val LOAD_DATA_ID: Int = -1
     }
 
-    private var city: City = City(LOAD_DATA)
+    private var city: City = City(LOAD_DATA, LOAD_DATA_ID)
     private lateinit var citySource: CitySource
 
     private var settings = Settings
 
     private lateinit var fragmentView: View
 
-    private var weatherForecast: WeatherForecast= WeatherPresenter.weatherForecast
+    private var weatherForecast: WeatherForecast = WeatherPresenter.weatherForecast
     private val weatherPresenter: WeatherPresenter = WeatherPresenter
 
     lateinit var recyclerView: RecyclerView
 
     private lateinit var modelCity: SelectCityViewModel
     private lateinit var updateCity: UpdateCityViewModel
-    private lateinit var changeSettings:SettingViewModel
+    private lateinit var changeSettings: SettingViewModel
 
 
-    private val onDialogReconnectListener: OnDialogReconnectListener = object : OnDialogReconnectListener {
-        override fun onDialogReconnect() {
-            city = WeatherPresenter.city
-            WeatherPresenter.newRequest(city)
-            updateCity.updateCity(city)
+    private val onDialogReconnectListener: OnDialogReconnectListener =
+        object : OnDialogReconnectListener {
+            override fun onDialogReconnect() {
+                city = WeatherPresenter.city
+                WeatherPresenter.newRequest(city)
+                updateCity.updateCity(city)
+            }
+
+            override fun onDialogCancel() {
+
+            }
         }
-
-        override fun onDialogCancel() {
-
-        }
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -94,7 +95,7 @@ class MainFragment : Fragment(){
         initViewModel()
 
         nextWeathersCreate(view)
-        update(view)
+        checkRequest()
 
         initNotificationChannel()
     }
@@ -103,17 +104,17 @@ class MainFragment : Fragment(){
         modelCity =
             ViewModelProviders.of(activity ?: return).get(SelectCityViewModel::class.java)
         modelCity.selectedCity.observe(viewLifecycleOwner, Observer<City> {
-                WeatherPresenter.newRequest(it)
+            WeatherPresenter.newRequest(it)
 
         })
 
-        changeSettings = ViewModelProviders.of(activity?:return).get(SettingViewModel::class.java)
-        changeSettings.settings.observe(viewLifecycleOwner, Observer <Settings>{
+        changeSettings = ViewModelProviders.of(activity ?: return).get(SettingViewModel::class.java)
+        changeSettings.settings.observe(viewLifecycleOwner, Observer<Settings> {
             settings = it
-            update(fragmentView)
+            checkRequest()
         })
 
-        updateCity = ViewModelProviders.of(activity?: return).get(UpdateCityViewModel::class.java)
+        updateCity = ViewModelProviders.of(activity ?: return).get(UpdateCityViewModel::class.java)
 
 
     }
@@ -141,47 +142,20 @@ class MainFragment : Fragment(){
     }
 
 
-
-
-
     @SuppressLint("SetTextI18n")
-    private fun update(view: View) {
-        if(!WeatherPresenter.isRequestSuccessful){
+    private fun checkRequest() {
+        if (!WeatherPresenter.isRequestSuccessful) {
             updateWeather(null)
         }
-//        val dateTextView: TextView = view.findViewById(R.id.date_text_view)
-//        Settings.dateView(dateTextView, weatherForecast.list[0])
-//        val timeTextView: TextView = view.findViewById(R.id.time_text_view)
-//        Settings.timeView(timeTextView, weatherForecast.list[0])
-//
-//        (recyclerView.adapter as NextWeatherAdapter).notifyDataSetChanged()
-//
-//
-//        val temperatureTextView: TextView = view.findViewById(R.id.temperature_text_view)
-//        temperatureTextView.text = Settings.temperatureMode(settings.temperatureC, weatherForecast.list[0])
-//
-//        val pressureTextView: TextView = view.findViewById(R.id.pressure_textView)
-//        Settings.pressureView(pressureTextView,weatherForecast.list[0])
-//
-//
-//        val windTextView: TextView = view.findViewById(R.id.wind_textView)
-//        Settings.windView(windTextView, weatherForecast.list[0])
-
-        updateCity.updateCity(city)
     }
-
-
-
-
-
 
     fun updateWeather(weatherForecast: WeatherForecast?) {
         if (weatherForecast != null) {
             this.weatherForecast = weatherForecast
             city = weatherForecast.city
             citySource.addCity(city)
-            update(fragmentView)
             nextWeathersCreate(fragmentView)
+            updateCity.updateCity(city)
         } else {
             val noConnectDialog: NoNetworkDialog = NoNetworkDialog.newInstance()
             noConnectDialog.onDialogReconnectListener = onDialogReconnectListener

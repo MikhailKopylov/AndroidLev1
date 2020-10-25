@@ -119,9 +119,9 @@ class SelectCityFragment : Fragment() {
     private fun initCityList() {
         citySource = CitySource((activity as CoordinatorActivity).db.cityDAO())
         if (citySource.allCities.isEmpty() || citySource.allCities.size == 1) {
-            citySource.addCity(City(resources.getString(R.string.Moscow)))
-            citySource.addCity(City(resources.getString(R.string.Saint_Petersburg)))
-            citySource.addCity(City(resources.getString(R.string.Saratov)))
+            citySource.addCity(City(resources.getString(R.string.Moscow), 524901))
+            citySource.addCity(City(resources.getString(R.string.Saint_Petersburg), 498817))
+            citySource.addCity(City(resources.getString(R.string.Saratov), 498677))
         }
     }
 
@@ -132,7 +132,7 @@ class SelectCityFragment : Fragment() {
         okButton.setOnClickListener {
             val newCityName = newCityEditText.text.toString()
             newCityEditText.setText("")
-            citySource.addCity(City(newCityName))
+//            citySource.addCity(City(newCityName))
             requestCity(City(newCityName, Coord(Double.NaN, Double.NaN)))
         }
     }

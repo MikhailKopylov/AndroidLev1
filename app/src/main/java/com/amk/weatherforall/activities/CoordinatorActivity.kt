@@ -81,15 +81,15 @@ class CoordinatorActivity : AppCompatActivity()/*,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        db = Room.databaseBuilder<CityDatabase>(
+            applicationContext, CityDatabase::class.java, "city_database"
+        ).allowMainThreadQueries()
+            .build()
         setContentView(R.layout.activity_coordinator)
         setSupportActionBar(findViewById(R.id.toolbar))
         bottomNavView = findViewById(R.id.nav_view)
         findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout).title = title
 
-        db = Room.databaseBuilder<CityDatabase>(
-            applicationContext, CityDatabase::class.java, "city_database"
-        ).allowMainThreadQueries()
-            .build()
 
         initViewModel()
 

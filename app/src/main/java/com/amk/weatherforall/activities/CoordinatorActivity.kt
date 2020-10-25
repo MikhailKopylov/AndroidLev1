@@ -7,10 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.room.Room
@@ -18,6 +15,7 @@ import com.amk.weatherforall.R
 import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.database.CityDatabase
+import com.amk.weatherforall.core.database.CitySource
 import com.amk.weatherforall.fragments.FragmentsNames
 import com.amk.weatherforall.fragments.runFragments
 import com.amk.weatherforall.services.getUrlByCity
@@ -25,18 +23,17 @@ import com.amk.weatherforall.viewModels.BottomNavigationViewModel
 import com.amk.weatherforall.viewModels.UpdateCityViewModel
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
 
 class CoordinatorActivity : AppCompatActivity()/*,
     NavigationView.OnNavigationItemSelectedListener*/ {
 
 
-//    private lateinit var drawer: DrawerLayout
+    //    private lateinit var drawer: DrawerLayout
     private lateinit var bottomNavView: BottomNavigationView
 
-    private lateinit var updateCity:UpdateCityViewModel
-    private lateinit var selectItemBottomNavView:BottomNavigationViewModel
+    private lateinit var updateCity: UpdateCityViewModel
+    private lateinit var selectItemBottomNavView: BottomNavigationViewModel
 
     private val onNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -69,6 +66,7 @@ class CoordinatorActivity : AppCompatActivity()/*,
         }
 
     lateinit var db: CityDatabase
+    private lateinit var citySource: CitySource
 
     private fun setSelectItem(item: MenuItem) {
         val bottomNavView: BottomNavigationView = findViewById(R.id.nav_view)
@@ -81,10 +79,10 @@ class CoordinatorActivity : AppCompatActivity()/*,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        db = Room.databaseBuilder<CityDatabase>(
-            applicationContext, CityDatabase::class.java, "city_database"
-        ).allowMainThreadQueries()
-            .build()
+
+        initDataBase()
+        initCityList()
+
         setContentView(R.layout.activity_coordinator)
         setSupportActionBar(findViewById(R.id.toolbar))
         bottomNavView = findViewById(R.id.nav_view)
@@ -111,15 +109,33 @@ class CoordinatorActivity : AppCompatActivity()/*,
 
     }
 
+    private fun initCityList() {
+        if (citySource.allCities.isEmpty() || citySource.allCities.size == 1) {
+            citySource.addCity(City(resources.getString(R.string.Moscow), 524901))
+            citySource.addCity(City(resources.getString(R.string.Saint_Petersburg), 498817))
+            citySource.addCity(City(resources.getString(R.string.Saratov), 498677))
+        }
+        WeatherPresenter.city = citySource.allCities[0]
+    }
+
+    private fun initDataBase() {
+        db = Room.databaseBuilder<CityDatabase>(
+            applicationContext, CityDatabase::class.java, "city_database"
+        ).allowMainThreadQueries()
+            .build()
+        citySource = CitySource(db.cityDAO())
+    }
+
     private fun initViewModel() {
         updateCity = ViewModelProviders.of(this).get(UpdateCityViewModel::class.java)
         updateCity.updateCity.observe(this, Observer<City> {
             setTitle(it.name)
             updateImage(it)
-        } )
+        })
 
-        selectItemBottomNavView = ViewModelProviders.of(this).get(BottomNavigationViewModel::class.java)
-        selectItemBottomNavView.itemBottomNavView.observe(this, Observer <Int>{
+        selectItemBottomNavView =
+            ViewModelProviders.of(this).get(BottomNavigationViewModel::class.java)
+        selectItemBottomNavView.itemBottomNavView.observe(this, Observer<Int> {
             bottomNavView.selectedItemId = it
         })
     }
@@ -129,7 +145,7 @@ class CoordinatorActivity : AppCompatActivity()/*,
             val notificationManager: NotificationManager =
                 (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
             val importance: Int = NotificationManager.IMPORTANCE_LOW
-            val channel= NotificationChannel("2", "name", importance)
+            val channel = NotificationChannel("2", "name", importance)
             notificationManager.createNotificationChannel(channel)
         }
     }
@@ -145,27 +161,27 @@ class CoordinatorActivity : AppCompatActivity()/*,
         findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout).title = title
     }
 
-  /*  override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.home -> {
-                runFragments(this, FragmentsNames.MainFragment)
-                setSelectItem(item)
-            }
+    /*  override fun onNavigationItemSelected(item: MenuItem): Boolean {
+          when (item.itemId) {
+              R.id.home -> {
+                  runFragments(this, FragmentsNames.MainFragment)
+                  setSelectItem(item)
+              }
 
-            R.id.settings -> {
-                runFragments(this, FragmentsNames.SettingsFragment)
-                setSelectItem(item)
-            }
+              R.id.settings -> {
+                  runFragments(this, FragmentsNames.SettingsFragment)
+                  setSelectItem(item)
+              }
 
-            R.id.select_city -> {
-                runFragments(this, FragmentsNames.SelectCityFragment)
-                setSelectItem(item)
-            }
-        }
-        val drawer: DrawerLayout = findViewById(R.id.drawer_layout)
-        drawer.closeDrawer(GravityCompat.START)
-        return true
-    }*/
+              R.id.select_city -> {
+                  runFragments(this, FragmentsNames.SelectCityFragment)
+                  setSelectItem(item)
+              }
+          }
+          val drawer: DrawerLayout = findViewById(R.id.drawer_layout)
+          drawer.closeDrawer(GravityCompat.START)
+          return true
+      }*/
 
     override fun onBackPressed() {
 

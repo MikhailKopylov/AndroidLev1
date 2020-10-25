@@ -1,11 +1,11 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@color/blue_De_France</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:textColor">@color/blue_grey_700</item>
     </style>
 
 
@@ -16,7 +16,11 @@
         <item name="contentPaddingTop">1dp</item>
         <item name="contentPaddingLeft">3dp</item>
         <item name="contentPaddingRight">3dp</item>
+    </style>
 
+    <style name="appBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textSize">40sp</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -28,13 +32,23 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
+
+    <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/primary_dark</item>
+    </style>
+
 <!--    <style name="BottomNavigation">-->
-<!--        <item name="android:background">@color/indigo</item>-->
-<!--        <item name="itemBackground">@drawable/navigation_bar_item_bg</item>-->
-<!--        <item name="itemIconTint">@color/navigation_bar_txt_color</item>-->
-<!--        <item name="itemTextColor">@color/navigation_bar_txt_color</item>-->
-<!--        <item name="paddingStart">@dimen/bottom_navigation_padding</item>-->
-<!--        <item name="paddingEnd">@dimen/bottom_navigation_padding</item>-->
+<!--        <item name="android:background">@color/primary_dark</item>-->
+<!--        <item name="itemIconTint">@color/primary_text</item>-->
+<!--        <item name="itemTextColor">@color/primary_text</item>-->
+<!--        <item name="item"-->
+
 <!--    </style>-->
 
 

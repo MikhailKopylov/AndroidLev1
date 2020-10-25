@@ -12,9 +12,9 @@ object Settings {
 
     fun temperatureMode(showInC: Boolean, weatherData: WeatherData): String {
         return if (showInC) {
-            "${weatherData.main.temp.toInt()}° C"
+            "${weatherData.main.temp.toInt()}°C"
         } else {
-            "${weatherData.main.temp.toInt().convertToF()}° F"
+            "${weatherData.main.temp.toInt().convertToF()}°F"
         }
     }
 

@@ -38,6 +38,9 @@ class ListWeatherAdapter(
                         weatherListWithDateHeader += weathersList[index]
                         listHeaderDate.add(weatherListWithDateHeader.size - 1)
                     }
+                } else{
+                    weatherListWithDateHeader += weathersList[index]
+                    listHeaderDate.add(weatherListWithDateHeader.size - 1)
                 }
                 weatherListWithDateHeader += weathersList[index]
             }

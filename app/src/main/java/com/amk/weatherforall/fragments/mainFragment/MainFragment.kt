@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.amk.weatherforall.R
 import com.amk.weatherforall.activities.CoordinatorActivity
 import com.amk.weatherforall.core.City.City
@@ -27,6 +28,7 @@ import com.amk.weatherforall.services.Settings
 import com.amk.weatherforall.viewModels.SelectCityViewModel
 import com.amk.weatherforall.viewModels.SettingViewModel
 import com.amk.weatherforall.viewModels.UpdateCityViewModel
+import kotlinx.android.synthetic.main.activity_coordinator.*
 
 
 class MainFragment : Fragment() {
@@ -51,6 +53,7 @@ class MainFragment : Fragment() {
     private val weatherPresenter: WeatherPresenter = WeatherPresenter
 
     lateinit var recyclerView: RecyclerView
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private lateinit var modelCity: SelectCityViewModel
     private lateinit var updateCity: UpdateCityViewModel
@@ -125,7 +128,12 @@ class MainFragment : Fragment() {
     }
 
     private fun nextWeathersCreate(view: View) {
+//        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
+//        swipeRefreshLayout.setOnRefreshListener {
+//            WeatherPresenter.newRequest(city)
+//        }
         recyclerView = view.findViewById(R.id.nextWeather_view)
+        recyclerView.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(view.context)
         recyclerView.layoutManager = linearLayoutManager
 
@@ -156,6 +164,9 @@ class MainFragment : Fragment() {
             citySource.addCity(city)
             nextWeathersCreate(fragmentView)
             updateCity.updateCity(city)
+            if(activity is CoordinatorActivity){
+                (activity as CoordinatorActivity).swipeRefresh.isRefreshing = false
+            }
         } else {
             val noConnectDialog: NoNetworkDialog = NoNetworkDialog.newInstance()
             noConnectDialog.onDialogReconnectListener = onDialogReconnectListener

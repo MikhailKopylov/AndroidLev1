@@ -76,6 +76,6 @@ data class City(
     )
 
     companion object {
-        val CITY_DEFAULT = City("Moscow", 524901)
+        val CITY_DEFAULT = City("Unknown", -1)
     }
 }

@@ -153,10 +153,12 @@ class SettingsFragment : Fragment() {
         }
 
         temperatureRadioGroup.setOnCheckedChangeListener { _, radioButtonId ->
+            settings.previousTemperatureC = settings.temperatureC
             when (radioButtonId) {
                 temperatureC.id -> settings.temperatureC = true
                 temperatureF.id -> settings.temperatureC = false
             }
+
         }
     }
 
@@ -169,27 +171,27 @@ class SettingsFragment : Fragment() {
             val showPressureCheckBox: CheckBox = view.findViewById(R.id.show_pressure_checkBox)
             settings.showPressure = showPressureCheckBox.isChecked
 
-            val bottomNavigationViewModel: BottomNavigationViewModel = ViewModelProviders.of(
-                activity ?: return@setOnClickListener
-            ).get(
-                BottomNavigationViewModel::class.java
-            )
-            bottomNavigationViewModel.selectItemBottom(R.id.navigation_home)
-
-            runFragments(activity ?: return@setOnClickListener, FragmentsNames.MainFragment)
+            closeFragment()
 
         }
 
         val cancelButton: Button = view.findViewById(R.id.cancel_button_setting)
         cancelButton.setOnClickListener {
+            settings.temperatureC = settings.previousTemperatureC
             closeFragment()
         }
     }
 
     private fun closeFragment() {
-        (context as AppCompatActivity)
-            .supportFragmentManager
-            .popBackStack()
+        val bottomNavigationViewModel: BottomNavigationViewModel = ViewModelProviders.of(
+            activity ?: return
+        ).get(
+            BottomNavigationViewModel::class.java
+        )
+        bottomNavigationViewModel.selectItemBottom(R.id.navigation_home)
+
+        runFragments(activity ?: return, FragmentsNames.MainFragment)
+
     }
 
     private fun enableSign() {

@@ -9,7 +9,6 @@
     >
 
     <androidx.recyclerview.widget.RecyclerView
-
         android:id="@+id/nextWeather_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

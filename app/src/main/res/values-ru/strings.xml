@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Saint_Petersburg">Санкт-Петербург</string>
-    <string name="Moscow">Москва</string>
-    <string name="Saratov">Саратов</string>
+
     <string name="Default_city_name">Санкт-Петербург</string>
 
-    <string name="app_name">Погода для всех</string>
+    <string name="app_name">Прогноз погоды</string>
     <string name="unitF">Показывать погоду в F°</string>
     <string name="unitC">Показывать погоду в C°</string>
     <string name="update">обновить</string>
     <string name="clear">Ясно</string>
-    <string name="select_city">Выбрать город</string>
+    <string name="select_city">Выберите город</string>
     <string name="to_write_city_name">Введите название города</string>
     <string name="select_to_write_city_name">Введите название города</string>
     <string name="show_wind">Показать скорость ветра</string>
@@ -57,6 +55,34 @@
     <string name="Cloudy">Облачно</string>
 
     <string name="signout">Выйти</string>
+
+    <string name="Saint_Petersburg">Санкт-Петербург</string>
+    <string name="Moscow">Москва</string>
+    <string name="Saratov">Саратов</string>
+    <string name="Novosibirsk">Новосибирск</string>
+    <string name="Ekaterinburg">Екатеринбург</string>
+    <string name="Kazan">Казань</string>
+    <string name="Chelyabinsk">Челябинск</string>
+    <string name="Samara">Самара</string>
+    <string name="Omsk">Омск</string>
+    <string name="Rostov_on_don">Ростов-на-Дону</string>
+    <string name="Ufa">Уфа</string>
+    <string name="Krasnoyarsk">Красноярск</string>
+    <string name="Voronezh">Воронеж</string>
+    <string name="Perm">Пермь</string>
+    <string name="Volgograd">Волгоград</string>
+    <string name="Krasnodar">Краснодар</string>
+    <string name="Close_application">Закрыть приложение?</string>
+    <string name="yes">ДА</string>
+    <string name="Tyumen">Тюмень</string>
+    <string name="Izhevsk">Ижевск</string>
+    <string name="Barnaul">Барнаул</string>
+    <string name="Ulyanovsk">Ульяновск</string>
+    <string name="Irkutsk">Иркутск</string>
+    <string name="Khabarovsk">Хабаровск</string>
+    <string name="Yaroslavl">Ярославль</string>
+    <string name="Vladivostok">Владивосток</string>
+    <string name="Kotlas">Котлас</string>
 
 
 </resources>

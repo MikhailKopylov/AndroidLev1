@@ -5,7 +5,7 @@
     <string name="Default_city_name">Saint-Petersburg</string>
 
 
-    <string name="app_name">WeatherForAll</string>
+    <string name="app_name">Weather forecast</string>
     <string name="unitF">Display the temperature in F°</string>
     <string name="unitC">Display the temperature in C°</string>
     <string name="update">Update</string>
@@ -46,8 +46,10 @@
     <string name="select_by_coordinates">Select by coordinates</string>
     <string name="title_activity_maps">Map</string>
     <string name="longitude">Longitude</string>
-    <string name="load_data">Load data...</string>
+    <string name="load_data">Load data…</string>
     <string name="confirm">Confirm</string>
+    <string name="Close_application">Close application?</string>
+    <string name="yes">YES</string>
 
     <string name="mm_Hg">mm Hg</string>
     <string name="pressure">Pressure</string>
@@ -56,5 +58,28 @@
     <string name="m_s">m/s</string>
     <string name="Cloudy">Cloudy</string>
     <string name="signout">Sign Out</string>
+
+    <string name="Novosibirsk">Novosibirsk</string>
+    <string name="Ekaterinburg">Ekaterinburg</string>
+    <string name="Kazan">Kazan</string>
+    <string name="Chelyabinsk">Chelyabinsk</string>
+    <string name="Samara">Samara</string>
+    <string name="Omsk">Omsk</string>
+    <string name="Rostov_on_don">Rostov</string>
+    <string name="Ufa">Ufa</string>
+    <string name="Krasnoyarsk">Krasnoyarsk</string>
+    <string name="Voronezh">Voronezh</string>
+    <string name="Perm">Perm</string>
+    <string name="Volgograd">Volgograd</string>
+    <string name="Krasnodar">Krasnodar</string>
+    <string name="Tyumen">Tyumen</string>
+    <string name="Izhevsk">Izhevsk</string>
+    <string name="Barnaul">Barnaul</string>
+    <string name="Ulyanovsk">Ulyanovsk</string>
+    <string name="Irkutsk">Irkutsk</string>
+    <string name="Khabarovsk">Khabarovsk</string>
+    <string name="Yaroslavl">Yaroslavl</string>
+    <string name="Vladivostok">Vladivostok</string>
+    <string name="Kotlas">Kotlas</string>
 
 </resources>

@@ -22,7 +22,7 @@ interface CityDAO {
     fun deleteCity(city: City)
 
     @Query("""SELECT idDB, idFromNet, cityName, lon, lat, countryName, population, sunrise, sunset, timezone, date_of_last_use  FROM city
-        INNER JOIN dateLastUseCity ON city.idDB = dateLastUseCity.city_id ORDER BY  dateLastUseCity.date_of_last_use DESC""")
+        INNER JOIN dateLastUseCity ON city.idDB = dateLastUseCity.city_id ORDER BY  dateLastUseCity.date_of_last_use DESC, cityName""")
     fun getAllCitiesOrderByLastUse():List<City>
 
 //    @Query("SELECT * FROM city WHERE city.idDB = :id")

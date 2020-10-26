@@ -7,8 +7,9 @@ object Settings {
 
     var temperatureC: Boolean = true
     var showWind: Boolean = true
-    var showPressure: Boolean = false
+    var showPressure: Boolean = true
 
+    var previousTemperatureC: Boolean = temperatureC
 
     fun temperatureMode(showInC: Boolean, weatherData: WeatherData): String {
         return if (showInC) {

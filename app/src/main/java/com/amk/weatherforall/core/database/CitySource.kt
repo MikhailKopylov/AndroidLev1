@@ -15,30 +15,34 @@ class CitySource(private val cityDAO: CityDAO) {
 //        val listLastCities:List<DateLastUseCity> = cityDAO.getCitiesLastUse()
     }
 
-    fun countCities():Long{
+    fun countCities(): Long {
         return cityDAO.getCountCities()
     }
 
-    fun addCity(city: City){
-        val cityUpperCase:City = Settings.cityNameStartWithUpperCase(city)
-        for(elem in allCities){
-            if (cityUpperCase.name==elem.name){
-                cityDAO.insertLastCity(DateLastUseCity(elem.idDB, cityUpperCase.id, Date().time))
+    fun addCity(city: City) {
+        val cityUpperCase: City = Settings.cityNameStartWithUpperCase(city)
+        for (elem in allCities) {
+            if (cityUpperCase.name == elem.name) {
+                cityDAO.insertLastCity(DateLastUseCity(elem.idDB, cityUpperCase.id, date()))
                 loadCities()
                 return
             }
         }
-        val id:Long = cityDAO.insertCity(cityUpperCase)
-        cityDAO.insertLastCity(DateLastUseCity(id, cityUpperCase.id,Date().time))
+        val id: Long = cityDAO.insertCity(cityUpperCase)
+        cityDAO.insertLastCity(DateLastUseCity(id, cityUpperCase.id, date()))
 
         loadCities()
     }
-    fun updateCity(city: City){
+
+    private fun date(): Long = Date().time / 1000
+
+
+    fun updateCity(city: City) {
         cityDAO.updateCity(city)
         loadCities()
     }
 
-    fun deleteCity(city: City){
+    fun deleteCity(city: City) {
         cityDAO.deleteCity(city)
         loadCities()
     }

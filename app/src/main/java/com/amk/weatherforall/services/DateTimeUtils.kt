@@ -10,8 +10,8 @@ import java.util.*
 object DateTimeUtils {
     @SuppressLint("SimpleDateFormat")
     fun formatTime(timeLong: Long): String {
-        val time = LocalDateTime.ofEpochSecond(timeLong, 0, ZoneOffset.UTC)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val time = LocalDateTime.ofEpochSecond(timeLong, 0, ZoneOffset.UTC)
             if (time.minute > 9) {
                 "${time.hour}:${time.minute}"
             } else {
@@ -25,8 +25,8 @@ object DateTimeUtils {
 
     @SuppressLint("SimpleDateFormat")
     fun formatDate(dateLong: Long): String {
-        val date = LocalDateTime.ofEpochSecond(dateLong, 0, ZoneOffset.UTC)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val date = LocalDateTime.ofEpochSecond(dateLong, 0, ZoneOffset.UTC)
 
             if (date.monthValue > 9) {
                 "${date.dayOfMonth}.${date.monthValue}.${date.year}"
@@ -41,8 +41,8 @@ object DateTimeUtils {
 
     @SuppressLint("SimpleDateFormat")
     fun formatDateForParseToLocalDate(dateLong:Long):String{
-        val date = LocalDateTime.ofEpochSecond(dateLong, 0, ZoneOffset.UTC)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val date = LocalDateTime.ofEpochSecond(dateLong, 0, ZoneOffset.UTC)
 
             if (date.monthValue > 9) {
                 "${date.year}-${date.monthValue}-${date.dayOfMonth}"

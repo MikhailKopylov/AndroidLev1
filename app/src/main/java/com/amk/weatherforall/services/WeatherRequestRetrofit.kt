@@ -47,6 +47,7 @@ class WeatherRequestRetrofit {
                         WeatherPresenter.weatherForecast = it
                         WeatherPresenter.city = it.city
                         WeatherPresenter.fragment.updateWeather(it)
+
                     }
                 }
 

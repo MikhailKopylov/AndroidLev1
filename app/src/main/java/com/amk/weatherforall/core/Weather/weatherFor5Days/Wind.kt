@@ -10,5 +10,4 @@ data class Wind(
     @SerializedName("deg")
     @Expose
     val deg:Int
-) {
-}
+)

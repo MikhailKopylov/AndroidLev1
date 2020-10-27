@@ -8,7 +8,4 @@ class SettingViewModel:ViewModel() {
 
     val settings = MediatorLiveData<Settings>()
 
-    fun changeSettings(settings: Settings){
-        this.settings.value = settings
-    }
 }

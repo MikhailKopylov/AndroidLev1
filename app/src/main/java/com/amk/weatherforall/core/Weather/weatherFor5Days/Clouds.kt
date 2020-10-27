@@ -7,5 +7,4 @@ data class Clouds(
     @SerializedName("all")
     @Expose
     val all:Int
-) {
-}
+)

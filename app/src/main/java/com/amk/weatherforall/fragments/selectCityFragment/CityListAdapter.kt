@@ -11,9 +11,9 @@ import com.amk.weatherforall.core.City.City
 class CityListAdapter(var cityList: List<City>) :
     RecyclerView.Adapter<CityListAdapter.CityListHolder>() {
 
-    lateinit var itemClickListener: onCityItemClickListener
+    lateinit var itemClickListener: OnCityItemClickListener
 
-    fun setOnItemClickListener(onItemClickListener: onCityItemClickListener) {
+    fun setOnItemClickListener(onItemClickListener: OnCityItemClickListener) {
         this.itemClickListener = onItemClickListener
     }
 
@@ -50,7 +50,7 @@ class CityListAdapter(var cityList: List<City>) :
         }
     }
 
-    interface onCityItemClickListener {
+    interface OnCityItemClickListener {
         fun onItemClickListener(view: View, position: Int)
         fun onItemLongClickListener(view: View, position: Int)
     }

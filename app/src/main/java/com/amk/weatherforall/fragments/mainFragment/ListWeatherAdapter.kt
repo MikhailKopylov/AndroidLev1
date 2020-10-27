@@ -10,11 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.Weather.weatherFor5Days.WeatherData
 import com.amk.weatherforall.services.DateTimeUtils
+import com.amk.weatherforall.services.DateTimeUtils.isNextDay
 import com.amk.weatherforall.services.Settings
 import com.amk.weatherforall.services.converterToMmHg
 import com.amk.weatherforall.services.drawable
-import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 
 
 class ListWeatherAdapter(
@@ -34,11 +33,11 @@ class ListWeatherAdapter(
         weathersList.forEachIndexed { index, element ->
             run {
                 if (index > 0) {
-                    if (isNextDay(element, weathersList[index - 1])) {
+                    if (isNextDay(element.getDateTime(), weathersList[index - 1].getDateTime())) {
                         weatherListWithDateHeader += weathersList[index]
                         listHeaderDate.add(weatherListWithDateHeader.size - 1)
                     }
-                } else{
+                } else {
                     weatherListWithDateHeader += weathersList[index]
                     listHeaderDate.add(weatherListWithDateHeader.size - 1)
                 }
@@ -48,21 +47,6 @@ class ListWeatherAdapter(
         return weatherListWithDateHeader
     }
 
-    private fun isNextDay(weather: WeatherData, previousWeather: WeatherData): Boolean {
-        val day: LocalDate =
-            LocalDate.parse(DateTimeUtils.formatDateForParseToLocalDate(weather.dateTime))
-        val previousDay: LocalDate =
-            LocalDate.parse(DateTimeUtils.formatDateForParseToLocalDate(previousWeather.dateTime))
-
-        val difference = ChronoUnit.DAYS.between(previousDay, day)
-        return difference > 0
-    }
-//    lateinit var itemClickListener: onWeatherItemClickListener
-
-//
-//    fun setOnItemClickListener(onItemClickListener: onWeatherItemClickListener) {
-//        this.itemClickListener = onItemClickListener
-//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherHolder {
         return when (viewType) {
@@ -73,7 +57,7 @@ class ListWeatherAdapter(
                 WeatherItem(view)
             }
             DATE_HEADER_ITEM_TYPE -> {
-                val view: View =  LayoutInflater.from(parent.context)
+                val view: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_date, parent, false)
                 DateItem(view)
             }
@@ -161,12 +145,12 @@ class ListWeatherAdapter(
 
         @SuppressLint("SetTextI18n")
         fun dateView(weatherData: WeatherData) {
-            dateTextView.text = "${DateTimeUtils.formatDate(weatherData.dateTime)} "
+            dateTextView.text = "${DateTimeUtils.formatDate(weatherData.getDateTime())} "
         }
 
         @SuppressLint("SetTextI18n")
         fun timeView(weatherData: WeatherData) {
-            timeTextView.text = "${DateTimeUtils.formatTime(weatherData.dateTime)} "
+            timeTextView.text = "${DateTimeUtils.formatTime(weatherData.getDateTime())} "
         }
 
         @SuppressLint("SetTextI18n")
@@ -196,7 +180,7 @@ class ListWeatherAdapter(
 
         @SuppressLint("SetTextI18n")
         fun dateView(weatherData: WeatherData) {
-            dateTextView.text = "${DateTimeUtils.formatDate(weatherData.dateTime)} "
+            dateTextView.text = "${DateTimeUtils.formatDate(weatherData.getDateTime())} "
         }
     }
 

@@ -16,7 +16,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class WeatherRequestRetrofit {
 
-    private lateinit var sharedPref: SharedPreferences
     private lateinit var openWeatherCityName: OpenWeatherCityName
     private lateinit var openWeatherCoord: OpenWeatherCoord
 

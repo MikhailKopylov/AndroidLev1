@@ -55,6 +55,8 @@
     <string name="Cloudy">Облачно</string>
 
     <string name="signout">Выйти</string>
+    <string name="city">город</string>
+    <string name="weather">погода</string>
 
     <string name="Saint_Petersburg">Санкт-Петербург</string>
     <string name="Moscow">Москва</string>

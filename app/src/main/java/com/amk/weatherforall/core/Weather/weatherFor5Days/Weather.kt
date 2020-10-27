@@ -16,5 +16,4 @@ data class Weather(
     @SerializedName("icon")
     @Expose
     val icon:String
-) {
-}
+)

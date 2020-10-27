@@ -101,7 +101,7 @@ class SelectCityFragment : Fragment() {
         recyclerView.adapter = cityListAdapter
 
         cityListAdapter.setOnItemClickListener(object :
-            CityListAdapter.onCityItemClickListener {
+            CityListAdapter.OnCityItemClickListener {
             override fun onItemClickListener(view: View, position: Int) {
                 requestCity(City(citySource.allCities[position].name, Coord(Double.NaN, Double.NaN)))
             }

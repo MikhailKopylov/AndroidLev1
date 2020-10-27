@@ -31,5 +31,4 @@ data class Main (
     @SerializedName("temp_kf")
     @Expose
     val temp_kf:Double
-){
-}
+)

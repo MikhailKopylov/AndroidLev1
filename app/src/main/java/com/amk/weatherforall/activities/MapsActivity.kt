@@ -126,9 +126,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         Thread {
             try {
-                val adresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+                val adresse = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
                 handler.post {
-                    latitudeTextView.text = adresses[0].getAddressLine(0)
+                    latitudeTextView.text = adresse[0].getAddressLine(0)
                 }
             } catch (e: IOException) {
                 e.printStackTrace()

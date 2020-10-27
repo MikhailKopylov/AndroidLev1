@@ -10,19 +10,17 @@ import java.net.MalformedURLException
 import java.net.SocketTimeoutException
 import java.net.URL
 import java.text.ParseException
-import java.util.*
 import javax.net.ssl.HttpsURLConnection
 
 abstract class AbstractRequest {
-    val temper: Temperature = Temperature(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-    val main: Main = Main(0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0.0)
-    val weather: Weather = Weather(0, "", "", "")
-    val clouds: Clouds = Clouds(0)
-    val wind: Wind = Wind(0.0, 0)
-    val sys: Sys = Sys("")
-    val weaterDataDefault: WeatherData =
+    private val main: Main = Main(0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0.0)
+    private val weather: Weather = Weather(0, "", "", "")
+    private val clouds: Clouds = Clouds(0)
+    private val wind: Wind = Wind(0.0, 0)
+    private val sys: Sys = Sys("")
+    private val weatherDataDefault: WeatherData =
         WeatherData(1L, main, arrayOf(weather), clouds, wind, 0, 0.0, sys, "")
-    var weatherResult: WeatherForecast = WeatherForecast(city, arrayOf(weaterDataDefault))
+    private var weatherResult: WeatherForecast = WeatherForecast(city, arrayOf(weatherDataDefault))
         get() {
             if (WeatherRequestCityName.isSendRequest) {
                 WeatherRequestCityName.isSendRequest = false
@@ -34,7 +32,7 @@ abstract class AbstractRequest {
 
     abstract fun url():URL
 
-    fun requestURL() {
+    private fun requestURL() {
         val uri = url()
 
         try {
@@ -46,7 +44,6 @@ abstract class AbstractRequest {
                 val inStream = BufferedReader(InputStreamReader(urlConnection.inputStream))
                 val result: String = inStream.use(BufferedReader::readText)
                 val gson = Gson()
-                val temp = Date(1599581171)
                 weatherResult = gson.fromJson(result, WeatherForecast::class.java)
             } catch (e: SocketTimeoutException) {
                 e.printStackTrace()

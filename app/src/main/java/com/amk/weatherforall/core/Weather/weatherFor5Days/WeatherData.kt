@@ -1,8 +1,9 @@
 package com.amk.weatherforall.core.Weather.weatherFor5Days
 
+import com.amk.weatherforall.services.DateTimeUtils
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDateTime
+import java.util.*
 
 data class WeatherData(
 //    val temp: Temperature,
@@ -14,7 +15,7 @@ data class WeatherData(
 //    val clouds: Int
     @SerializedName("dt")
     @Expose
-    val dateTime:Long,
+    private val dateTime:Long,
     @SerializedName("main")
     @Expose
     val main:Main,
@@ -39,4 +40,9 @@ data class WeatherData(
     @SerializedName("dt_txt")
     @Expose
     val dt_txt:String
-)
+){
+    fun getDateTime():Long{
+        val offSet:Int = TimeZone.getDefault().getOffset(System.currentTimeMillis())
+        return    dateTime + offSet / DateTimeUtils.ADD_TO_MILLISECONDS
+    }
+}

@@ -58,6 +58,8 @@
     <string name="m_s">m/s</string>
     <string name="Cloudy">Cloudy</string>
     <string name="signout">Sign Out</string>
+    <string name="city">city</string>
+    <string name="weather">weather</string>
 
     <string name="Novosibirsk">Novosibirsk</string>
     <string name="Ekaterinburg">Ekaterinburg</string>

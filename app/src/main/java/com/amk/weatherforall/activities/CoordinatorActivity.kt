@@ -28,11 +28,9 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
 
-class CoordinatorActivity : AppCompatActivity()/*,
-    NavigationView.OnNavigationItemSelectedListener*/ {
+class CoordinatorActivity : AppCompatActivity() {
 
 
-    //    private lateinit var drawer: DrawerLayout
     private lateinit var bottomNavView: BottomNavigationView
 
     private lateinit var updateCity: UpdateCityViewModel

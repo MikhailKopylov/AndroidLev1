@@ -7,7 +7,7 @@
     tools:context=".activities.CoordinatorActivity">
 
     <TextView
-        android:id="@+id/darck_theme_textView2"
+        android:id="@+id/dark_theme_textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -36,7 +36,7 @@
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/darck_theme_textView2">
+        app:layout_constraintTop_toBottomOf="@+id/dark_theme_textView2">
 
         <RadioButton
             android:id="@+id/display_in_C_radioButton"

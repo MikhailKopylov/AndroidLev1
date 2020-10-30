@@ -14,12 +14,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.amk.weatherforall.R
 import com.amk.weatherforall.activities.CoordinatorActivity
 import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
+import com.amk.weatherforall.core.database.CityDatabase
 import com.amk.weatherforall.core.database.CitySource
 import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogReconnectListener
@@ -75,7 +77,15 @@ class MainFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         WeatherPresenter.fragment = this
-        citySource = CitySource((activity as CoordinatorActivity).db.cityDAO())
+        val db: CityDatabase? = activity?.applicationContext?.let {
+            Room.databaseBuilder<CityDatabase>(
+                it, CityDatabase::class.java, "city_database"
+            ).allowMainThreadQueries()
+                .build()
+        }
+        if (db != null) {
+            citySource = CitySource(cityDAO = db.cityDAO())
+        }
     }
 
     override fun onCreateView(

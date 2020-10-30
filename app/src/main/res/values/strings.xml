@@ -20,7 +20,7 @@
     <string name="dark_theme_on">Dark theme on</string>
     <string name="on">ON</string>
     <string name="wind_text_view">Wind 15 m/c</string>
-    <string name="pressure_text_view">Pressure 760 mm Hg</string>
+    <string name="pressure_text_view">Pressure 760 mm Hg аруоуео</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="additional_information">additional information</string>
@@ -56,7 +56,7 @@
     <string name="wind">Wind</string>
     <string name="Local">en</string>
     <string name="m_s">m/s</string>
-    <string name="Cloudy">Cloudy</string>
+    <string name="Cloudy">Cloudy рцкрцкрцкрцкрцкрцкр</string>
     <string name="signout">Sign Out</string>
     <string name="city">city</string>
     <string name="weather">weather</string>

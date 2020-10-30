@@ -65,6 +65,7 @@ object DateTimeUtils {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun isNextDay(date: Long, previousDate: Long): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val day: LocalDate =
@@ -75,14 +76,32 @@ object DateTimeUtils {
             val difference = ChronoUnit.DAYS.between(previousDay, day)
             difference > 0
         } else {
-            val simpleDateFormat = SimpleDateFormat("dd")
-            val day: Int = simpleDateFormat.format(date * ADD_TO_MILLISECONDS).toInt()
-            val previousDay: Int =
-                simpleDateFormat.format(previousDate * ADD_TO_MILLISECONDS).toInt()
-            val difference = day - previousDay
-            difference > 0
+            val differenceDay = differenceDay(date, previousDate, "dd")
+            val differenceMonth = differenceDay(date, previousDate, "MM")
+            val differenceYear = differenceDay(date, previousDate, "yyyy")
+            differenceYear > 0 || differenceMonth > 0 || differenceDay > 0
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
+    private fun differenceDay(date: Long, previousDate: Long, format:String): Int {
+        val simpleDateFormat = SimpleDateFormat(format)
+        val currentDate: Int = simpleDateFormat.format(date * ADD_TO_MILLISECONDS).toInt()
+        val previousDate: Int =
+            simpleDateFormat.format(previousDate * ADD_TO_MILLISECONDS).toInt()
+        return currentDate - previousDate
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun isChangeTimeOfDay(date: Long): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val time = LocalDateTime.ofEpochSecond(date, 0, ZoneOffset.UTC)
+            time.hour == 9 || time.hour == 18 || time.hour == 0
+        } else {
+            val formatterTime = SimpleDateFormat("HH")
+            val result = formatterTime.format(date * ADD_TO_MILLISECONDS)
+            result == "09" || result == "18" || result == "0"
+        }
+    }
 
 }

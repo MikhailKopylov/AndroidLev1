@@ -6,10 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.Weather.weatherFor5Days.WeatherData
 import com.amk.weatherforall.services.DateTimeUtils
+import com.amk.weatherforall.services.DateTimeUtils.isChangeTimeOfDay
 import com.amk.weatherforall.services.DateTimeUtils.isNextDay
 import com.amk.weatherforall.services.Settings
 import com.amk.weatherforall.services.converterToMmHg
@@ -98,6 +102,7 @@ class ListWeatherAdapter(
         private val descriptionTextView: TextView = itemView.findViewById(R.id.description_textView)
         private val pressureTextView: TextView = itemView.findViewById(R.id.pressure_textView)
         private val iconWeather: ImageView = itemView.findViewById(R.id.weather_image_view)
+        private val cardView: CardView = itemView.findViewById(R.id.weather_cardview)
 
 //        init {
 //            itemView.setOnClickListener {
@@ -116,7 +121,20 @@ class ListWeatherAdapter(
             timeView(weatherListWithDateHeader[position])
             iconView(weatherListWithDateHeader[position])
             descriptionView(weatherListWithDateHeader[position])
+
+           // setMarginTop(weatherListWithDateHeader[position])
         }
+
+        private fun setMarginTop(weatherData: WeatherData) {
+            if (isChangeTimeOfDay(weatherData.getDateTime())) {
+                val cardViewMarginParams:ViewGroup.MarginLayoutParams  = cardView.layoutParams as ViewGroup.MarginLayoutParams
+                cardViewMarginParams.setMargins(0, 40,0, 0)
+                cardView.requestLayout()
+            }
+        }
+
+
+
 
         @SuppressLint("SetTextI18n")
         fun windView(weatherData: WeatherData) {

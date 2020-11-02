@@ -17,7 +17,7 @@ object WeatherPresenter {
 
     const val UNKNOWN_CITY_NAME = "Unknown"
 
-    val main: Main = Main(0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0.0)
+    private val main: Main = Main(0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0.0)
     val weather: Weather = Weather(0, "", "", "")
     private val clouds: Clouds = Clouds(0)
     private val wind: Wind = Wind(0.0, 0)

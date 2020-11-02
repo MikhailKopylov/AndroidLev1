@@ -46,8 +46,8 @@
     <string name="load_data">Данные загружаются…</string>
     <string name="confirm">Выбрать</string>
 
-    <string name="mm_Hg">мм. рт. ст.</string>
-    <string name="pressure">Давление</string>
+    <string name="mm_Hg">мм.рт.ст.</string>
+    <string name="pressure">Давл.</string>
     <string name="wind">Ветер</string>
     <string name="Local">ru</string>
     <string name="m_s">м/с</string>

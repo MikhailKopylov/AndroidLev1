@@ -34,9 +34,9 @@ object DateTimeUtils {
             val date = LocalDateTime.ofEpochSecond(dateLong, 0, ZoneOffset.UTC)
 
             if (date.monthValue > 9) {
-                "${date.dayOfMonth}.${date.monthValue}.${date.year}"
+                "${date.dayOfMonth}.${date.monthValue}"
             } else {
-                "${date.dayOfMonth}.0${date.monthValue}.${date.year}"
+                "${date.dayOfMonth}.0${date.monthValue}"
             }
         } else {
             val formatterDate = SimpleDateFormat("dd.MM.yy")

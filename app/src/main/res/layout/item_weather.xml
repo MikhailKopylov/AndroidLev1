@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/time_text_view"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="@+id/temperature_text_view"
             tools:text="14.08.2020" />
@@ -33,7 +34,6 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/date_text_view"
             tools:text="22:10" />
@@ -58,14 +58,14 @@
             android:id="@+id/weather_image_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:contentDescription="@string/weather"
             android:gravity="center_horizontal"
             android:scaleType="fitCenter"
             android:src="@drawable/d01"
-            android:contentDescription="@string/weather"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/temperature_text_view"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toEndOf="@+id/temperature_text_view"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/temperature_text_view" />
 
 
         <androidx.constraintlayout.widget.Guideline
@@ -95,17 +95,15 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/pressure_textView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/date_text_view" />
 
         <TextView
             android:id="@+id/pressure_textView"
             android:layout_width="0dp"
-            android:layout_height="31dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="wrap_content"
             android:gravity="start"
             android:text="@string/pressure_text_view"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/time_text_view"
             app:layout_constraintTop_toBottomOf="@+id/wind_textView" />

@@ -8,9 +8,38 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:315903155886:android:fa0ffd7143c7f45e9f7993",
+        "android_client_info": {
+          "package_name": "com.amk.weatherforall.pro"
+        }
+      },
+
+      "oauth_client": [
+        {
+          "client_id": "315903155886-3r0ivns8cnvu99k8vfvu2t49cil0qi4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN_a5mWI7M4XRirqedJmvX5883-a4NFx4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424420460266-46impe4diduia0a0s61l6nlukcic0221.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:424420460266:android:fa0ffd7143c7f45e9f7993",
         "android_client_info": {
-          "package_name": "com.amk.weatherforall.pro",
           "package_name": "com.amk.weatherforall.free"
         }
       },

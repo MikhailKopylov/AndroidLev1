@@ -20,7 +20,7 @@ import com.amk.weatherforall.services.converterToMmHg
 import com.amk.weatherforall.services.drawable
 
 
-class ListWeatherAdapter(
+class  ListWeatherAdapter(
     private val weathersList: Array<WeatherData>
 ) : RecyclerView.Adapter<WeatherHolder>() {
 

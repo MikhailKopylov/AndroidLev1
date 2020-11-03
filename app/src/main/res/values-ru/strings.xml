@@ -54,9 +54,32 @@
 
     <string name="Cloudy">Облачно</string>
 
-    <string name="signout">Выйти</string>
+    <string name="sign_out">Выйти</string>
     <string name="city">город</string>
     <string name="weather">погода</string>
+    <string name="Close_application">Закрыть приложение?</string>
+    <string name="yes">ДА</string>
+
+    <string name="Monday">Понедельник</string>
+    <string name="Sunday">воскресенье</string>
+    <string name="Tuesday">вторник</string>
+    <string name="Wednesday">среда</string>
+    <string name="Thursday">четверг</string>
+    <string name="Friday">пятница</string>
+    <string name="Saturday">суббота</string>
+
+    <string name="January">января</string>
+    <string name="February">февраля</string>
+    <string name="March">марта</string>
+    <string name="April">апреля</string>
+    <string name="May">мая</string>
+    <string name="June">июня</string>
+    <string name="July">июля</string>
+    <string name="August">августа</string>
+    <string name="September">сентября</string>
+    <string name="October">октября</string>
+    <string name="November">ноября</string>
+    <string name="December">декабря</string>
 
     <string name="Saint_Petersburg">Санкт-Петербург</string>
     <string name="Moscow">Москва</string>
@@ -74,8 +97,6 @@
     <string name="Perm">Пермь</string>
     <string name="Volgograd">Волгоград</string>
     <string name="Krasnodar">Краснодар</string>
-    <string name="Close_application">Закрыть приложение?</string>
-    <string name="yes">ДА</string>
     <string name="Tyumen">Тюмень</string>
     <string name="Izhevsk">Ижевск</string>
     <string name="Barnaul">Барнаул</string>

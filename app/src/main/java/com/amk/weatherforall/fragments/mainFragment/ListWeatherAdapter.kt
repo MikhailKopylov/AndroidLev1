@@ -1,14 +1,13 @@
 package com.amk.weatherforall.fragments.mainFragment
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
 import com.amk.weatherforall.core.Weather.weatherFor5Days.WeatherData
@@ -21,7 +20,8 @@ import com.amk.weatherforall.services.drawable
 
 
 class  ListWeatherAdapter(
-    private val weathersList: Array<WeatherData>
+    private val weathersList: Array<WeatherData>,
+    private val resources: Resources
 ) : RecyclerView.Adapter<WeatherHolder>() {
 
     companion object {
@@ -163,7 +163,7 @@ class  ListWeatherAdapter(
 
         @SuppressLint("SetTextI18n")
         fun dateView(weatherData: WeatherData) {
-            dateTextView.text = "${DateTimeUtils.formatDate(weatherData.getDateTime())} "
+            dateTextView.text = "${DateTimeUtils.formatDate(weatherData.getDateTime(), resources = resources)} "
         }
 
         @SuppressLint("SetTextI18n")
@@ -198,7 +198,7 @@ class  ListWeatherAdapter(
 
         @SuppressLint("SetTextI18n")
         fun dateView(weatherData: WeatherData) {
-            dateTextView.text = "${DateTimeUtils.formatDate(weatherData.getDateTime())} "
+            dateTextView.text = "${DateTimeUtils.formatDateHeader(weatherData.getDateTime(), resources)} "
         }
     }
 

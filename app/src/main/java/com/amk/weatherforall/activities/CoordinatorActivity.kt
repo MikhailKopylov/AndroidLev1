@@ -17,7 +17,9 @@ import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.database.CityDatabase
 import com.amk.weatherforall.core.database.CitySource
+import com.amk.weatherforall.core.database.createListCities
 import com.amk.weatherforall.fragments.FragmentsNames
+import com.amk.weatherforall.fragments.SplashFragment
 import com.amk.weatherforall.fragments.dialogs.ExitAppDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogListener
 import com.amk.weatherforall.fragments.runFragments
@@ -102,7 +104,11 @@ class CoordinatorActivity : AppCompatActivity() {
 
         bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        runFragments(this, FragmentsNames.MainFragment)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, SplashFragment.getInstance())
+            .commit()
+
         initNotificationChannel()
 
     }
@@ -111,7 +117,7 @@ class CoordinatorActivity : AppCompatActivity() {
         val swipeRefreshLayout: SwipeRefreshLayout = findViewById(R.id.swipeRefresh)
         swipeRefreshLayout.setOnRefreshListener {
             if (idFragmentVisible == FragmentsNames.MainFragment.idFragment) {
-                WeatherPresenter.newRequest(WeatherPresenter.city)
+                WeatherPresenter.newRequest(WeatherPresenter.city,resources.getString(R.string.Local))
             } else {
                 swipeRefreshLayout.isRefreshing = false
             }
@@ -128,35 +134,12 @@ class CoordinatorActivity : AppCompatActivity() {
 
     private fun initCityList() {
         if (citySource.allCities.isEmpty() || citySource.allCities.size == 1) {
-            citySource.addCity(City(resources.getString(R.string.Moscow), 524901))
-            citySource.addCity(City(resources.getString(R.string.Saint_Petersburg), 498817))
-            citySource.addCity(City(resources.getString(R.string.Saratov), 498677))
-            citySource.addCity(City(resources.getString(R.string.Novosibirsk), 1496747))
-            citySource.addCity(City(resources.getString(R.string.Ekaterinburg), 1486209))
-            citySource.addCity(City(resources.getString(R.string.Kazan), 551487))
-            citySource.addCity(City(resources.getString(R.string.Chelyabinsk), 1508291))
-            citySource.addCity(City(resources.getString(R.string.Samara), 499068))
-            citySource.addCity(City(resources.getString(R.string.Omsk), 1496153))
-            citySource.addCity(City(resources.getString(R.string.Rostov_on_don), 501183))
-            citySource.addCity(City(resources.getString(R.string.Ufa), 479561))
-            citySource.addCity(City(resources.getString(R.string.Krasnoyarsk), 1502026))
-            citySource.addCity(City(resources.getString(R.string.Voronezh), 472045))
-            citySource.addCity(City(resources.getString(R.string.Perm), 511196))
-            citySource.addCity(City(resources.getString(R.string.Volgograd), 472757))
-            citySource.addCity(City(resources.getString(R.string.Krasnodar), 542415))
-            citySource.addCity(City(resources.getString(R.string.Tyumen), 1488754))
-            citySource.addCity(City(resources.getString(R.string.Izhevsk), 554840))
-            citySource.addCity(City(resources.getString(R.string.Barnaul), 1510853))
-            citySource.addCity(City(resources.getString(R.string.Ulyanovsk), 479119))
-            citySource.addCity(City(resources.getString(R.string.Irkutsk), 2023469))
-            citySource.addCity(City(resources.getString(R.string.Khabarovsk), 2022890))
-            citySource.addCity(City(resources.getString(R.string.Yaroslavl), 468902))
-            citySource.addCity(City(resources.getString(R.string.Vladivostok), 2013348))
-            citySource.addCity(City(resources.getString(R.string.Kotlas), 543704))
-            citySource.addCity(City(resources.getString(R.string.Vladivostok), 479119))
+            createListCities(citySource, resources)
         }
         WeatherPresenter.city = citySource.allCities[0]
     }
+
+
 
     private fun initDataBase() {
         db = Room.databaseBuilder<CityDatabase>(

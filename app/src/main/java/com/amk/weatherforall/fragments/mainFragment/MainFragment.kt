@@ -23,6 +23,7 @@ import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.database.CityDatabase
 import com.amk.weatherforall.core.database.CitySource
+import com.amk.weatherforall.core.interfaces.FragmentWeather
 import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogReconnectListener
 import com.amk.weatherforall.services.Settings
@@ -32,7 +33,7 @@ import com.amk.weatherforall.viewModels.UpdateCityViewModel
 import kotlinx.android.synthetic.main.activity_coordinator.*
 
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), FragmentWeather {
 
     companion object {
         fun getInstance(): MainFragment {
@@ -65,7 +66,7 @@ class MainFragment : Fragment() {
         object : OnDialogReconnectListener {
             override fun onDialogReconnect() {
                 city = WeatherPresenter.city
-                WeatherPresenter.newRequest(city)
+                WeatherPresenter.newRequest(city,resources.getString(R.string.Local))
                 updateCity.updateCity(city)
             }
 
@@ -100,23 +101,27 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         fragmentView = view
 
-        if (city.name == LOAD_DATA) {
-            WeatherPresenter.newRequest(WeatherPresenter.city)
-        }
 
         initViewModel()
 
+        updateWeather(WeatherPresenter.weatherForecast)
         nextWeathersCreate(view)
         checkRequest()
 
         initNotificationChannel()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
     }
 
     private fun initViewModel() {
         modelCity =
             ViewModelProviders.of(activity ?: return).get(SelectCityViewModel::class.java)
         modelCity.selectedCity.observe(viewLifecycleOwner, Observer<City> {
-            WeatherPresenter.newRequest(it)
+            WeatherPresenter.newRequest(it,resources.getString(R.string.Local))
 
         })
 
@@ -141,13 +146,17 @@ class MainFragment : Fragment() {
 //        swipeRefreshLayout.setOnRefreshListener {
 //            WeatherPresenter.newRequest(city)
 //        }
+//        weatherForecast = WeatherPresenter.weatherForecast
+//        city = WeatherPresenter.city
         recyclerView = view.findViewById(R.id.nextWeather_view)
         recyclerView.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(view.context)
         recyclerView.layoutManager = linearLayoutManager
 
-        val nextWeatherAdapter = ListWeatherAdapter(weatherForecast.list)
+        val nextWeatherAdapter = ListWeatherAdapter(weatherForecast.list, resources)
         recyclerView.adapter = nextWeatherAdapter
+
+        recyclerView.smoothScrollToPosition(0)
 
 
 //        nextWeatherAdapter.setOnItemClickListener(object :
@@ -166,7 +175,7 @@ class MainFragment : Fragment() {
         }
     }
 
-    fun updateWeather(weatherForecast: WeatherForecast?) {
+    override fun updateWeather(weatherForecast: WeatherForecast?) {
         if (weatherForecast != null) {
             this.weatherForecast = weatherForecast
             city = weatherForecast.city

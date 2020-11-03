@@ -4,6 +4,7 @@ import com.amk.weatherforall.R
 import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.Weather.weatherFor5Days.*
+import com.amk.weatherforall.core.interfaces.FragmentWeather
 import com.amk.weatherforall.fragments.mainFragment.MainFragment
 import com.amk.weatherforall.services.WeatherRequestRetrofit
 
@@ -12,8 +13,8 @@ object WeatherPresenter {
     const val KEI_API: String = "a196f08fdb6ccf6e2a8a0ee4af9d9f27"
     const val UNITS: String = "metric"
 
-    const val LATITUDE_DEFAULT: Double = 56.26241
-    const val LONGITUDE_DEFAULT: Double = 34.32817
+    const val LATITUDE_DEFAULT: Double = 55.7522
+    const val LONGITUDE_DEFAULT: Double = 37.6156
 
     const val UNKNOWN_CITY_NAME = "Unknown"
 
@@ -36,10 +37,10 @@ object WeatherPresenter {
 
     lateinit var local:String
 
-    lateinit var fragment: MainFragment
+    lateinit var fragment: FragmentWeather
 
-    fun newRequest(city: City) {
-        local = fragment.resources.getString(R.string.Local)
+    fun newRequest(city: City, local:String) {
+        this.local = local
         this.city = city
         if (city.name == UNKNOWN_CITY_NAME) {
             weatherRequestRetrofit.requestWeatherCoord(city.coord.lat, city.coord.lon, KEI_API)

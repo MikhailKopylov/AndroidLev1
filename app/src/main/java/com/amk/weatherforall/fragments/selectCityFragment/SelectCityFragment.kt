@@ -100,6 +100,8 @@ class SelectCityFragment : Fragment() {
         cityListAdapter = CityListAdapter(citySource.allCities)
         recyclerView.adapter = cityListAdapter
 
+        recyclerView.smoothScrollToPosition(0)
+
         cityListAdapter.setOnItemClickListener(object :
             CityListAdapter.OnCityItemClickListener {
             override fun onItemClickListener(view: View, position: Int) {

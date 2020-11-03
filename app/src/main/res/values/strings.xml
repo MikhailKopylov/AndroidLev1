@@ -56,10 +56,31 @@
     <string name="wind">Wind</string>
     <string name="Local">en</string>
     <string name="m_s">m/s</string>
-    <string name="Cloudy">Cloudy рцкрцкрцкрцкрцкрцкр</string>
-    <string name="signout">Sign Out</string>
+    <string name="Cloudy">Cloudy</string>
+    <string name="sign_out">Sign Out</string>
     <string name="city">city</string>
     <string name="weather">weather</string>
+
+
+    <string name="Monday">Monday</string>
+    <string name="Sunday">Sunday</string>
+    <string name="Tuesday">Tuesday</string>
+    <string name="Wednesday">Wednesday</string>
+    <string name="Thursday">Thursday</string>
+    <string name="Friday">Friday</string>
+    <string name="Saturday">Saturday</string>
+    <string name="January">January</string>
+    <string name="February">February</string>
+    <string name="March">March</string>
+    <string name="April">April</string>
+    <string name="May">May</string>
+    <string name="June">June</string>
+    <string name="July">July</string>
+    <string name="August">August</string>
+    <string name="September">September</string>
+    <string name="October">October</string>
+    <string name="November">November</string>
+    <string name="December">December</string>
 
     <string name="Novosibirsk">Novosibirsk</string>
     <string name="Ekaterinburg">Ekaterinburg</string>

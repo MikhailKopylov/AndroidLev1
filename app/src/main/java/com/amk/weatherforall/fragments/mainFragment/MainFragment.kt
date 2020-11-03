@@ -106,14 +106,9 @@ class MainFragment : Fragment(), FragmentWeather {
 
         updateWeather(WeatherPresenter.weatherForecast)
         nextWeathersCreate(view)
-        checkRequest()
-
+//        checkRequest()
+//
         initNotificationChannel()
-
-    }
-
-    override fun onResume() {
-        super.onResume()
 
     }
 
@@ -128,7 +123,7 @@ class MainFragment : Fragment(), FragmentWeather {
         changeSettings = ViewModelProviders.of(activity ?: return).get(SettingViewModel::class.java)
         changeSettings.settings.observe(viewLifecycleOwner, Observer<Settings> {
             settings = it
-            checkRequest()
+//            checkRequest()
         })
 
         updateCity = ViewModelProviders.of(activity ?: return).get(UpdateCityViewModel::class.java)
@@ -149,14 +144,14 @@ class MainFragment : Fragment(), FragmentWeather {
 //        weatherForecast = WeatherPresenter.weatherForecast
 //        city = WeatherPresenter.city
         recyclerView = view.findViewById(R.id.nextWeather_view)
-        recyclerView.setHasFixedSize(true)
+//        recyclerView.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(view.context)
         recyclerView.layoutManager = linearLayoutManager
 
         val nextWeatherAdapter = ListWeatherAdapter(weatherForecast.list, resources)
         recyclerView.adapter = nextWeatherAdapter
 
-        recyclerView.smoothScrollToPosition(0)
+//        recyclerView.smoothScrollToPosition(0)
 
 
 //        nextWeatherAdapter.setOnItemClickListener(object :
@@ -168,12 +163,12 @@ class MainFragment : Fragment(), FragmentWeather {
     }
 
 
-    @SuppressLint("SetTextI18n")
-    private fun checkRequest() {
-        if (!WeatherPresenter.isRequestSuccessful) {
-            updateWeather(null)
-        }
-    }
+//    @SuppressLint("SetTextI18n")
+//    private fun checkRequest() {
+//        if (!WeatherPresenter.isRequestSuccessful) {
+//            updateWeather(null)
+//        }
+//    }
 
     override fun updateWeather(weatherForecast: WeatherForecast?) {
         if (weatherForecast != null) {

@@ -78,4 +78,11 @@ data class City(
     companion object {
         val CITY_DEFAULT = City("Unknown", -1)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if(other is City) {
+            return name == other.name || id == other.id
+        }
+        return false
+    }
 }

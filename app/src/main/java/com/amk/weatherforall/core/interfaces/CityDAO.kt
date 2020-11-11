@@ -39,8 +39,11 @@ interface CityDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLastCity(dateLastUseCity: DateLastUseCity)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateLastCity(dateLastUseCity: DateLastUseCity)
+    @Query("UPDATE DateLastUseCity SET date_of_last_use = :newDate WHERE city_id_from_net = :city_id_from_net ")
+    fun updateLastCity(city_id_from_net:Int, newDate:Long)
+
+//    @Query("SELECT id, city_id,  city_id_from_net, date_of_last_use FROM  dateLastUseCity WHERE city_id_from_net = :cityIdFromNet")
+//    fun getDateLastCity(cityIdFromNet: Long): DateLastUseCity
 
 //    @Query("SELECT * FROM dateLastUseCity")
 //    fun getCitiesLastUse(): List<DateLastUseCity>

@@ -23,8 +23,7 @@ class CitySource(private val cityDAO: CityDAO) {
         val cityUpperCase: City = Settings.cityNameStartWithUpperCase(city)
         for (elem in allCities) {
             if (cityUpperCase == elem) {
-
-                cityDAO.updateLastCity(DateLastUseCity(elem.idDB, cityUpperCase.id, date()))
+                cityDAO.updateLastCity(cityUpperCase.id, date())
                 loadCities()
                 return
             }

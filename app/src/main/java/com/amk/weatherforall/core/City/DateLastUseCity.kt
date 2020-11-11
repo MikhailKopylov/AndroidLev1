@@ -20,8 +20,15 @@ class DateLastUseCity(
     val idCityFromNet: Int,
 
     @ColumnInfo(name = "date_of_last_use")
-    val positionOfLastUse: Long
-) {
+    val positionOfLastUse: Long,
+
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
+    var id: Long
+) {
+    constructor(idCity: Long, idCityFromNet: Int, positionOfLastUse: Long) : this(
+        idCity,
+        idCityFromNet,
+        positionOfLastUse,
+        0
+    )
 }

@@ -5,6 +5,9 @@ import com.amk.weatherforall.core.Weather.weatherFor5Days.WeatherData
 
 object Settings {
 
+    const val TEMPERATURE_KEY = "TemperatureMode"
+    const val PRESSURE_KEY = "showPressure"
+    const val WIND_KEY = "showWind"
     var temperatureC: Boolean = true
     var showWind: Boolean = true
     var showPressure: Boolean = true

@@ -1,8 +1,10 @@
 package com.amk.weatherforall.activities
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -23,6 +25,7 @@ import com.amk.weatherforall.fragments.SplashFragment
 import com.amk.weatherforall.fragments.dialogs.ExitAppDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogListener
 import com.amk.weatherforall.fragments.runFragments
+import com.amk.weatherforall.services.Settings
 import com.amk.weatherforall.services.getUrlByCity
 import com.amk.weatherforall.viewModels.BottomNavigationViewModel
 import com.amk.weatherforall.viewModels.UpdateCityViewModel
@@ -32,6 +35,9 @@ import com.squareup.picasso.Picasso
 
 class CoordinatorActivity : AppCompatActivity() {
 
+    companion object{
+        const val APP_PREFERENCES = "settings"
+    }
 
     private lateinit var bottomNavView: BottomNavigationView
 
@@ -91,6 +97,11 @@ class CoordinatorActivity : AppCompatActivity() {
         initSwipeRefresh()
 
         initViewModel()
+
+        val settingsLoad:SharedPreferences = getPreferences(MODE_PRIVATE)
+        Settings.temperatureC = settingsLoad.getBoolean(Settings.TEMPERATURE_KEY, true)
+        Settings.showPressure = settingsLoad.getBoolean(Settings.PRESSURE_KEY, true)
+        Settings.showWind = settingsLoad.getBoolean(Settings.WIND_KEY, true)
 
 //        val navigationView: NavigationView = findViewById(R.id.navigation_view)
 //        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
@@ -221,5 +232,16 @@ class CoordinatorActivity : AppCompatActivity() {
         override fun onDialogCancel() {
 
         }
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    override fun onStop() {
+        super.onStop()
+        val sharedPref:SharedPreferences = getPreferences(MODE_PRIVATE)
+        val editor:SharedPreferences.Editor =  sharedPref.edit()
+        editor.putBoolean(Settings.TEMPERATURE_KEY, Settings.temperatureC)
+        editor.putBoolean(Settings.PRESSURE_KEY, Settings.showPressure)
+        editor.putBoolean(Settings.WIND_KEY, Settings.showWind)
+        editor.apply()
     }
 }

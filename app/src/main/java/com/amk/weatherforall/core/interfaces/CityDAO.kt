@@ -39,6 +39,9 @@ interface CityDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLastCity(dateLastUseCity: DateLastUseCity)
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun updateLastCity(dateLastUseCity: DateLastUseCity)
+
 //    @Query("SELECT * FROM dateLastUseCity")
 //    fun getCitiesLastUse(): List<DateLastUseCity>
 

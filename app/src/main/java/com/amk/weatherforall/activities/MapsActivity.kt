@@ -71,13 +71,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
 
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
 
 
-        initView()
-        requestPermissions()
+
     }
 
     private fun initView() {
@@ -150,7 +146,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
         requestPermissions()
+        initView()
     }
 
     private fun requestPermissions() {
@@ -203,6 +204,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         criteria.accuracy = Criteria.ACCURACY_COARSE
         val provider: String? =
             LocationManager.NETWORK_PROVIDER//locationManager.getBestProvider(criteria, true)
+//        LocationManager.GPS_PROVIDER
         if (provider != null) {
 //            locationManager.requestLocationUpdates(
 //                provider,

@@ -32,6 +32,7 @@ fun getUrlByCity(city: City, context:Context):String{
         context.resources.getString(R.string.Vladivostok) -> "https://cdn.pixabay.com/photo/2018/10/09/10/33/fefu-3734649_960_720.jpg"
         context.resources.getString(R.string.Kotlas) -> "https://upload.wikimedia.org/wikipedia/commons/1/11/Saint_Stephen_of_Perm_Church_%28Kotlas%29_%2801%29.JPG"
         context.resources.getString(R.string.Vladivostok) -> "https://cdn.pixabay.com/photo/2018/10/09/10/33/fefu-3734649_960_720.jpg"
+        context.resources.getString(R.string.Sertolovo) -> "https://cdn.pixabay.com/photo/2020/11/13/09/50/city-5738104_960_720.jpg"
         else -> "https://images.unsplash.com/uploads/1413259835094dcdeb9d3/6e609595?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80"
     }
 }

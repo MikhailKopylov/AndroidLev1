@@ -82,8 +82,8 @@ class SelectCityFragment : Fragment() {
         requestResult(view)
         val selectCoordButton: Button = view.findViewById(R.id.show_on_map_button)
         selectCoordButton.setOnClickListener {
-            activity?.supportFragmentManager
-                ?.popBackStack()
+//            activity?.supportFragmentManager
+//                ?.popBackStack()
 
             startActivityForResult(
                 Intent(context, MapsActivity::class.java),

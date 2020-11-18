@@ -10,7 +10,9 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.amk.weatherforall.R
-import com.amk.weatherforall.core.Weather.weatherFor5Days.WeatherData
+import com.amk.weatherforall.core.weather.WindDirection
+import com.amk.weatherforall.core.weather.convertDegreesToDirectionWind
+import com.amk.weatherforall.core.weather.weatherFor5Days.WeatherData
 import com.amk.weatherforall.services.DateTimeUtils
 import com.amk.weatherforall.services.DateTimeUtils.isChangeTimeOfDay
 import com.amk.weatherforall.services.DateTimeUtils.isNextDay
@@ -19,7 +21,7 @@ import com.amk.weatherforall.services.converterToMmHg
 import com.amk.weatherforall.services.drawable
 
 
-class  ListWeatherAdapter(
+class ListWeatherAdapter(
     private val weathersList: Array<WeatherData>,
     private val resources: Resources
 ) : RecyclerView.Adapter<WeatherHolder>() {
@@ -103,6 +105,8 @@ class  ListWeatherAdapter(
         private val pressureTextView: TextView = itemView.findViewById(R.id.pressure_textView)
         private val iconWeather: ImageView = itemView.findViewById(R.id.weather_image_view)
         private val cardView: CardView = itemView.findViewById(R.id.weather_cardview)
+        private val windDirectionTextView: TextView =
+            itemView.findViewById(R.id.wind_direction_text_view)
 
 //        init {
 //            itemView.setOnClickListener {
@@ -121,19 +125,19 @@ class  ListWeatherAdapter(
             timeView(weatherListWithDateHeader[position])
             iconView(weatherListWithDateHeader[position])
             descriptionView(weatherListWithDateHeader[position])
+            windDirectionView(weatherListWithDateHeader[position])
 
-           // setMarginTop(weatherListWithDateHeader[position])
+            // setMarginTop(weatherListWithDateHeader[position])
         }
 
         private fun setMarginTop(weatherData: WeatherData) {
             if (isChangeTimeOfDay(weatherData.getDateTime())) {
-                val cardViewMarginParams:ViewGroup.MarginLayoutParams  = cardView.layoutParams as ViewGroup.MarginLayoutParams
-                cardViewMarginParams.setMargins(0, 40,0, 0)
+                val cardViewMarginParams: ViewGroup.MarginLayoutParams =
+                    cardView.layoutParams as ViewGroup.MarginLayoutParams
+                cardViewMarginParams.setMargins(0, 40, 0, 0)
                 cardView.requestLayout()
             }
         }
-
-
 
 
         @SuppressLint("SetTextI18n")
@@ -163,7 +167,8 @@ class  ListWeatherAdapter(
 
         @SuppressLint("SetTextI18n")
         fun dateView(weatherData: WeatherData) {
-            dateTextView.text = "${DateTimeUtils.formatDate(weatherData.getDateTime(), resources = resources)} "
+            dateTextView.text =
+                "${DateTimeUtils.formatDate(weatherData.getDateTime(), resources = resources)} "
         }
 
         @SuppressLint("SetTextI18n")
@@ -186,6 +191,25 @@ class  ListWeatherAdapter(
                 )
             )
         }
+
+        private fun windDirectionView(weatherData: WeatherData) {
+            windDirectionTextView.text =
+                localNameWindDirection(convertDegreesToDirectionWind(weatherData.wind.deg))
+        }
+
+        private fun localNameWindDirection(windDirection: WindDirection): String {
+            val resources = windDirectionTextView.context.resources
+            return when (windDirection) {
+                WindDirection.North -> "${resources.getString(R.string.North)} ⬆"
+                WindDirection.NorthEast -> "${resources.getString(R.string.NorthEast)} ↗"
+                WindDirection.East -> "${resources.getString(R.string.East)} ➡"
+                WindDirection.SouthEast -> "${resources.getString(R.string.SouthEast)} ↘"
+                WindDirection.South -> "${resources.getString(R.string.South)} ⬇"
+                WindDirection.SouthWest -> "${resources.getString(R.string.SouthWest)} ↙"
+                WindDirection.West -> "${resources.getString(R.string.West)} ⬅"
+                WindDirection.NorthWest -> "${resources.getString(R.string.NorthWest)} ↖"
+            }
+        }
     }
 
     inner class DateItem(itemView: View) : WeatherHolder(itemView) {
@@ -198,7 +222,8 @@ class  ListWeatherAdapter(
 
         @SuppressLint("SetTextI18n")
         fun dateView(weatherData: WeatherData) {
-            dateTextView.text = "${DateTimeUtils.formatDateHeader(weatherData.getDateTime(), resources)} "
+            dateTextView.text =
+                "${DateTimeUtils.formatDateHeader(weatherData.getDateTime(), resources)} "
         }
     }
 

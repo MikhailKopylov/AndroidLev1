@@ -2,13 +2,13 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/weather_cardview"
+    style="@style/MyCardViewStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginTop="8dp"
-    app:cardBackgroundColor="@android:color/white"
-    android:id="@+id/weather_cardview"
-    style="@style/MyCardViewStyle">
+    app:cardBackgroundColor="@android:color/white">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,11 +78,12 @@
             android:id="@+id/wind_textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:gravity="end"
             android:text="@string/wind_text_view"
             android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/pressure_textView"
+            app:layout_constraintEnd_toStartOf="@+id/wind_direction_text_view"
+            app:layout_constraintStart_toEndOf="@+id/date_text_view"
             app:layout_constraintTop_toBottomOf="@+id/description_textView" />
 
         <TextView
@@ -106,6 +107,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/time_text_view"
             app:layout_constraintTop_toBottomOf="@+id/wind_textView" />
+
+        <TextView
+            android:id="@+id/wind_direction_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NW"
+            app:layout_constraintBottom_toBottomOf="@+id/wind_textView"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

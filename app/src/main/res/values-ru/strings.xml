@@ -107,4 +107,12 @@
     <string name="Vladivostok">Владивосток</string>
     <string name="Kotlas">Котлас</string>
     <string name="Sertolovo">Сертолово</string>
+    <string name="North">С</string>
+    <string name="NorthEast">СВ</string>
+    <string name="East">В</string>
+    <string name="SouthEast">ЮВ</string>
+    <string name="South">Ю</string>
+    <string name="SouthWest">ЮЗ</string>
+    <string name="West">З</string>
+    <string name="NorthWest">СЗ</string>
 </resources>

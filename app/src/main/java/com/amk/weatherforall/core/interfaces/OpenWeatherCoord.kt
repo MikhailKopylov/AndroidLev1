@@ -1,6 +1,6 @@
 package com.amk.weatherforall.core.interfaces
 
-import com.amk.weatherforall.core.Weather.WeatherForecast
+import com.amk.weatherforall.core.weather.WeatherForecast
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

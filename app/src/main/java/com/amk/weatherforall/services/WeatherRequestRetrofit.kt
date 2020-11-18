@@ -1,12 +1,11 @@
 package com.amk.weatherforall.services
 
-import android.content.SharedPreferences
 import com.amk.weatherforall.core.City.City
-import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.WeatherPresenter.UNITS
 import com.amk.weatherforall.core.interfaces.OpenWeatherCityName
 import com.amk.weatherforall.core.interfaces.OpenWeatherCoord
+import com.amk.weatherforall.core.weather.WeatherForecast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +32,7 @@ class WeatherRequestRetrofit {
         openWeatherCoord = retrofit.create(OpenWeatherCoord::class.java)
     }
 
-    fun requestWeatherCity(city: City, keyApi: String){
+    fun requestWeatherCity(city: City, keyApi: String) {
         openWeatherCityName.loadWeather(city.name, keyApi, UNITS, WeatherPresenter.local)
             .enqueue(object : Callback<WeatherForecast> {
 
@@ -57,8 +56,14 @@ class WeatherRequestRetrofit {
 
     }
 
-    fun requestWeatherCoord(lat:Double, lon:Double, keyApi: String){
-        openWeatherCoord.loadWeather(lat.toString(), lon.toString(), keyApi, UNITS, WeatherPresenter.local)
+    fun requestWeatherCoord(lat: Double, lon: Double, keyApi: String) {
+        openWeatherCoord.loadWeather(
+            lat.toString(),
+            lon.toString(),
+            keyApi,
+            UNITS,
+            WeatherPresenter.local
+        )
             .enqueue(object : Callback<WeatherForecast> {
 
                 override fun onResponse(

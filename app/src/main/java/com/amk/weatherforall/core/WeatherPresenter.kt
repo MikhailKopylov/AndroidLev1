@@ -1,11 +1,9 @@
 package com.amk.weatherforall.core
 
-import com.amk.weatherforall.R
 import com.amk.weatherforall.core.City.City
-import com.amk.weatherforall.core.Weather.WeatherForecast
-import com.amk.weatherforall.core.Weather.weatherFor5Days.*
 import com.amk.weatherforall.core.interfaces.FragmentWeather
-import com.amk.weatherforall.fragments.mainFragment.MainFragment
+import com.amk.weatherforall.core.weather.WeatherForecast
+import com.amk.weatherforall.core.weather.weatherFor5Days.*
 import com.amk.weatherforall.services.WeatherRequestRetrofit
 
 object WeatherPresenter {
@@ -35,11 +33,11 @@ object WeatherPresenter {
     var isRequestSuccessful: Boolean = true
     private val weatherRequestRetrofit: WeatherRequestRetrofit = WeatherRequestRetrofit()
 
-    lateinit var local:String
+    lateinit var local: String
 
     lateinit var fragment: FragmentWeather
 
-    fun newRequest(city: City, local:String) {
+    fun newRequest(city: City, local: String) {
         this.local = local
         this.city = city
         if (city.name == UNKNOWN_CITY_NAME) {

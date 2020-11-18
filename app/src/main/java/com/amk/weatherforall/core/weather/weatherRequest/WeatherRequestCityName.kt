@@ -1,4 +1,4 @@
-package com.amk.weatherforall.core.Weather.weatherRequest
+package com.amk.weatherforall.core.weather.weatherRequest
 
 import com.amk.weatherforall.core.City.City
 import com.amk.weatherforall.core.WeatherPresenter

@@ -1,6 +1,5 @@
 package com.amk.weatherforall.fragments.mainFragment
 
-import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -15,15 +14,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.amk.weatherforall.R
 import com.amk.weatherforall.activities.CoordinatorActivity
 import com.amk.weatherforall.core.City.City
-import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.database.CityDatabase
 import com.amk.weatherforall.core.database.CitySource
 import com.amk.weatherforall.core.interfaces.FragmentWeather
+import com.amk.weatherforall.core.weather.WeatherForecast
 import com.amk.weatherforall.fragments.dialogs.NoNetworkDialog
 import com.amk.weatherforall.fragments.dialogs.OnDialogReconnectListener
 import com.amk.weatherforall.services.Settings
@@ -54,8 +52,7 @@ class MainFragment : Fragment(), FragmentWeather {
     private var weatherForecast: WeatherForecast = WeatherPresenter.weatherForecast
     private val weatherPresenter: WeatherPresenter = WeatherPresenter
 
-    lateinit var recyclerView: RecyclerView
-    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var recyclerView: RecyclerView
 
     private lateinit var modelCity: SelectCityViewModel
     private lateinit var updateCity: UpdateCityViewModel
@@ -66,7 +63,7 @@ class MainFragment : Fragment(), FragmentWeather {
         object : OnDialogReconnectListener {
             override fun onDialogReconnect() {
                 city = WeatherPresenter.city
-                WeatherPresenter.newRequest(city,resources.getString(R.string.Local))
+                WeatherPresenter.newRequest(city, resources.getString(R.string.Local))
                 updateCity.updateCity(city)
             }
 
@@ -116,7 +113,7 @@ class MainFragment : Fragment(), FragmentWeather {
         modelCity =
             ViewModelProviders.of(activity ?: return).get(SelectCityViewModel::class.java)
         modelCity.selectedCity.observe(viewLifecycleOwner, Observer<City> {
-            WeatherPresenter.newRequest(it,resources.getString(R.string.Local))
+            WeatherPresenter.newRequest(it, resources.getString(R.string.Local))
 
         })
 
@@ -177,7 +174,7 @@ class MainFragment : Fragment(), FragmentWeather {
             citySource.addCity(city)
             nextWeathersCreate(fragmentView)
             updateCity.updateCity(city)
-            if(activity is CoordinatorActivity){
+            if (activity is CoordinatorActivity) {
                 (activity as CoordinatorActivity).swipeRefresh.isRefreshing = false
             }
         } else {

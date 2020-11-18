@@ -1,4 +1,4 @@
-package com.amk.weatherforall.core.Weather
+package com.amk.weatherforall.core.weather
 
 data class Wind(
     val speed:Int,

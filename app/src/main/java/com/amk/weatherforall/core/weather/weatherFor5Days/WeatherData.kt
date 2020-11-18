@@ -1,4 +1,4 @@
-package com.amk.weatherforall.core.Weather.weatherFor5Days
+package com.amk.weatherforall.core.weather.weatherFor5Days
 
 import com.amk.weatherforall.services.DateTimeUtils
 import com.google.gson.annotations.Expose

@@ -1,7 +1,7 @@
-package com.amk.weatherforall.core.Weather.weatherRequest
+package com.amk.weatherforall.core.weather.weatherRequest
 
-import com.amk.weatherforall.core.Weather.WeatherForecast
-import com.amk.weatherforall.core.Weather.weatherFor5Days.*
+import com.amk.weatherforall.core.weather.WeatherForecast
+import com.amk.weatherforall.core.weather.weatherFor5Days.*
 import com.amk.weatherforall.core.WeatherPresenter.city
 import com.google.gson.Gson
 import java.io.BufferedReader

@@ -8,18 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.amk.weatherforall.R
-import com.amk.weatherforall.core.Weather.WeatherForecast
 import com.amk.weatherforall.core.WeatherPresenter
 import com.amk.weatherforall.core.database.CityDatabase
 import com.amk.weatherforall.core.database.CitySource
 import com.amk.weatherforall.core.interfaces.FragmentWeather
+import com.amk.weatherforall.core.weather.WeatherForecast
 
 class SplashFragment : Fragment(), FragmentWeather {
     private lateinit var citySource: CitySource
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

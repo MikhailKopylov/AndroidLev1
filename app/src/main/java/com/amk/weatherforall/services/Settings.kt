@@ -1,7 +1,7 @@
 package com.amk.weatherforall.services
 
 import com.amk.weatherforall.core.City.City
-import com.amk.weatherforall.core.Weather.weatherFor5Days.WeatherData
+import com.amk.weatherforall.core.weather.weatherFor5Days.WeatherData
 
 object Settings {
 
@@ -24,7 +24,7 @@ object Settings {
 
 
     fun startWithUpperCase(word: String): String {
-        if(word.isEmpty()) return word
+        if (word.isEmpty()) return word
         return StringBuilder().append(word.first().toUpperCase())
             .append(word.subSequence(1, word.length))
             .toString()
@@ -32,9 +32,12 @@ object Settings {
 
 
     fun cityNameStartWithUpperCase(city: City): City {
-        return City(city.id, startWithUpperCase(city.name),
-        city.coord, city.country, city.timezone, city.population, city.sunrise, city.sunset)
+        return City(
+            city.id, startWithUpperCase(city.name),
+            city.coord, city.country, city.timezone, city.population, city.sunrise, city.sunset
+        )
     }
+
     private fun Int.convertToF() = ((this * 1.8) + 32).toInt()
 }
 

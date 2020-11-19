@@ -20,7 +20,7 @@
     <string name="dark_theme_on">Dark theme on</string>
     <string name="on">ON</string>
     <string name="wind_text_view">Wind 15 m/c</string>
-    <string name="pressure_text_view">Pressure 760 mm Hg аруоуео</string>
+    <string name="pressure_text_view">Pressure 760 mm Hg</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="additional_information">additional information</string>
@@ -116,5 +116,6 @@
     <string name="Vladivostok">Vladivostok</string>
     <string name="Kotlas">Kotlas</string>
     <string name="Sertolovo">Sertolovo</string>
+    <string name="Kuloy">Kuloy</string>
 
 </resources>

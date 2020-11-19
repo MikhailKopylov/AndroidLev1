@@ -15,10 +15,10 @@
         <item name="cardMaxElevation">0dp</item>
         <item name="contentPaddingBottom">1dp</item>
         <item name="contentPaddingTop">1dp</item>
-        <item name="contentPaddingLeft">3dp</item>
-        <item name="contentPaddingRight">3dp</item>
-        <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_marginEnd">8dp</item>
+        <item name="contentPaddingLeft">1dp</item>
+        <item name="contentPaddingRight">1dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
     </style>
 
     <style name="appBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">

@@ -145,10 +145,12 @@ class ListWeatherAdapter(
             val wind: String = windTextView.context.resources.getString(R.string.wind)
             val m_s: String = windTextView.context.resources.getString(R.string.m_s)
             if (Settings.showWind) {
-                windTextView.text = "$wind ${weatherData.wind.speed} $m_s"
+                windTextView.text = "$wind ${weatherData.wind.speed.toInt()} $m_s"
                 windTextView.visibility = View.VISIBLE
+                windDirectionTextView.visibility = View.VISIBLE
             } else {
                 windTextView.visibility = View.INVISIBLE
+                windDirectionTextView.visibility = View.INVISIBLE
             }
         }
 
@@ -158,7 +160,7 @@ class ListWeatherAdapter(
             val pressure: String = pressureTextView.context.resources.getString(R.string.pressure)
             if (Settings.showPressure) {
                 pressureTextView.text =
-                    "$pressure ${weatherData.main.pressure.converterToMmHg()} $mm_Hg"
+                    "$pressure ${weatherData.main.pressure.converterToMmHg()}$mm_Hg"
                 pressureTextView.visibility = View.VISIBLE
             } else {
                 pressureTextView.visibility = View.INVISIBLE
@@ -200,14 +202,14 @@ class ListWeatherAdapter(
         private fun localNameWindDirection(windDirection: WindDirection): String {
             val resources = windDirectionTextView.context.resources
             return when (windDirection) {
-                WindDirection.North -> "${resources.getString(R.string.North)} ⬆"
-                WindDirection.NorthEast -> "${resources.getString(R.string.NorthEast)} ↗"
-                WindDirection.East -> "${resources.getString(R.string.East)} ➡"
-                WindDirection.SouthEast -> "${resources.getString(R.string.SouthEast)} ↘"
-                WindDirection.South -> "${resources.getString(R.string.South)} ⬇"
-                WindDirection.SouthWest -> "${resources.getString(R.string.SouthWest)} ↙"
-                WindDirection.West -> "${resources.getString(R.string.West)} ⬅"
-                WindDirection.NorthWest -> "${resources.getString(R.string.NorthWest)} ↖"
+                WindDirection.North -> "${resources.getString(R.string.North)} ⬇"
+                WindDirection.NorthEast -> "${resources.getString(R.string.NorthEast)} ↙"
+                WindDirection.East -> "${resources.getString(R.string.East)} ⬅"
+                WindDirection.SouthEast -> "${resources.getString(R.string.SouthEast)} ↖"
+                WindDirection.South -> "${resources.getString(R.string.South)} ⬆"
+                WindDirection.SouthWest -> "${resources.getString(R.string.SouthWest)} ↗"
+                WindDirection.West -> "${resources.getString(R.string.West)} ➡"
+                WindDirection.NorthWest -> "${resources.getString(R.string.NorthWest)} ↘"
             }
         }
     }

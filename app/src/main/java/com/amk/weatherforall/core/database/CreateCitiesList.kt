@@ -30,4 +30,5 @@ fun createListCities(citySource: CitySource, resources: Resources) {
     citySource.addCity(City(resources.getString(R.string.Yaroslavl), 468902))
     citySource.addCity(City(resources.getString(R.string.Kotlas), 543704))
     citySource.addCity(City(resources.getString(R.string.Vladivostok), 479119))
+    citySource.addCity(City(resources.getString(R.string.Kuloy), 539385))
 }

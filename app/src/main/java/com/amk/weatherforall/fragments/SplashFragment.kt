@@ -45,9 +45,7 @@ class SplashFragment : Fragment(), FragmentWeather {
 
     companion object {
         @JvmStatic
-        fun getInstance(): SplashFragment {
-            return SplashFragment()
-        }
+        fun getInstance() =  SplashFragment()
     }
 
     override fun updateWeather(weatherForecast: WeatherForecast?) {

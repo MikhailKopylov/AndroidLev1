@@ -105,6 +105,7 @@ object DateTimeUtils {
     @SuppressLint("SimpleDateFormat")
     fun isNextDay(date: Long, previousDate: Long): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val test = formatDateForParseToLocalDate(date)
             val day: LocalDate =
                 LocalDate.parse(formatDateForParseToLocalDate(date))
             val previousDay: LocalDate =
@@ -133,7 +134,7 @@ object DateTimeUtils {
             if (date.monthValue > 9) {
                 "${date.year}-${date.monthValue}-$day"
             } else {
-                "${date.year}-0${date.monthValue}-$day}"
+                "${date.year}-0${date.monthValue}-$day"
             }
         } else {
             val formatterDate = SimpleDateFormat("yyyy-mm-dd")

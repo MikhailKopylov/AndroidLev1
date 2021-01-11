@@ -9,7 +9,7 @@
     You can also add your credentials to an existing key, using these values:
 
     Package name:
-    com.amk.weatherforall.fragments
+    com.amk.weatherforall.ui.fragments
 
     SHA-1 certificate fingerprint:
     5A:EF:D6:CD:02:B7:11:49:D0:A1:90:33:52:7B:A8:3C:24:BE:BA:3D

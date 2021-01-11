@@ -7,7 +7,14 @@
     android:theme="@style/AppTheme"
 
     >
-
+    <TextView
+        android:id="@+id/load_data_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="32sp"
+        android:text="@string/load_data" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nextWeather_view"
         android:layout_width="match_parent"
@@ -15,7 +22,8 @@
         android:background="@color/primary_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone">
 
     </androidx.recyclerview.widget.RecyclerView>
 

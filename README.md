@@ -6,4 +6,4 @@
 Экран Google maps
 Экран настроек
 
-Использованные технологии: MVVM, Retrofit
+Использованные технологии: Kotlin, MVVM, Retrofit
